@@ -58,7 +58,9 @@ def search(dept):
 			total_F_PDF += int(courses[i].num_F_PDF)
 			total_P_PDF += int(courses[i].num_P_PDF)
 
-# Start execution here!
+# Enter department as command line argument, and 
+# this program will list the distribution of grades
+# in this department
 if __name__ == '__main__':
     print "Searching by Department"
     print ""
