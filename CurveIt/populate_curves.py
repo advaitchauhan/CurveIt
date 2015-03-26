@@ -73,3 +73,4 @@ if __name__ == '__main__':
     print newCourse
     populate()
     showGrades()
+    newCourse.save()
