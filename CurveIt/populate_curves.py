@@ -8,9 +8,14 @@ from random import randint
 
 from curves.models import Course_Specific, User
 
-newCourse = Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Sarkar", semester="Fall 2014")
+courses = []
+courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Sucharit Sarkar", semester="Fall 2014"))
+courses.append(Course_Specific(dept="COS", num="333", name="Advanced Programming Techniques", prof="Brian Kernighan", semester="Spring 2015"))
+courses.append(Course_Specific(dept="ECO", num="310", name="Microeconomic Theory", prof="Wolfgang Pesendorfer", semester="Fall 2014"))
+courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Mark McConnel", semester="Spring 2014"))
+courses.append(Course_Specific(dept="ECO", num="310", name="Microeconomic Theory", prof="Wolfgang Pesendorfer", semester="Spring 2014"))
 
-def addOneGrade():
+def addOneGrade(newCourse):
 	num = randint(1,14)
 	if num == 1:
 		newCourse.addGrade("A+")
@@ -42,10 +47,11 @@ def addOneGrade():
 		newCourse.addGrade("F_PDF")
 
 def populate():
-	for i in range(0, 1000):
-		addOneGrade()
+	for i in range(0, len(courses)):
+		for j in range(0, 1000):
+			addOneGrade(courses[i])
 
-def showGrades():
+'''def showGrades():
 	totalGrades = newCourse.getTotalGrades()
 	totalPDF = newCourse.getTotalPDF()
 	print "A+: " + str(newCourse.num_A_plus)
@@ -64,13 +70,13 @@ def showGrades():
 	print "P PDF: " + str(newCourse.num_P_PDF)
 	print "Total for Grade: " + str(newCourse.getTotalGrades())
 	print "Total PDF: " + str(newCourse.getTotalPDF())
-	print "Total: " + str(newCourse.getTotalGrades() + newCourse.getTotalPDF())
+	print "Total: " + str(newCourse.getTotalGrades() + newCourse.getTotalPDF())'''
 
 # Start execution here!
 if __name__ == '__main__':
     print "Starting curves population script..."
-    print "\n"
-    print newCourse
+    Course_Specific.objects.all().delete()
     populate()
-    showGrades()
-    newCourse.save()
+    # showGrades()
+    for i in range(0, len(courses)):
+    	courses[i].save()
