@@ -5,6 +5,6 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'CurveIt.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+    url(r'^curves/', include ('curves.urls', namespace = "curves")),
     url(r'^admin/', include(admin.site.urls)),
 )

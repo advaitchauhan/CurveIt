@@ -8,7 +8,7 @@ class Course_Specific(models.Model):
 	num = models.CharField(max_length = 4) # e.g. '333'
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
 	prof = models.CharField(max_length = 50) # e.g. 'Brian Kernighan'
-	semester = models.CharField(max_length = 11) # e.g. 'Spring 2015'
+	semester = models.CharField(max_length = 5) # e.g. 'S2015' or 'F2015'
 	num_A_plus = models.IntegerField(default = 0) 
 	num_A = models.IntegerField(default = 0)
 	num_A_minus = models.IntegerField(default = 0)
@@ -60,6 +60,14 @@ class Course_Specific(models.Model):
 
 	def getTotalPDF(self):
 		return self.num_P_PDF + self.num_D_PDF + self.num_F_PDF
+
+	def printGrades(self):
+		str = ""
+		numA = self.num_A + self.num_A_minus + self.num_A_plus
+		numB = self.num_B + self.num_B_minus + self.num_B_plus
+		numC = self.num_C + self.num_C_minus + self.num_C_plus
+		str = "A's: %s B's: %s C's: %s" % (numA, numB, numC)
+		return str
 
 	
 	def __unicode__(self):            
