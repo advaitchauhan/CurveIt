@@ -71,7 +71,7 @@ class Course_Specific(models.Model):
 
 	
 	def __unicode__(self):            
-		return self.dept + " " + self.num + " " + self.name + " "
+		return self.dept + " " + self.num + " " + self.name + " , " + self.semester
 		
 class User(models.Model):
 	netid = models.CharField(max_length = 20) # e.g. 'tylerh'
