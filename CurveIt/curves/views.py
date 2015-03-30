@@ -4,7 +4,7 @@ from curves.models import Course_Specific
 
 # Create your views here.
 def index(request):
-	return HttpResponse("Welcome to Princeton CurveIt. /n To start exploring course and grade distributions, append a 3-letter department code to the URL ")
+	return render(request, 'curves/index.html')
 
 #return a list of all classes that belong in the department, with links to them
 def deptView(request, cdept):
