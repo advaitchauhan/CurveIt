@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Curves</title>
+    </head>
+
+    <body>
+        <h1>Add Data</h1>
+
+        <form id="data_form" method="post" action="/curves/add_data/">
+
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                <ol>
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+                </ol>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Add Data" />
+        </form>
+    </body>
+
+</html>

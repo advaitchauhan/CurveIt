@@ -13,5 +13,8 @@ urlpatterns = patterns('',
 	#ommitted for now since not critical to rudimentary functionality
 
 	#course specific view
-	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<cnum>\d{3,3})/(?P<ctime>(F|S)\d{4,4})/$', views.courseSpecificView, name = 'courseSpecificView')
+	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<cnum>\d{3,3})/(?P<ctime>(F|S)\d{4,4})/$', views.courseSpecificView, name = 'courseSpecificView'),
+
+	# new mapping
+	url(r'^add_data/$', views.add_data, name='add_data')
 )
