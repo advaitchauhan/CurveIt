@@ -4,6 +4,8 @@ from django.db import models
 # Techniques' taught by a specific professor during a specific
 # semester)
 class Course_Specific(models.Model):
+	CHOICES = (("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D_grade", "D_grade"), ("F_grade", "F_grade"), ("D_PDF", "D_PDF"), ("F_PDF", "F_PDF"), ("P_PDF", "P_PDF"))
+	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
 	dept = models.CharField(max_length = 3) # e.g. 'COS'
 	num = models.CharField(max_length = 4) # e.g. '333'
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
@@ -71,7 +73,7 @@ class Course_Specific(models.Model):
 
 	
 	def __unicode__(self):            
-		return self.dept + " " + self.num + " " + self.name + " , " + self.semester
+		return self.dept + " " + self.num + " " + self.name
 		
 class User(models.Model):
 	netid = models.CharField(max_length = 20) # e.g. 'tylerh'

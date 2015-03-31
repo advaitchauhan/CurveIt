@@ -27,35 +27,39 @@ def add_data(request):
         if form.is_valid():
             curData = form.cleaned_data
             try:
-                thisClass = Course_Specific.objects.get(dept=curData["dept"], num=curData["num"], semester=curData["semester"])
+                thisClass = curData["pastSemClass"]
+                thisClassInfo = thisClass.split()
+                thisDept = thisClassInfo[0]
+                thisNum = thisClassInfo[1]
+                thisClass = Course_Specific.objects.get(dept=thisDept, num=thisNum, semester="S2015")
                 thisGrade = curData["grade"]
-                if thisGrade == "1":
+                if thisGrade == "A+":
                     thisClass.addGrade("A+")
-                elif thisGrade == "2":
+                elif thisGrade == "A":
                     thisClass.addGrade("A")
-                elif thisGrade == "3":
+                elif thisGrade == "A-":
                     thisClass.addGrade("A-")
-                elif thisGrade == "4":
+                elif thisGrade == "B+":
                     thisClass.addGrade("B+")
-                elif thisGrade == "5":
+                elif thisGrade == "B":
                     thisClass.addGrade("B")
-                elif thisGrade == "6":
+                elif thisGrade == "B-":
                     thisClass.addGrade("B-")
-                elif thisGrade == "7":
+                elif thisGrade == "C+":
                     thisClass.addGrade("C+")
-                elif thisGrade == "8":
+                elif thisGrade == "C":
                     thisClass.addGrade("C")
-                elif thisGrade == "9":
+                elif thisGrade == "C-":
                     thisClass.addGrade("C-")
-                elif thisGrade == "10":
+                elif thisGrade == "D_grade":
                     thisClass.addGrade("D_grade")
-                elif thisGrade == "11":
+                elif thisGrade == "F_grade":
                     thisClass.addGrade("F_grade")
-                elif thisGrade == "12":
+                elif thisGrade == "D_PDF":
                     thisClass.addGrade("D_PDF")
-                elif thisGrade == "13":
+                elif thisGrade == "F_PDF":
                     thisClass.addGrade("F_PDF")
-                elif thisGrade == "14":
+                elif thisGrade == "P_PDF":
                     thisClass.addGrade("P_PDF")
                 thisClass.save()
             except Course_Specific.DoesNotExist:

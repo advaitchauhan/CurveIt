@@ -2,14 +2,16 @@ from django import forms
 from curves.models import Course_Specific, User
 
 class Course_SpecificForm(forms.ModelForm):
-    CHOICES = ((1, "A+"), (2,"A"), (3,"A-"), (4, "B+"), (5, "B"), (6, "B-"), (7, "C+"), (8, "C"), (9, "C-"), (10, "D_grade"), (11, "F_grade"), (12, "D_PDF"), (13, "F_PDF"), (14, "P_PDF"))
-    dept = forms.CharField(max_length = 3, help_text="Dept Name") 
-    num = forms.CharField(max_length = 4, help_text="Course Number")
-    semester = forms.CharField(max_length = 10 ,help_text="Semester")
-    grade = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES, help_text="Grade")
-
+    curClasses = Course_Specific.objects.all()
+    curClassesList = []
+    for j in range (0, len(curClasses)):
+        curClass = (curClasses[j].__unicode__(), curClasses[j].__unicode__())
+        curClassesList.append(curClass)
+    print curClassesList
+    pastSemClass = forms.ChoiceField(widget=forms.RadioSelect, choices=curClassesList, help_text="Class")
+    grade = forms.ChoiceField(widget=forms.RadioSelect, choices=Course_Specific.CHOICES, help_text="Grade")
     # An inline class to provide additional information on the form.
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Course_Specific
-        fields = ('dept', 'num', 'semester', 'grade')
+        fields = ('pastSemClass', 'grade')
