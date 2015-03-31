@@ -26,37 +26,40 @@ def add_data(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             curData = form.cleaned_data
-            thisClass = Course_Specific.objects.get(dept=curData["dept"], num=curData["num"], name=curData["name"], semester=curData["semester"])
-            thisGrade = curData["grade"]
-            if thisGrade == "1":
-                thisClass.addGrade("A+")
-            elif thisGrade == "2":
-                thisClass.addGrade("A")
-            elif thisGrade == "3":
-                thisClass.addGrade("A-")
-            elif thisGrade == "4":
-                thisClass.addGrade("B+")
-            elif thisGrade == "5":
-                thisClass.addGrade("B")
-            elif thisGrade == "6":
-                thisClass.addGrade("B-")
-            elif thisGrade == "7":
-                thisClass.addGrade("C+")
-            elif thisGrade == "8":
-                thisClass.addGrade("C")
-            elif thisGrade == "9":
-                thisClass.addGrade("C-")
-            elif thisGrade == "10":
-                thisClass.addGrade("D_grade")
-            elif thisGrade == "11":
-                thisClass.addGrade("F_grade")
-            elif thisGrade == "12":
-                thisClass.addGrade("D_PDF")
-            elif thisGrade == "13":
-                thisClass.addGrade("F_PDF")
-            elif thisGrade == "14":
-                thisClass.addGrade("P_PDF")
-            thisClass.save()
+            try:
+                thisClass = Course_Specific.objects.get(dept=curData["dept"], num=curData["num"], name=curData["name"], semester=curData["semester"])
+                thisGrade = curData["grade"]
+                if thisGrade == "1":
+                    thisClass.addGrade("A+")
+                elif thisGrade == "2":
+                    thisClass.addGrade("A")
+                elif thisGrade == "3":
+                    thisClass.addGrade("A-")
+                elif thisGrade == "4":
+                    thisClass.addGrade("B+")
+                elif thisGrade == "5":
+                    thisClass.addGrade("B")
+                elif thisGrade == "6":
+                    thisClass.addGrade("B-")
+                elif thisGrade == "7":
+                    thisClass.addGrade("C+")
+                elif thisGrade == "8":
+                    thisClass.addGrade("C")
+                elif thisGrade == "9":
+                    thisClass.addGrade("C-")
+                elif thisGrade == "10":
+                    thisClass.addGrade("D_grade")
+                elif thisGrade == "11":
+                    thisClass.addGrade("F_grade")
+                elif thisGrade == "12":
+                    thisClass.addGrade("D_PDF")
+                elif thisGrade == "13":
+                    thisClass.addGrade("F_PDF")
+                elif thisGrade == "14":
+                    thisClass.addGrade("P_PDF")
+                thisClass.save()
+            except Course_Specific.DoesNotExist:
+                thisClass = None
 
             # Now call the index() view.
             # The user will be shown the homepage.
