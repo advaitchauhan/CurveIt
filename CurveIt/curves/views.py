@@ -27,7 +27,7 @@ def add_data(request):
         if form.is_valid():
             curData = form.cleaned_data
             try:
-                thisClass = Course_Specific.objects.get(dept=curData["dept"], num=curData["num"], name=curData["name"], semester=curData["semester"])
+                thisClass = Course_Specific.objects.get(dept=curData["dept"], num=curData["num"], semester=curData["semester"])
                 thisGrade = curData["grade"]
                 if thisGrade == "1":
                     thisClass.addGrade("A+")
