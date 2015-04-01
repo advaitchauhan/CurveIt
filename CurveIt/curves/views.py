@@ -16,9 +16,10 @@ def deptView(request, cdept):
 	return render(request, 'curves/dept.html', context)
 
 def courseSpecificView(request, cdept, cnum, ctime):
-	course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
-	response = Course_Specific.printGrades(course)
-	return HttpResponse(response)
+    course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
+    allGrades = course.getAllGrades()
+    context = {'all_grades': sorted(allGrades.iteritems()), 'course': course}
+    return render(request, 'curves/course_specific.html', context)
 
 def add_data(request):
     # A HTTP POST?
@@ -69,7 +70,7 @@ def add_data(request):
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return index(request)
+            return courseSpecificView(request, thisDept, thisNum, CURRENTSEMESTER)
         else:
             # The supplied form contained errors - just print them to the terminal.
             print form.errors

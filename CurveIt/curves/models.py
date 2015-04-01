@@ -63,6 +63,10 @@ class Course_Specific(models.Model):
 	def getTotalPDF(self):
 		return self.num_P_PDF + self.num_D_PDF + self.num_F_PDF
 
+	def getAllGrades(self):
+		allGrades = {"A+": self.num_A_plus, "A": self.num_A, "A-": self.num_A_minus, "B+": self.num_B_plus, "B": self.num_B, "B-": self.num_B_minus, "C+": self.num_C_plus, "C": self.num_C, "C-": self.num_C_minus, "D_grade": self.num_D_grade, "F_grade": self.num_F_grade, "P_PDF": self.num_P_PDF, "D_PDF": self.num_D_PDF, "F_PDF": self.num_F_PDF}
+		return allGrades
+
 	def printGrades(self):
 		str = ""
 		numA = self.num_A + self.num_A_minus + self.num_A_plus
