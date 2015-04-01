@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from curves.models import Course_Specific
 from curves.forms import Course_SpecificForm
 
+CURRENTSEMESTER = "S2015"
+
 # Create your views here.
 def index(request):
 	return render(request, 'curves/index.html')
@@ -31,7 +33,7 @@ def add_data(request):
                 thisClassInfo = thisClass.split()
                 thisDept = thisClassInfo[0]
                 thisNum = thisClassInfo[1]
-                thisClass = Course_Specific.objects.get(dept=thisDept, num=thisNum, semester="S2015")
+                thisClass = Course_Specific.objects.get(dept=thisDept, num=thisNum, semester=CURRENTSEMESTER)
                 thisGrade = curData["grade"]
                 if thisGrade == "A+":
                     thisClass.addGrade("A+")
