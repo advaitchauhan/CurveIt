@@ -20,10 +20,7 @@ def deptView(request, cdept):
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
     numGrades = course.getAllGrades()
-    gradesAndNum = {"grades": GRADES, "numbers": numGrades}
-    gradesAndNum_json = json.dumps(gradesAndNum)
-    context = {'gradesAndNum': gradesAndNum, 'course': course, "gradesAndNum_json": gradesAndNum_json}
-    print gradesAndNum_json
+    context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
 def add_data(request):
