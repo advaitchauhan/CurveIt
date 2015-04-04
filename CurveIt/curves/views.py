@@ -20,7 +20,11 @@ def deptView(request, cdept):
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
     numGrades = course.getAllGrades()
-    context = {'course': course, "grades": GRADES, "numGrades": numGrades}
+    dist = zip(GRADES, numGrades)
+    total = sum(numGrades)
+    
+    context = {'course': course, 'dist': dist, 'total': total}
+    # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
 def add_data(request):
