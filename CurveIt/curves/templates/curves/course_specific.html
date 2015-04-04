@@ -9,6 +9,9 @@
 		<title>Curves</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<style>
+			body { background-color: #47476B;}
+		</style>
 	<head>
 	<body>
 		<h1 class="title">{{ course }}</h1>
@@ -50,6 +53,7 @@
 			$(function () { 
     			$('#container').highcharts({
 			        chart: {
+			        	backgroundColor: '#47476B',
 			            type: 'column'
 			        },
 			        title: {
