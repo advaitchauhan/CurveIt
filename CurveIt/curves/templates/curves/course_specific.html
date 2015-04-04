@@ -6,7 +6,7 @@
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 	<head>
 	<body>
-		<h1>{{ course }}</h1>
+		<h1 class="title">{{ course }}</h1>
 		<div id="container" style="width:100%; height:400px;"></div>
 		<table class="thisTable">
 			{% for grade in grades %}
@@ -23,9 +23,13 @@
 			{% endfor %}
 		</table>
 		<script>
-			var course = "Tyler"
 			var _grades = [];
 			var _numGrades = [];
+			var courseTitle = ""
+			$('.title').each(function(index){
+				console.log("hi");
+				courseTitle = $(this).text();
+			});
 			$('._grade').each(function(index){
 				console.log("hi");
 				_grades.push($(this).text());
@@ -43,7 +47,7 @@
 			            type: 'column'
 			        },
 			        title: {
-			            text: 'Grade Distribution'
+			            text: courseTitle
 			        },
 			        xAxis: {
 			        	categories: _grades,
@@ -66,9 +70,10 @@
         				enabled: false
         			},
         			tooltip: {
-        				pointFormat: course
+            			pointFormat: 'Count: <b>{point.y}</b><br/>'
         			},
 			        series: [{
+			        	name: courseTitle, 
 			        	data: _numGrades
 			        }]
 			    });
