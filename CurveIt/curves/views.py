@@ -2,8 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from curves.models import Course_Specific
 from curves.forms import Course_SpecificForm
+import json
 
 CURRENTSEMESTER = "S2015"
+GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade", "P_PDF", "D_PDF", "F_PDF"]
 
 # Create your views here.
 def index(request):
@@ -17,8 +19,11 @@ def deptView(request, cdept):
 
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
-    allGrades = course.getAllGrades()
-    context = {'all_grades': sorted(allGrades.iteritems()), 'course': course}
+    numGrades = course.getAllGrades()
+    gradesAndNum = {"grades": GRADES, "numbers": numGrades}
+    gradesAndNum_json = json.dumps(gradesAndNum)
+    context = {'gradesAndNum': gradesAndNum, 'course': course, "gradesAndNum_json": gradesAndNum_json}
+    print gradesAndNum_json
     return render(request, 'curves/course_specific.html', context)
 
 def add_data(request):
