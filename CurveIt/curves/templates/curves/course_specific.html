@@ -1,3 +1,6 @@
+<!-- HTML template for displaying all specific courses along with their plotted 
+	grade distributions -->
+
 {% load mathfilters %}
 
 <!DOCTYPE html>
@@ -11,6 +14,7 @@
 		<h1 class="title">{{ course }}</h1>
 		<div id="container" style="width:100%; height:400px;"></div>
 		
+		<!-- First generate (hidden) table from which to reference data for chart -->
 		<table class="thisTable">
 			{% for grade, number in dist %}
 			<!-- Optional functionality: only show grades that make up >x% of grades; may be
@@ -27,30 +31,22 @@
 		<script>
 			var _grades = [];
 			var _numGrades = [];
-			var courseTitle = ""
+			var courseTitle = "";
 			$('.title').each(function(index){
 				console.log('hi1');
 				courseTitle = $(this).text();
 			});
+			// Add each grade element to list
 			$('._grade').each(function(index){
 				console.log("hi2");
 				_grades.push($(this).text());
 				console.log(_grades[index]);
 			});
+			// Add each numGrade element to list
 			$('._numGrade').each(function(index){
-				_numGrades.push($(this).text());
+				_numGrades.push(parseInt($(this).text()));
 			});
-			for (var i = 0; i < _numGrades.length; i++)
-			{
-				_numGrades[i] = parseInt(_numGrades[i]);
 
-				// if (_numGrades[i] < 62)
-				// {
-				// 	_numGrades[i] = 0;
-				// 	_grades[i] = '';
-				// 	console.log("here");
-				// }
-			}
 			$(function () { 
     			$('#container').highcharts({
 			        chart: {
