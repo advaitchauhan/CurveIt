@@ -13,9 +13,18 @@ def index(request):
 
 #return a list of all classes that belong in the department, with links to them
 def deptView(request, cdept):
-	course_list = get_list_or_404(Course_Specific, dept = cdept)
-	context = {'course_list': course_list, 'cdept': cdept}
-	return render(request, 'curves/dept.html', context)
+    course_list = get_list_or_404(Course_Specific, dept = cdept)
+    numGrades = [0] * len(GRADES)
+    for course in course_list:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades[i] += grades[i]
+
+    dist = zip(GRADES, numGrades)
+    total = sum(numGrades)
+
+    context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'total': total}
+    return render(request, 'curves/dept.html', context)
 
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
@@ -42,34 +51,8 @@ def add_data(request):
                 thisNum = thisClassInfo[1]
                 thisClass = Course_Specific.objects.get(dept=thisDept, num=thisNum, semester=CURRENTSEMESTER)
                 thisGrade = curData["grade"]
-                if thisGrade == "A+":
-                    thisClass.addGrade("A+")
-                elif thisGrade == "A":
-                    thisClass.addGrade("A")
-                elif thisGrade == "A-":
-                    thisClass.addGrade("A-")
-                elif thisGrade == "B+":
-                    thisClass.addGrade("B+")
-                elif thisGrade == "B":
-                    thisClass.addGrade("B")
-                elif thisGrade == "B-":
-                    thisClass.addGrade("B-")
-                elif thisGrade == "C+":
-                    thisClass.addGrade("C+")
-                elif thisGrade == "C":
-                    thisClass.addGrade("C")
-                elif thisGrade == "C-":
-                    thisClass.addGrade("C-")
-                elif thisGrade == "D_grade":
-                    thisClass.addGrade("D_grade")
-                elif thisGrade == "F_grade":
-                    thisClass.addGrade("F_grade")
-                elif thisGrade == "D_PDF":
-                    thisClass.addGrade("D_PDF")
-                elif thisGrade == "F_PDF":
-                    thisClass.addGrade("F_PDF")
-                elif thisGrade == "P_PDF":
-                    thisClass.addGrade("P_PDF")
+
+                thisClass.addGrade(thisGrade)
                 thisClass.save()
             except Course_Specific.DoesNotExist:
                 thisClass = None
