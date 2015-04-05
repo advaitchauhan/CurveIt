@@ -9,9 +9,11 @@ from random import randint
 from curves.models import Course_Specific, User
 
 courses = []
-courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Sucharit Sarkar", semester="S2015"))
-courses.append(Course_Specific(dept="COS", num="333", name="Advanced Programming Techniques", prof="Brian Kernighan", semester="S2015"))
-courses.append(Course_Specific(dept="ECO", num="310", name="Microeconomic Theory", prof="Wolfgang Pesendorfer", semester="S2015"))
+courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Sarkar", semester="S2015"))
+courses.append(Course_Specific(dept="COS", num="333", name="Advanced Programming Techniques", prof="Kernighan", semester="S2015"))
+courses.append(Course_Specific(dept="ECO", num="310", name="Microeconomic Theory", prof="Pesendorfer", semester="S2015"))
+courses.append(Course_Specific(dept="COS", num="109", name="Computers in Our World", prof="Kernighan", semester="S2015"))
+
 
 def addOneGrade(newCourse):
 	num = randint(1,14)

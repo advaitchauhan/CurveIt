@@ -17,6 +17,18 @@ def deptView(request, cdept):
 	context = {'course_list': course_list, 'cdept': cdept}
 	return render(request, 'curves/dept.html', context)
 
+def profView(request, cprof):
+    course_list = get_list_or_404(Course_Specific, prof = cprof)
+    numGrades = [0] * len(GRADES);
+    for course in course_list:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades[i] += grades[i]
+    dist = zip(GRADES, numGrades)
+    total = sum(numGrades)
+    context = {'course_list': course_list, 'cprof': cprof, 'dist': dist, 'total': total}
+    return render(request, 'curves/prof.html', context)
+
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
     numGrades = course.getAllGrades()
