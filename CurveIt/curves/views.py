@@ -14,6 +14,7 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 def index(request):
 	return render(request, 'curves/index.html')
 
+@login_required 
 #return a list of all classes that belong in the department, with links to them
 def deptView(request, cdept):
     course_list = get_list_or_404(Course_Specific, dept = cdept)
@@ -29,6 +30,7 @@ def deptView(request, cdept):
     context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'total': total}
     return render(request, 'curves/dept.html', context)
 
+@login_required
 #return a list of all classes that are taught by cprof, with links to them
 def profView(request, cprof):
     course_list = get_list_or_404(Course_Specific, prof = cprof)
@@ -42,6 +44,7 @@ def profView(request, cprof):
     context = {'course_list': course_list, 'cprof': cprof, 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
 
+@login_required
 # view associated with a specific course
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
@@ -53,6 +56,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
+@login_required
 # page for user to input class/grade
 def add_data(request):
     # A HTTP POST?
