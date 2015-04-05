@@ -44,7 +44,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
     
-    context = {'course': course, 'dist': dist, 'total': total}
+    context = {'course': course.name, 'prof': course.prof, 'dept': course.dept, 'coursenum': course.num, 'dist': dist, 'total': total}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
