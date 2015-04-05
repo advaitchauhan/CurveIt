@@ -36,14 +36,11 @@
 			var _numGrades = [];
 			var plotTitle = "";
 			$('.title').each(function(index){
-				console.log('hi1');
 				plotTitle = $(this).text();
 			});
 			// Add each grade element to list
 			$('._grade').each(function(index){
-				console.log("hi2");
 				_grades.push($(this).text());
-				console.log(_grades[index]);
 			});
 			// Add each numGrade element to list
 			$('._numGrade').each(function(index){

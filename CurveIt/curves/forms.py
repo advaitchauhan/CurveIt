@@ -1,6 +1,7 @@
 from django import forms
 from curves.models import Course_Specific, User
 
+# form to get a class and a grade from a user
 class Course_SpecificForm(forms.ModelForm):
     curClasses = Course_Specific.objects.all()
     curClassesList = []
