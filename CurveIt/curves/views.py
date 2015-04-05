@@ -8,11 +8,9 @@ import json
 CURRENTSEMESTER = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade", "P_PDF", "D_PDF", "F_PDF"]
 
-<<<<<<< HEAD
 # Create your views here.
 @login_required
-=======
->>>>>>> c359e2c14e4752472da9454c04124064fc6a4efd
+
 def index(request):
 	return render(request, 'curves/index.html')
 
