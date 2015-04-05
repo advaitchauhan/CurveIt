@@ -49,7 +49,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
-# page for user to input data
+# page for user to input class/grade
 def add_data(request):
     # A HTTP POST?
     if request.method == 'POST':
