@@ -20,4 +20,5 @@ urlpatterns = patterns('',
 
 	# new mapping
 	url(r'^add_data/$', views.add_data, name='add_data')
+
 )

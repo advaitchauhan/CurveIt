@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific
 from curves.forms import Course_SpecificForm
 import json
@@ -8,6 +9,7 @@ CURRENTSEMESTER = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade", "P_PDF", "D_PDF", "F_PDF"]
 
 # Create your views here.
+@login_required
 def index(request):
 	return render(request, 'curves/index.html')
 
