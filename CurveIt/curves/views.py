@@ -7,7 +7,6 @@ import json
 CURRENTSEMESTER = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade", "P_PDF", "D_PDF", "F_PDF"]
 
-# Create your views here.
 def index(request):
 	return render(request, 'curves/index.html')
 
@@ -26,6 +25,7 @@ def deptView(request, cdept):
     context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'total': total}
     return render(request, 'curves/dept.html', context)
 
+#return a list of all classes that are taught by cprof, with links to them
 def profView(request, cprof):
     course_list = get_list_or_404(Course_Specific, prof = cprof)
     numGrades = [0] * len(GRADES);
@@ -38,6 +38,7 @@ def profView(request, cprof):
     context = {'course_list': course_list, 'cprof': cprof, 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
 
+# view associated with a specific course
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
     numGrades = course.getAllGrades()
@@ -48,6 +49,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
+# page for user to input data
 def add_data(request):
     # A HTTP POST?
     if request.method == 'POST':

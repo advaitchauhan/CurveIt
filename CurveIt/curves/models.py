@@ -57,24 +57,18 @@ class Course_Specific(models.Model):
 		elif grade == "P_PDF":
 			self.num_P_PDF += 1
 
+	# returns total number of grades (non PDF)
 	def getTotalGrades(self):
 		return self.num_A_plus + self.num_A + self.num_A_minus + self.num_B_plus + self.num_B + self.num_B_minus + self.num_C_plus + self.num_C + self.num_C_minus + self.num_D_grade + self.num_F_grade
 
+	# returns total number of PDF grades
 	def getTotalPDF(self):
 		return self.num_P_PDF + self.num_D_PDF + self.num_F_PDF
 
+	# returns a list of all number of grades (A+ to F_PDF)
 	def getAllGrades(self):
 		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade, self.num_P_PDF, self.num_D_PDF, self.num_F_PDF]
 		return allGrades
-
-	def printGrades(self):
-		str = ""
-		numA = self.num_A + self.num_A_minus + self.num_A_plus
-		numB = self.num_B + self.num_B_minus + self.num_B_plus
-		numC = self.num_C + self.num_C_minus + self.num_C_plus
-		str = "A's: %s B's: %s C's: %s" % (numA, numB, numC)
-		return str
-
 	
 	def __unicode__(self):            
 		return self.dept + " " + self.num + " " + self.name
