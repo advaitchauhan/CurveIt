@@ -18,6 +18,13 @@ def index(request):
 #return a list of all classes that belong in the department, with links to them
 def deptView(request, cdept):
     course_list = get_list_or_404(Course_Specific, dept = cdept)
+    uniqueCourse_list = []
+    for course in course_list:
+        for uniqueCourse in uniqueCourse_list:
+            if course.num == uniqueCourse.num:
+                break
+        else:
+            uniqueCourse_list.append(course)
     numGrades = [0] * len(GRADES)
     for course in course_list:
         grades = course.getAllGrades()
@@ -27,7 +34,7 @@ def deptView(request, cdept):
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
 
-    context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'total': total}
+    context = {'dept': cdept, 'uniqueCourse_list': uniqueCourse_list, 'dist': dist, 'total': total}
     return render(request, 'curves/dept.html', context)
 
 @login_required
@@ -39,10 +46,33 @@ def profView(request, cprof):
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
+    uniqueCourse_list = []
+    for course in course_list:
+        for uniqueCourse in uniqueCourse_list:
+            if course.num == uniqueCourse.num and course.dept == uniqueCourse.dept:
+                break
+        else:
+            uniqueCourse_list.append(course)
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
-    context = {'course_list': course_list, 'cprof': cprof, 'dist': dist, 'total': total}
+    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof, 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
+
+@login_required
+# view associated with a specific course
+def courseView(request, cdept, cnum):
+    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
+    numGrades = [0] * len(GRADES);
+    for course in course_list:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades[i] += grades[i]
+    curCourse = course_list[0]
+    dist = zip(GRADES, numGrades)
+    total = sum(numGrades) 
+    context = {'course_list': course_list, 'dist': dist, 'total': total, 'dept': curCourse.dept, 'coursenum': curCourse.num, 'name': curCourse.name}
+    return render(request, 'curves/course.html', context)
+
 
 @login_required
 # view associated with a specific course

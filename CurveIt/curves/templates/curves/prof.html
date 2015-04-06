@@ -15,8 +15,8 @@
     <body>
         <h1 class="title">{{cprof}}</h1>
         <ul>
-            {% for course in course_list %}
-                <li> <a href = "/curves/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/"> {{ course }}</a></li>
+            {% for course in uniqueCourse_list %}
+                <li> <a href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }}</a></li>
             {% endfor %}
         </ul>
         <div id="container" style="width:100%; height:400px;"></div>

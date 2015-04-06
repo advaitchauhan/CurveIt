@@ -16,8 +16,8 @@
 		<h1 class="title">{{ dept }}</h1>
 		<!-- First put list of courses under dept at the top -->
 		<ul>
-			{% for course in course_list %}
-  		 		<li> <a href = "/curves/{{ dept }}/{{ course.num }}/{{ course.semester }}/"> {{ course }} </a> </li>
+			{% for course in uniqueCourse_list %}
+  		 		<li> <a href = "/curves/{{ dept }}/{{ course.num }}/"> {{ course }} </a> </li>
 			{% endfor %}
 		</ul>
 

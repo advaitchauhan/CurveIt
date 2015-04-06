@@ -13,6 +13,7 @@ courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calcul
 courses.append(Course_Specific(dept="COS", num="333", name="Advanced Programming Techniques", prof="Kernighan", semester="S2015"))
 courses.append(Course_Specific(dept="ECO", num="310", name="Microeconomic Theory", prof="Pesendorfer", semester="S2015"))
 courses.append(Course_Specific(dept="COS", num="109", name="Computers in Our World", prof="Kernighan", semester="S2015"))
+courses.append(Course_Specific(dept="COS", num="109", name="Computers in Our World", prof="Kernighan", semester="S2014"))
 
 
 def addOneGrade(newCourse):
