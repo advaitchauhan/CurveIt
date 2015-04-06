@@ -78,11 +78,13 @@ def courseView(request, cdept, cnum):
 # view associated with a specific course
 def courseSpecificView(request, cdept, cnum, ctime):
     course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
+    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
+    curCourse = course_list[0]
     
-    context = {'course': course.name, 'prof': course.prof, 'dept': course.dept, 'coursenum': course.num, 'dist': dist, 'total': total}
+    context = {'course_list': course_list,'course': course.name, 'name': curCourse.name, 'prof': course.prof, 'dept': course.dept, 'coursenum': course.num, 'dist': dist, 'total': total}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
