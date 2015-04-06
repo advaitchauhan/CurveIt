@@ -1,0 +1,21 @@
+body {
+    background-color: #005266;
+    padding-top: 65px;
+}
+
+
+.title {
+	color: white;
+	font-size: 400%;
+
+}
+
+.listofclasses {
+	color: white;
+}
+
+.option {
+	color: grey;
+	font-size: 200%;
+
+}
