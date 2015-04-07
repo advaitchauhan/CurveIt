@@ -1,5 +1,14 @@
 from django.db import models
 
+"""
+class Department(models.Model):
+	dept = models.CharField(max_lenth = 3)
+"""
+
+"""
+class Number(models.Model):
+	num = models.CharField(max_length = 4)
+"""
 # Represents a course (e.g. 'COS 333 Advanced Programming 
 # Techniques' taught by a specific professor during a specific
 # semester)
@@ -8,6 +17,8 @@ class Course_Specific(models.Model):
 	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
 	dept = models.CharField(max_length = 3) # e.g. 'COS'
 	num = models.CharField(max_length = 4) # e.g. '333'
+	#dept = models.OneToManyField(Department)
+	#num = models.OneToManyField(Number)
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
 	prof = models.CharField(max_length = 60) # e.g. 'Brian Kernighan'
 	semester = models.CharField(max_length = 5) # e.g. 'S2015' or 'F2015'
@@ -70,8 +81,16 @@ class Course_Specific(models.Model):
 		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade]
 		return allGrades
 	
-	def __unicode__(self):            
-		return self.dept + " " + self.num + " " + self.name
+	def __unicode__(self): 
+		result = ""
+		depts = self.dept.split("/")  
+		nums = self.num.split("/")
+		for i in range(0, len(depts)):
+			if i == (len(depts)-1):
+				result += depts[i] + " " + nums[i] + ": "
+			else:
+				result += depts[i] + " " + nums[i] + "/"         
+		return result + self.name
 		
 class User(models.Model):
 	netid = models.CharField(max_length = 20) # e.g. 'tylerh'

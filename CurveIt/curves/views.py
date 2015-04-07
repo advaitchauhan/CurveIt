@@ -17,7 +17,7 @@ def index(request):
 @login_required 
 #return a list of all classes that belong in the department, with links to them
 def deptView(request, cdept):
-    course_list = get_list_or_404(Course_Specific, dept = cdept)
+    course_list = get_list_or_404(Course_Specific, dept__contains = cdept)
     uniqueCourse_list = []
     for course in course_list:
         for uniqueCourse in uniqueCourse_list:
@@ -62,7 +62,10 @@ def profView(request, cprof):
 @login_required
 # view associated with a specific course
 def courseView(request, cdept, cnum):
-    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
+    print "here"
+    print cdept
+    print cnum
+    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
     numGrades = [0] * len(GRADES);
     for course in course_list:
         grades = course.getAllGrades()
@@ -78,7 +81,10 @@ def courseView(request, cdept, cnum):
 @login_required
 # view associated with a specific course
 def courseSpecificView(request, cdept, cnum, ctime):
-    course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
+    print "here"
+    print cdept
+    print cnum
+    course = Course_Specific.objects.get(dept__contains = cdept, num__contains = cnum, semester = ctime)
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
@@ -102,10 +108,17 @@ def add_data(request):
             curData = form.cleaned_data
             try:
                 thisClass = curData["pastSemClass"]
-                thisClassInfo = thisClass.split()
-                thisDept = thisClassInfo[0]
-                thisNum = thisClassInfo[1]
-                thisClass = Course_Specific.objects.get(dept=thisDept, num=thisNum, semester=CURRENTSEMESTER)
+                thisClassInfo = thisClass.split("/")
+                lastString = thisClassInfo[len(thisClassInfo)-1]
+                lastString = (lastString)[0:lastString.index(":")]
+                thisClassInfo = thisClassInfo[:-1]
+                thisClassInfo.append(lastString)
+                print thisClassInfo
+                curClass = thisClassInfo[0]
+                curListings = curClass.split()
+                thisDept = curListings[0]
+                thisNum = curListings[1]
+                thisClass = Course_Specific.objects.get(dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
                 thisGrade = curData["grade"]
 
                 thisClass.addGrade(thisGrade)
@@ -115,7 +128,7 @@ def add_data(request):
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return courseSpecificView(request, thisDept, thisNum, CURRENTSEMESTER)
+            return courseSpecificView(request, thisClass.dept, thisClass.num, CURRENTSEMESTER)
         else:
             # The supplied form contained errors - just print them to the terminal.
             print form.errors
