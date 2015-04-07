@@ -3,7 +3,7 @@ from curves.models import Course_Specific, User
 
 # form to get a class and a grade from a user
 class Course_SpecificForm(forms.ModelForm):
-    curClasses = Course_Specific.objects.all()
+    curClasses = Course_Specific.objects.filter(semester="S2015")
     curClassesList = []
     for j in range (0, len(curClasses)):
         curClass = (curClasses[j].__unicode__(), curClasses[j].__unicode__())

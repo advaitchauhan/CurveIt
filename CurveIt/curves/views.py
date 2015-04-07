@@ -6,7 +6,7 @@ from curves.forms import Course_SpecificForm
 import json
 
 CURRENTSEMESTER = "S2015"
-GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade", "P_PDF", "D_PDF", "F_PDF"]
+GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade"]
 
 # Create your views here.
 @login_required
@@ -81,6 +81,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
+    print dist
     total = sum(numGrades)
     curCourse = course_list[0]
     

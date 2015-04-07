@@ -67,7 +67,7 @@ class Course_Specific(models.Model):
 
 	# returns a list of all number of grades (A+ to F_PDF)
 	def getAllGrades(self):
-		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade, self.num_P_PDF, self.num_D_PDF, self.num_F_PDF]
+		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade]
 		return allGrades
 	
 	def __unicode__(self):            
