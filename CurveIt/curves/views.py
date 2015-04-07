@@ -40,6 +40,7 @@ def deptView(request, cdept):
 @login_required
 #return a list of all classes that are taught by cprof, with links to them
 def profView(request, cprof):
+    print cprof
     course_list = get_list_or_404(Course_Specific, prof = cprof)
     numGrades = [0] * len(GRADES);
     for course in course_list:
@@ -55,7 +56,7 @@ def profView(request, cprof):
             uniqueCourse_list.append(course)
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
-    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof, 'dist': dist, 'total': total}
+    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("/", " "), 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
 
 @login_required

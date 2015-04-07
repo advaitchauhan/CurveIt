@@ -32,8 +32,7 @@ def main():
     profs = course["profs"]
     if len(profs) > 0:
       thisProf = (profs[0])["name"]
-      names = thisProf.split()
-      thisProf = names[len(names)-1]
+      names = thisProf.replace(" ", "/")
       print thisProf
     else:
       thisProf = ""
@@ -45,7 +44,7 @@ def main():
       thisDept = ""
       thisNum = ""    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2015", num_A_plus=20, num_A=23, num_A_minus=35, num_B_plus=41, num_B=30, num_B_minus=26, num_C_plus=18, num_C=20, num_C_minus=12, num_D_grade=50, num_F_grade=52,))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=names, semester="S2015", num_A_plus=20, num_A=23, num_A_minus=35, num_B_plus=41, num_B=30, num_B_minus=26, num_C_plus=18, num_C=20, num_C_minus=12, num_D_grade=50, num_F_grade=52,))
 
   for i in range(0, len(courseSpecifics)):
       courseSpecifics[i].save()

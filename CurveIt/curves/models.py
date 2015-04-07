@@ -9,7 +9,7 @@ class Course_Specific(models.Model):
 	dept = models.CharField(max_length = 3) # e.g. 'COS'
 	num = models.CharField(max_length = 4) # e.g. '333'
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
-	prof = models.CharField(max_length = 50) # e.g. 'Brian Kernighan'
+	prof = models.CharField(max_length = 60) # e.g. 'Brian Kernighan'
 	semester = models.CharField(max_length = 5) # e.g. 'S2015' or 'F2015'
 	num_A_plus = models.IntegerField(default = 0) 
 	num_A = models.IntegerField(default = 0)

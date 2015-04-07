@@ -9,7 +9,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<cdept>[A-Za-z]{3,3})/$', views.deptView, name = 'deptView'), 
 
 	#professor view
-	url(r'^prof/(?P<cprof>[A-Za-z]+)/$', views.profView, name = 'profView'),
+	url(r'^prof/(?P<cprof>[\x00-\x7F]+)/$', views.profView, name = 'profView'),
 
 	#course view
 	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<cnum>\d{3,3})/$', views.courseView, name = 'courseView'),
