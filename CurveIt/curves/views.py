@@ -81,7 +81,6 @@ def courseView(request, cdept, cnum):
 @login_required
 # view associated with a specific course
 def courseSpecificView(request, cdept, cnum, ctime):
-    print "here"
     print cdept
     print cnum
     course = Course_Specific.objects.get(dept__contains = cdept, num__contains = cnum, semester = ctime)
@@ -107,26 +106,23 @@ def add_data(request):
         if form.is_valid():
             curData = form.cleaned_data
             try:
-                thisClass = curData["pastSemClass"]
-                thisClassInfo = thisClass.split("/")
-                print thisClassInfo
+                thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
+                thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
                 lastString = thisClassInfo[len(thisClassInfo)-1]
-                lastDept = (lastString)[0:lastString.index(":")]
-                thisName = (lastString)[(lastString.index(":") + 2):]
-                thisClassInfo = thisClassInfo[:-1]
-                thisClassInfo.append(lastDept)
-                print thisClassInfo
-                curClass = thisClassInfo[0]
+                lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
+                thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
+                # now thisClassInfo is a list of all dist/num pairs
+                thisClassInfo = thisClassInfo[:-1] 
+                thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
+
+                curClass = thisClassInfo[0] # first listing
                 curListings = curClass.split()
-                thisDept = curListings[0]
-                thisNum = curListings[1]
-                print "suraj"
+                thisDept = curListings[0] # department of first listing
+                thisNum = curListings[1] # number of first listing
                 potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
 
-                thisClass = potentialClasses[0]
+                thisClass = potentialClasses[0] # initialize
                 for c in potentialClasses:
-                    print thisName
-                    print c.name
                     if c.name == thisName:
                         thisClass = c
                         break

@@ -49,12 +49,12 @@ def main():
       if i == (len(theseDepts) - 1):
         thisDept += theseDepts[i]
       else:
-        thisDept += theseDepts[i] + "/"  
+        thisDept += theseDepts[i] + "+"  
     for i in range(0, len(theseNums)):
       if i == (len(theseNums) - 1):
         thisNum += theseNums[i]
       else:
-        thisNum += theseNums[i] + "/"    
+        thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
     courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=names, semester="S2015", num_A_plus=20, num_A=23, num_A_minus=35, num_B_plus=41, num_B=30, num_B_minus=26, num_C_plus=18, num_C=20, num_C_minus=12, num_D_grade=50, num_F_grade=52,))
 
