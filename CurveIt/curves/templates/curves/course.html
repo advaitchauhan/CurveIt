@@ -3,7 +3,7 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{ dept }}  {{ coursenum }} {{ name }}</h1>
+<h1 class="title">{{ name }}</h1>
 <!-- First put list of courses under dept at the top -->
 <!--
 <div class="dropdown">
@@ -21,7 +21,7 @@
 <ul class="nav nav-tabs">
 	<li role="presentation" class="active"><a href="#">Currently Viewing All Semesters</a></li>
 	{% for course in course_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
 			{% endfor %}
   <!--<li role="presentation" class="active"><a href="#"></a></li>
   <li role="presentation"><a href="#">Profile</a></li>

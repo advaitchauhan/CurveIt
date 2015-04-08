@@ -15,18 +15,6 @@ def index(request):
 	return render(request, 'curves/index.html')
 
 
-potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
-
-thisClass = potentialClasses[0]
-for c in potentialClasses:
-    print thisName
-    print c.name
-    if c.name == thisName:
-        thisClass = c
-        break
-
-
-
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
@@ -58,6 +46,7 @@ def deptView(request, cdept):
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 def deptSpecific(request, cdept, ctime):
+    pass
 
 
 @login_required
@@ -86,25 +75,36 @@ def profView(request, cprof):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
-    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
+    depts = cdept.split("+")
+    nums = cnum.split("+")
+    print depts[0]
+    print nums[0]
+    course_list = []
+    potentialCourse_list = get_list_or_404(Course_Specific, dept__contains = depts[0], num__contains = nums[0])
+    for c in potentialCourse_list:
+        if c.dept == cdept:
+            course_list.append(c)
+
     numGrades = [0] * len(GRADES);
     for course in course_list:
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
+    print numGrades
     curCourse = course_list[0]
     dist = zip(GRADES, numGrades)
     total = sum(numGrades) 
-    context = {'course_list': course_list, 'dist': dist, 'total': total, 'dept': curCourse.dept, 'coursenum': curCourse.num, 'name': curCourse.name}
+    context = {'course_list': course_list, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
     return render(request, 'curves/course.html', context)
 
 # Further narrow query on our side.  Ex: query for WWWS 598 would return 
 # WWS 590/POL 598, WWS 598/POP 508.  Narrow it down to the latter.
 def narrowList(potentialClasses):
     thisClass = potentialClasses[0]
-    if c.name == thisName:
-        thisClass = c
-        break
+    for c in potentialClasses:
+        if c.name == thisName:
+            thisClass = c
+            break
     return thisClass
 
 
@@ -118,7 +118,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
 
     if len(course_list) > 1:
-        
+        pass
 
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
@@ -126,7 +126,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     total = sum(numGrades)
     curCourse = course_list[0]
     
-    context = {'course_list': course_list,'course': course.name, 'name': curCourse.name, 'prof': course.prof, 'dept': course.dept, 'coursenum': course.num, 'dist': dist, 'total': total}
+    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
@@ -141,23 +141,22 @@ def add_data(request):
         if form.is_valid():
             curData = form.cleaned_data
             try:
-                thisClass = curData["pastSemClass"]
-                thisClassInfo = thisClass.split("/")
-                print thisClassInfo
+                thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
+                thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
                 lastString = thisClassInfo[len(thisClassInfo)-1]
-                lastDept = (lastString)[0:lastString.index(":")]
-                thisName = (lastString)[(lastString.index(":") + 2):]
-                thisClassInfo = thisClassInfo[:-1]
-                thisClassInfo.append(lastDept)
-                print thisClassInfo
-                curClass = thisClassInfo[0]
+                lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
+                thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
+                # now thisClassInfo is a list of all dist/num pairs
+                thisClassInfo = thisClassInfo[:-1] 
+                thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
+
+                curClass = thisClassInfo[0] # first listing
                 curListings = curClass.split()
-                thisDept = curListings[0]
-                thisNum = curListings[1]
-                print "suraj"
+                thisDept = curListings[0] # department of first listing
+                thisNum = curListings[1] # number of first listing
                 potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
 
-                thisClass = potentialClasses[0]
+                thisClass = potentialClasses[0] # initialize
                 for c in potentialClasses:
                     if c.name == thisName:
                         thisClass = c

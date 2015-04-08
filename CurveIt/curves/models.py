@@ -15,8 +15,8 @@ class Number(models.Model):
 class Course_Specific(models.Model):
 	CHOICES = (("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D_grade", "D_grade"), ("F_grade", "F_grade"), ("D_PDF", "D_PDF"), ("F_PDF", "F_PDF"), ("P_PDF", "P_PDF"))
 	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
-	dept = models.CharField(max_length = 3) # e.g. 'COS'
-	num = models.CharField(max_length = 4) # e.g. '333'
+	dept = models.CharField(max_length = 40) # e.g. 'COS'
+	num = models.CharField(max_length = 40) # e.g. '333'
 	#dept = models.OneToManyField(Department)
 	#num = models.OneToManyField(Number)
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
@@ -83,8 +83,8 @@ class Course_Specific(models.Model):
 	
 	def __unicode__(self): 
 		result = ""
-		depts = self.dept.split("/")  
-		nums = self.num.split("/")
+		depts = self.dept.split("+")  
+		nums = self.num.split("+")
 		# return string in format "COS 126/ EGR 126 General Computer Science"
 		for i in range(0, len(depts)):
 			if i == (len(depts)-1):
