@@ -75,15 +75,7 @@ def profView(request, cprof):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
-    depts = cdept.split("+")
-    nums = cnum.split("+")
-    print depts[0]
-    print nums[0]
-    course_list = []
-    potentialCourse_list = get_list_or_404(Course_Specific, dept__contains = depts[0], num__contains = nums[0])
-    for c in potentialCourse_list:
-        if c.dept == cdept:
-            course_list.append(c)
+    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
 
     numGrades = [0] * len(GRADES);
     for course in course_list:
@@ -113,12 +105,11 @@ def narrowList(potentialClasses):
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
     # course specific to the semester
-    course = Course_Specific.objects.get(dept__contains = cdept, num__contains = cnum, semester = ctime)
+    course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
     # all semesters of the course
-    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
+    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
 
-    if len(course_list) > 1:
-        pass
+    
 
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
