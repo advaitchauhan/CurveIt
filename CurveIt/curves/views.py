@@ -14,10 +14,26 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 def index(request):
 	return render(request, 'curves/index.html')
 
+
+potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
+
+thisClass = potentialClasses[0]
+for c in potentialClasses:
+    print thisName
+    print c.name
+    if c.name == thisName:
+        thisClass = c
+        break
+
+
+
 @login_required 
-#return a list of all classes that belong in the department, with links to them
+# ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
+# plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
-    course_list = get_list_or_404(Course_Specific, dept__contains = cdept)
+    # get all courses registered under the department, including those that are cross listed
+    course_list = get_list_or_404(Course_Specific, dept__contains = cdept) # includes all semesters
+    # construct list of unique course titles
     uniqueCourse_list = []
     for course in course_list:
         for uniqueCourse in uniqueCourse_list:
@@ -25,6 +41,8 @@ def deptView(request, cdept):
                 break
         else:
             uniqueCourse_list.append(course)
+
+    # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
     for course in course_list:
         grades = course.getAllGrades()
@@ -36,6 +54,11 @@ def deptView(request, cdept):
 
     context = {'dept': cdept, 'uniqueCourse_list': uniqueCourse_list, 'dist': dist, 'total': total}
     return render(request, 'curves/dept.html', context)
+
+# ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
+# during the given semester.
+def deptSpecific(request, cdept, ctime):
+
 
 @login_required
 #return a list of all classes that are taught by cprof, with links to them
@@ -60,11 +83,9 @@ def profView(request, cprof):
     return render(request, 'curves/prof.html', context)
 
 @login_required
-# view associated with a specific course
+# ex: curves/COS/333. Plot of all time aggregate distribution, links to 
+# courseSpecific for each semester
 def courseView(request, cdept, cnum):
-    print "here"
-    print cdept
-    print cnum
     course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
     numGrades = [0] * len(GRADES);
     for course in course_list:
@@ -77,15 +98,28 @@ def courseView(request, cdept, cnum):
     context = {'course_list': course_list, 'dist': dist, 'total': total, 'dept': curCourse.dept, 'coursenum': curCourse.num, 'name': curCourse.name}
     return render(request, 'curves/course.html', context)
 
+# Further narrow query on our side.  Ex: query for WWWS 598 would return 
+# WWS 590/POL 598, WWS 598/POP 508.  Narrow it down to the latter.
+def narrowList(potentialClasses):
+    thisClass = potentialClasses[0]
+    if c.name == thisName:
+        thisClass = c
+        break
+    return thisClass
+
 
 @login_required
-# view associated with a specific course
+# ex: curves/COS/333/S2015.  Plot of grade distribution for course taught during
+# given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
-    print "here"
-    print cdept
-    print cnum
+    # course specific to the semester
     course = Course_Specific.objects.get(dept__contains = cdept, num__contains = cnum, semester = ctime)
-    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
+    # all semesters of the course
+    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, num__contains = cnum)
+
+    if len(course_list) > 1:
+        
+
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
     print dist
@@ -125,15 +159,9 @@ def add_data(request):
 
                 thisClass = potentialClasses[0]
                 for c in potentialClasses:
-                    print thisName
-                    print c.name
                     if c.name == thisName:
                         thisClass = c
                         break
-                # thisClass = potentialClasses[0]
-                # for c in potentialClasses:
-                #     if c.dept.index(thisDept) == c.num.index(thisNum):
-                #         thisClass = c
 
                 thisGrade = curData["grade"]
 
