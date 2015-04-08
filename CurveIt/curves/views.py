@@ -109,16 +109,32 @@ def add_data(request):
             try:
                 thisClass = curData["pastSemClass"]
                 thisClassInfo = thisClass.split("/")
+                print thisClassInfo
                 lastString = thisClassInfo[len(thisClassInfo)-1]
-                lastString = (lastString)[0:lastString.index(":")]
+                lastDept = (lastString)[0:lastString.index(":")]
+                thisName = (lastString)[(lastString.index(":") + 2):]
                 thisClassInfo = thisClassInfo[:-1]
-                thisClassInfo.append(lastString)
+                thisClassInfo.append(lastDept)
                 print thisClassInfo
                 curClass = thisClassInfo[0]
                 curListings = curClass.split()
                 thisDept = curListings[0]
                 thisNum = curListings[1]
-                thisClass = Course_Specific.objects.get(dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
+                print "suraj"
+                potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
+
+                thisClass = potentialClasses[0]
+                for c in potentialClasses:
+                    print thisName
+                    print c.name
+                    if c.name == thisName:
+                        thisClass = c
+                        break
+                # thisClass = potentialClasses[0]
+                # for c in potentialClasses:
+                #     if c.dept.index(thisDept) == c.num.index(thisNum):
+                #         thisClass = c
+
                 thisGrade = curData["grade"]
 
                 thisClass.addGrade(thisGrade)

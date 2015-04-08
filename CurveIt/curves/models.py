@@ -85,6 +85,7 @@ class Course_Specific(models.Model):
 		result = ""
 		depts = self.dept.split("/")  
 		nums = self.num.split("/")
+		# return string in format "COS 126/ EGR 126 General Computer Science"
 		for i in range(0, len(depts)):
 			if i == (len(depts)-1):
 				result += depts[i] + " " + nums[i] + ": "
