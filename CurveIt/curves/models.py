@@ -1,14 +1,5 @@
 from django.db import models
 
-"""
-class Department(models.Model):
-	dept = models.CharField(max_lenth = 3)
-"""
-
-"""
-class Number(models.Model):
-	num = models.CharField(max_length = 4)
-"""
 # Represents a course (e.g. 'COS 333 Advanced Programming 
 # Techniques' taught by a specific professor during a specific
 # semester)
@@ -17,8 +8,6 @@ class Course_Specific(models.Model):
 	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
 	dept = models.CharField(max_length = 40) # e.g. 'COS'
 	num = models.CharField(max_length = 40) # e.g. '333'
-	#dept = models.OneToManyField(Department)
-	#num = models.OneToManyField(Number)
 	name = models.CharField(max_length = 100) # e.g. 'Advanced Programming Techniques'
 	prof = models.CharField(max_length = 60) # e.g. 'Brian Kernighan'
 	semester = models.CharField(max_length = 5) # e.g. 'S2015' or 'F2015'
