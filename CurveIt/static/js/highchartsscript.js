@@ -36,8 +36,10 @@ $(function makechart() {
         },
         plotOptions: {
 			column: {
-    			pointPadding: 0.2,
-    			borderWidth: 0,
+    			pointPadding: 0,
+    			borderWidth: 0.5,
+                groupPadding: 0,
+                borderColor: "#000000"
 			}
 		},
 		legend: {

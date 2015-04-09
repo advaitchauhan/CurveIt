@@ -56,7 +56,7 @@ def main():
       else:
         thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=names, semester="S2015", num_A_plus=20))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=names, semester="S2015", num_A_plus=20, num_A=30, num_A_minus=35, num_B_plus=20, num_B=11, num_B_minus=8, num_C_plus=4))
 
   for i in range(0, len(courseSpecifics)):
       courseSpecifics[i].save()
