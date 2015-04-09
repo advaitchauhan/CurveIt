@@ -32,8 +32,7 @@ def main():
     profs = course["profs"]
     if len(profs) > 0:
       thisProf = (profs[0])["name"]
-      names = thisProf.replace(" ", "/")
-      print thisProf
+      names = thisProf.replace(" ", "+")
     else:
       thisProf = ""
     listings = course["listings"]

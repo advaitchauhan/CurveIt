@@ -68,7 +68,7 @@ def profView(request, cprof):
             uniqueCourse_list.append(course)
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
-    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("/", " "), 'dist': dist, 'total': total}
+    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("+", " "), 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
 
 @login_required
@@ -117,7 +117,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     total = sum(numGrades)
     curCourse = course_list[0]
     
-    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total}
+    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total, 'profForPrint': curCourse.prof.replace("+", " "), 'prof': curCourse.prof}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
