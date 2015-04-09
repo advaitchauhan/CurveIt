@@ -15,6 +15,10 @@ urlpatterns = patterns('',
 	#professor view
 	url(r'^prof/(?P<cprof>[\x00-\x7F]+)/$', views.profView, name = 'profView'),
 
+	#prof-specific view
+	url(r'^prof/(?P<cprof>[\x00-\x7F]+)/(?P<ctime>(F|S)\d{4,4})/$', views.profSpecificView, name = 'profSpecificView'),
+
+
 	#course view
 	url(r'^(?P<cdept>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/$', views.courseView, name = 'courseView'),
 
