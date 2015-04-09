@@ -12,7 +12,7 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 @login_required
 
 def index(request):
-	return render(request, 'curves/index.html')
+    return render(request, 'curves/index.html')
 
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
@@ -57,7 +57,7 @@ def deptSpecific(request, cdept, ctime):
 
     dist = zip(GRADES, numGrades)
 
-    context = {'dept': cdept, 'course_list' = course_list, 'dist': dist}
+    context = {'dept': cdept, 'course_list': course_list, 'dist': dist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -79,7 +79,7 @@ def profView(request, cprof):
             uniqueCourse_list.append(course)
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
-    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("/", " "), 'dist': dist, 'total': total}
+    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("+", " "), 'dist': dist, 'total': total}
     return render(request, 'curves/prof.html', context)
 
 @login_required
@@ -115,7 +115,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     total = sum(numGrades)
     curCourse = course_list[0]
     
-    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total}
+    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total, 'profForPrint': curCourse.prof.replace("+", " "), 'prof': curCourse.prof}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
