@@ -3,18 +3,29 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{ name }}</h1>
-<h3>Taught by: <a class = "prof" href="/curves/prof/{{ prof }}/">{{ profForPrint }}</a><br /></h3>
+<h1 class="title">{{ dept }}</h1>
+
+<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		    Select an Individual Class
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+		    {% for course in course_list %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+			{% endfor %}
+		  </ul>
+		</div>
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/curves/{{ course.dept }}/{{ course.num }}">View All Semesters</a></li>
+	<li role="presentation"><a href="/curves/{{ dept }}">View All Semesters</a></li>
+	{% for s in sem_list %}
 
-	{% for s in sem_list %}  		 		
-  		 		{% if s == course.semester %}
-  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
+  		 		{% if s == sem %}
+  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ sem }}/">{{ sem }} </a> </li>
 
   		 		{% else %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ s }}/">{{s}} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
 
   		 		{% endif %}
 	{% endfor %}

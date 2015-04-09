@@ -23,12 +23,20 @@ def deptView(request, cdept):
     
     # construct list of unique course titles
     uniqueCourse_list = []
+    sem_list = []
     for course in course_list:
+        # get list of all distinct courses
         for uniqueCourse in uniqueCourse_list:
             if course.name == uniqueCourse.name and course.num == uniqueCourse.num:
                 break
         else:
             uniqueCourse_list.append(course)
+        # get list of all distinct semesters
+        for sem in sem_list:
+            if course.semester == sem:
+                break
+        else:
+            sem_list.append(course.semester)
 
     # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
@@ -40,14 +48,27 @@ def deptView(request, cdept):
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
 
-    context = {'dept': cdept, 'uniqueCourse_list': uniqueCourse_list, 'dist': dist, 'total': total}
+    context = {'dept': cdept, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
-def deptSpecific(request, cdept, ctime):
+def deptSpecificView(request, cdept, ctime):
+    print "hello"
     # list of all classes in the department taken during given semester
-    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, semester = ctime)
+    allsemallcourse = get_list_or_404(Course_Specific, dept__contains = cdept)
+
+    course_list = []
+    sem_list = []
+    # get list of all distinct semesters
+    for course in allsemallcourse:
+        if course.semester == ctime:
+            course_list.append(course)
+        for sem in sem_list:
+            if course.semester == sem:
+                break
+        else:
+            sem_list.append(course.semester)
 
     numGrades = [0] * len(GRADES)
     for course in course_list:
@@ -57,7 +78,12 @@ def deptSpecific(request, cdept, ctime):
 
     dist = zip(GRADES, numGrades)
 
-    context = {'dept': cdept, 'course_list': course_list, 'dist': dist}
+    print cdept
+    print ctime
+    print "hello"
+
+
+    context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -88,16 +114,19 @@ def profView(request, cprof):
 def courseView(request, cdept, cnum):
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
 
+    sem_list = []
+
     numGrades = [0] * len(GRADES);
     for course in course_list:
+        sem_list.append(course.semester)
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
-    print numGrades
+    
     curCourse = course_list[0]
     dist = zip(GRADES, numGrades)
     total = sum(numGrades) 
-    context = {'course_list': course_list, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
+    context = {'sem_list': sorted(sem_list, reverse=True), 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -109,13 +138,16 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # all semesters of the course
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)    
 
+    sem_list = []
+    for c in course_list:
+        sem_list.append(c.semester)
+
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
     print dist
     total = sum(numGrades)
-    curCourse = course_list[0]
     
-    context = {'course_list': course_list,'course': curCourse, 'name': curCourse.__unicode__(), 'dist': dist, 'total': total, 'profForPrint': curCourse.prof.replace("+", " "), 'prof': curCourse.prof}
+    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profForPrint': course.prof.replace("+", " "), 'prof': course.prof}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
