@@ -11,6 +11,8 @@ urlpatterns = patterns('',
 	#dept-specific view
 	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<ctime>(F|S)\d{4,4})/$', views.deptSpecificView, name = 'deptSpecificView'), 
 
+		#prof-specific view
+	url(r'^prof/(?P<cprof>[\x00-\x7F]+)/(?P<ctime>(F|S)\d{4,4})/$', views.profSpecificView, name = 'profSpecificView'),
 
 	#professor view
 	url(r'^prof/(?P<cprof>[\x00-\x7F]+)/$', views.profView, name = 'profView'),

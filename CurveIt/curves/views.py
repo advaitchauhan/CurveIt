@@ -65,8 +65,11 @@ def deptSpecificView(request, cdept, ctime):
     sem_list = []
     # get list of all distinct semesters
     for course in allSemAllCourse:
+        # create list of all the classes in the current semester
         if course.semester == ctime:
             course_list.append(course)
+
+        # create a list of all the distinct semesters
         for sem in sem_list:
             if course.semester == sem:
                 break
@@ -87,28 +90,75 @@ def deptSpecificView(request, cdept, ctime):
 
 
 @login_required
-# ex: curves/prof/Brian+W.+Kernighan
+# ex: curves/prof/Brian+W.+Kernighan. Plot of all time aggregate distribution, links to
+# professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
-    # All courses over all semesters for which this prof was teacher
-    course_list = get_list_or_404(Course_Specific, prof__contains = cprof)
+    print "hello"
+    allSemAllCourse = get_list_or_404(Course_Specific, prof__contains = cprof)
+    print cprof
+    sem_list = []
+    course_list = []
+
+    for c in allSemAllCourse:
+        # get a list of all distinct courses
+        for uniqueCourse in course_list:
+            if c.num == uniqueCourse.num and c.dept == uniqueCourse.dept:
+                break
+        else:
+            course_list.append(c)
+
+        # get a list of all distinct semesters taught
+        for sem in sem_list:
+            if c.semester == sem:
+                break
+        else:
+            sem_list.append(c.semester)
+
+    # generate grade distibution across all courses taught
     numGrades = [0] * len(GRADES);
     for course in course_list:
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
-    # creates unique list of courses (will be overlap because course_list is all semester)
-    uniqueCourse_list = []
-    for course in course_list:
-        for uniqueCourse in uniqueCourse_list:
-            if course.num == uniqueCourse.num and course.dept == uniqueCourse.dept:
-                break
-        else:
-            uniqueCourse_list.append(course)
 
     dist = zip(GRADES, numGrades)
-    total = sum(numGrades)
-    context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("+", " "), 'dist': dist, 'total': total}
+    print cprof
+    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("+", " "), 'prof': cprof, 'dist': dist}
     return render(request, 'curves/prof.html', context)
+
+# ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
+# during the given semester, links to other semesters
+def profSpecificView(request, cprof, ctime):
+    print "hello2"
+    print cprof
+    allsemallcourse = get_list_or_404(Course_Specific, prof__contains = cprof)
+
+    course_list = []
+    sem_list = []
+
+    for c in allsemallcourse:
+        # create a list of all classes in the current semester
+        if c.semester == ctime:
+            course_list.append(c)
+
+        # create a list of all semesters in which professor taught
+        for sem in sem_list:
+            if c.semester == sem:
+                break
+        else:
+            sem_list.append(c.semester)
+
+    # generate grade distribution across all coureses taught
+    numGrades = [0] * len(GRADES);
+    for course in course_list:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades[i] += grades[i]
+
+    dist = zip(GRADES, numGrades)
+    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("+", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
+    return render(request, 'curves/prof_specific.html', context)
+
 
 @login_required
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 

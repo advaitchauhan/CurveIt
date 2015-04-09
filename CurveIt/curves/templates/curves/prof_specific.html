@@ -3,7 +3,7 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{ dept }}</h1>
+<h1 class="title">{{ profForPrint }}</h1>
 
 <div class="dropdown">
 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -18,13 +18,13 @@
 		</div>
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/curves/{{ dept }}">View All Semesters</a></li>
+	<li role="presentation"><a href="/curves/prof/{{ prof }}">View All Semesters</a></li>
 	{% for s in sem_list %}
   		 		{% if s == sem %}
-  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ sem }}/">{{ sem }} </a> </li>
+  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/prof/{{ prof }}/{{ sem }}/">{{ sem }} </a> </li>
 
   		 		{% else %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/prof/{{ prof }}/{{ s }}/">{{ s }} </a> </li>
 
   		 		{% endif %}
 	{% endfor %}

@@ -4,7 +4,7 @@
 {% load mathfilters %}
 {% load static %}
 <h1 class="title">{{ dept }}</h1>
-		<!-- First put list of courses under dept at the top -->
+		<!-- Dropdown of courses in the department across all semesters -->
 		<div class="dropdown">
 		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 		    Select an Individual Class
@@ -17,6 +17,7 @@
 		  </ul>
 		</div>
 
+		<!-- Tabs to all semesters in which courses from this department are offered -->
 		<ul class="nav nav-tabs">
 			<li role="presentation" class="active"><a href="#">View All Semesters</a></li>
 			{% for s in sem_list %}
