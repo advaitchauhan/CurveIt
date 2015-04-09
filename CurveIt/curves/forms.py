@@ -26,11 +26,11 @@ class SearchForm(forms.Form):
     curClassesList.sort()
     curProfs = []
     curDepts = []
-    for class in Course_Specific.objects.all():
-        if class.prof not in curProfs:
-            curProfs.append(class.prof)
-        if class.dept not in curDepts:
-            curDepts.append(class.dept)
+    for c in Course_Specific.objects.all():
+        if c.prof not in curProfs:
+            curProfs.append(c.prof)
+        if c.dept not in curDepts:
+            curDepts.append(c.dept)
     curProfs.sort()
     curDepts.sort()
     allChoices = curClassesList + curProfs + curDepts
