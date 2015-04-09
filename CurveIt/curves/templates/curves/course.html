@@ -5,6 +5,18 @@
 {% load static %}
 <h1 class="title">{{ name }}</h1>
 
+<div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+            Professors for this Course
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            {% for p,name in profs %}
+                <li> <a href = "/curves/prof/{{ p }}/"> {{ name }}</a></li>
+            {% endfor %}    
+          </ul>
+        </div>
+
 <ul class="nav nav-tabs">
 	<li role="presentation" class="active"><a href="#">View All Semesters</a></li>
 	{% for s in sem_list %}

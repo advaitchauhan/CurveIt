@@ -170,17 +170,32 @@ def courseView(request, cdept, cnum):
     # list of all semesters this class was taught
     sem_list = []
 
+    # list of all professors who have taught this class
+    prof_list = []
+    prof_names_list = []
+
     numGrades = [0] * len(GRADES);
     for course in course_list:
         sem_list.append(course.semester)
+        for p in prof_list:
+            if course.prof == p:
+                break
+        else:
+            prof_list.append(course.prof)
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
+    for p in prof_list:
+        thisProf = p.replace("+", " ")
+        prof_names_list.append(thisProf)
+
+    print prof_names_list
     # in order to pass in name of this class
     curCourse = course_list[0]
     dist = zip(GRADES, numGrades)
+    profs = zip(prof_list, prof_names_list)
     total = sum(numGrades) 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
+    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
     return render(request, 'curves/course.html', context)
 
 @login_required
