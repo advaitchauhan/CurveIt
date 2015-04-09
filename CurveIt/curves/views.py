@@ -14,18 +14,18 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 def index(request):
 	return render(request, 'curves/index.html')
 
-
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
     # get all courses registered under the department, including those that are cross listed
     course_list = get_list_or_404(Course_Specific, dept__contains = cdept) # includes all semesters
+    
     # construct list of unique course titles
     uniqueCourse_list = []
     for course in course_list:
         for uniqueCourse in uniqueCourse_list:
-            if course.num == uniqueCourse.num:
+            if course.name == uniqueCourse.name and course.num == uniqueCourse.num:
                 break
         else:
             uniqueCourse_list.append(course)
@@ -46,14 +46,25 @@ def deptView(request, cdept):
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 def deptSpecific(request, cdept, ctime):
-    pass
+    # list of all classes in the department taken during given semester
+    course_list = get_list_or_404(Course_Specific, dept__contains = cdept, semester = ctime)
+
+    numGrades = [0] * len(GRADES)
+    for course in course_list:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades[i] += grades[i]
+
+    dist = zip(GRADES, numGrades)
+
+    context = {'dept': cdept, 'course_list' = course_list, 'dist': dist}
+    return render(request, 'curves/dept_specific.html', context)
 
 
 @login_required
-#return a list of all classes that are taught by cprof, with links to them
+# ex: curves/prof/Brian/Kernighan
 def profView(request, cprof):
-    print cprof
-    course_list = get_list_or_404(Course_Specific, prof = cprof)
+    course_list = get_list_or_404(Course_Specific, prof__contains = cprof)
     numGrades = [0] * len(GRADES);
     for course in course_list:
         grades = course.getAllGrades()
@@ -89,17 +100,6 @@ def courseView(request, cdept, cnum):
     context = {'course_list': course_list, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
     return render(request, 'curves/course.html', context)
 
-# Further narrow query on our side.  Ex: query for WWWS 598 would return 
-# WWS 590/POL 598, WWS 598/POP 508.  Narrow it down to the latter.
-def narrowList(potentialClasses):
-    thisClass = potentialClasses[0]
-    for c in potentialClasses:
-        if c.name == thisName:
-            thisClass = c
-            break
-    return thisClass
-
-
 @login_required
 # ex: curves/COS/333/S2015.  Plot of grade distribution for course taught during
 # given semester.  Provide links to all other semesters for the course.  
@@ -107,9 +107,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # course specific to the semester
     course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
     # all semesters of the course
-    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
-
-    
+    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)    
 
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
