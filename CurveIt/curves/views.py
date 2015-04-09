@@ -23,11 +23,12 @@ def deptView(request, cdept):
     
     # construct list of unique course titles
     uniqueCourse_list = []
+    # construct a list of all semesters for which we have data
     sem_list = []
     for course in course_list:
         # get list of all distinct courses
         for uniqueCourse in uniqueCourse_list:
-            if course.name == uniqueCourse.name and course.num == uniqueCourse.num:
+            if course.num == uniqueCourse.num:
                 break
         else:
             uniqueCourse_list.append(course)
@@ -48,20 +49,22 @@ def deptView(request, cdept):
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
 
+    # sem_list sorted in reverse so that they appear in reverse chronological order
     context = {'dept': cdept, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 def deptSpecificView(request, cdept, ctime):
-    print "hello"
-    # list of all classes in the department taken during given semester
-    allsemallcourse = get_list_or_404(Course_Specific, dept__contains = cdept)
+    # list of all classes in the department over all semesters
+    allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
 
+    # all courses for current semester
     course_list = []
+    # all semester for which classes under this dept were taught
     sem_list = []
     # get list of all distinct semesters
-    for course in allsemallcourse:
+    for course in allSemAllCourse:
         if course.semester == ctime:
             course_list.append(course)
         for sem in sem_list:
@@ -78,24 +81,22 @@ def deptSpecificView(request, cdept, ctime):
 
     dist = zip(GRADES, numGrades)
 
-    print cdept
-    print ctime
-    print "hello"
-
-
+    # departments sorted in reverse so they appear like S2015 S2014, etc...
     context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept_specific.html', context)
 
 
 @login_required
-# ex: curves/prof/Brian/Kernighan
+# ex: curves/prof/Brian+W.+Kernighan
 def profView(request, cprof):
+    # All courses over all semesters for which this prof was teacher
     course_list = get_list_or_404(Course_Specific, prof__contains = cprof)
     numGrades = [0] * len(GRADES);
     for course in course_list:
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
+    # creates unique list of courses (will be overlap because course_list is all semester)
     uniqueCourse_list = []
     for course in course_list:
         for uniqueCourse in uniqueCourse_list:
@@ -103,6 +104,7 @@ def profView(request, cprof):
                 break
         else:
             uniqueCourse_list.append(course)
+
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
     context = {'uniqueCourse_list': uniqueCourse_list, 'cprof': cprof.replace("+", " "), 'dist': dist, 'total': total}
@@ -112,8 +114,10 @@ def profView(request, cprof):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
-    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)
+    # gets list of this course over all semesters
+    course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
 
+    # list of all semesters this class was taught
     sem_list = []
 
     numGrades = [0] * len(GRADES);
@@ -122,7 +126,7 @@ def courseView(request, cdept, cnum):
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
-    
+    # in order to pass in name of this class
     curCourse = course_list[0]
     dist = zip(GRADES, numGrades)
     total = sum(numGrades) 
@@ -135,9 +139,9 @@ def courseView(request, cdept, cnum):
 def courseSpecificView(request, cdept, cnum, ctime):
     # course specific to the semester
     course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
-    # all semesters of the course
+    # course over all semesters
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)    
-
+    # all semesters for which this class was taught
     sem_list = []
     for c in course_list:
         sem_list.append(c.semester)
@@ -163,27 +167,33 @@ def add_data(request):
             curData = form.cleaned_data
             try:
                 thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
+                thisGrade = curData["grade"] # gets grade chosen
                 thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
                 lastString = thisClassInfo[len(thisClassInfo)-1]
                 lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
                 thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
+
                 # now thisClassInfo is a list of all dist/num pairs
                 thisClassInfo = thisClassInfo[:-1] 
                 thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
 
-                curClass = thisClassInfo[0] # first listing
-                curListings = curClass.split()
-                thisDept = curListings[0] # department of first listing
-                thisNum = curListings[1] # number of first listing
-                potentialClasses = get_list_or_404(Course_Specific, dept__contains=thisDept, num__contains=thisNum, semester=CURRENTSEMESTER)
+                # will be a list of depts in format AAS+MUS
+                depts = ""
+                # will be a list of nums 210+253
+                nums = ""
 
-                thisClass = potentialClasses[0] # initialize
-                for c in potentialClasses:
-                    if c.name == thisName:
-                        thisClass = c
-                        break
+                for i in range(0, len(thisClassInfo)):
+                    curListings = thisClassInfo[i].split()
+                    thisDept = curListings[0]
+                    thisNum = curListings[1]
+                    if i == (len(thisClassInfo) - 1):
+                        depts += thisDept
+                        nums += thisNum
+                    else:
+                        depts += thisDept + "+"
+                        nums += thisNum + "+"
 
-                thisGrade = curData["grade"]
+                thisClass = get_object_or_404(Course_Specific, dept=depts, num=nums, semester=CURRENTSEMESTER)
 
                 thisClass.addGrade(thisGrade)
                 thisClass.save()
