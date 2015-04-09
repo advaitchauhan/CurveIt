@@ -12,7 +12,7 @@
 		  </button>
 		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 		    {% for course in uniqueCourse_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
 			{% endfor %}
 		  </ul>
 		</div>
@@ -30,12 +30,10 @@
 			{% for grade, number in dist %}
 			<!-- Optional functionality: only show grades that make up >x% of grades; may be
 			     useful for deciding whether to show PDF  -->
-				<!-- {% if number >= total|div:20 %}  -->
 					<tr>
 						<td class="_grade" hidden>{{ grade }}</td>
 						<td class="_numGrade" hidden>{{ number }}</td>
 					</tr>
-				<!-- {% endif %} -->
 			{% endfor %}
 		</table>
 <!-- {% endblock %} 

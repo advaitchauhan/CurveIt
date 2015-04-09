@@ -21,9 +21,17 @@
 -->
 <ul class="nav nav-tabs">
 	<li role="presentation"><a href="/curves/{{ course.dept }}/{{ course.num }}">View All Semesters</a></li>
-	{% for course in course_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
-			{% endfor %}
+	{% for c in course_list %}
+
+  		 		
+  		 		{% if c.semester == course.semester %}
+  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ c.dept }}/{{ c.num }}/{{ c.semester }}/">{{course.semester}} </a> </li>
+
+  		 		{% else %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ c.dept }}/{{ c.num }}/{{ c.semester }}/">{{c.semester}} </a> </li>
+
+  		 		{% endif %}
+	{% endfor %}
   <!--<li role="presentation" class="active"><a href="#"></a></li>
   <li role="presentation"><a href="#">Profile</a></li>
   <li role="presentation"><a href="#">Messages</a></li>-->
