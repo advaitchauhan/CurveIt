@@ -1,0 +1,19 @@
+List of Issues:
+Made this to properly document challenges that we encounter and resolve so that we can put together a comprehensive timeline at the end of the semester. Do not delete items -- just mark them as resolved when they are closed.  
+
+Date:
+By: 
+Description:
+Example:
+Resolved?:
+Date Resolved:
+
+
+Date: 4/11
+By: Suraj
+Description: Do not properly handle special characters (accents)
+Example: ART 339 -- professor's name has an accent 
+Resolved: No
+Date Resolved: 
+
+
