@@ -1,0 +1,28 @@
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+    <form action="/curves/search/" method="get" id = "autocomplete">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>
+
+<script>
+$( "#autocomplete" ).autocomplete({
+  source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
+});
+</script>
+
+ {% endblock %}

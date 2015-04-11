@@ -278,3 +278,38 @@ def add_data(request):
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
     return render(request, 'curves/add_data.html', {'form': form})
+
+def search_form(request):
+    return render(request, 'curves/search_form.html')
+
+def search(request):
+    if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
+        q = request.GET['q']
+
+        #check if search term is a department?
+        classes = Course_Specific.objects.filter(dept__iexact=q)
+        if (len(classes) > 0):
+            #context = {'classes': classes}
+            #return render(request, 'curves/results.html', context)
+            aClass = classes[0]
+            return deptView(request, aClass.dept)
+
+        #check if the search term is part of a professor?
+        classes = Course_Specific.objects.filter(prof__icontains=q)
+        if (len(classes) > 0):
+            #context = {'classes': classes}
+            #return render(request, 'curves/results.html', context)
+            aClass = classes[0]
+            return profView(request, aClass.prof)
+
+        #check if search term is a dept/num combo
+
+        #check if search term is part of a class title?
+        classes = Course_Specific.objects.filter(name__icontains=q)
+        if (len(classes) > 0):
+            context = {'classes': classes}
+            return render(request, 'curves/results.html', context)
+
+    else:
+        return HttpResponse('Please submit a search term.')
+    return HttpResponse(message)

@@ -24,6 +24,11 @@ urlpatterns = patterns('',
 	url(r'^(?P<cdept>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/(?P<ctime>(F|S)\d{4,4})/$', views.courseSpecificView, name = 'courseSpecificView'),
 
 	# new mapping
-	url(r'^add_data/$', views.add_data, name='add_data')
+	url(r'^add_data/$', views.add_data, name='add_data'),
 
+	#search bar form
+	url(r'^search_form/$', views.search_form),
+
+	#intermediary url for search queries
+	url(r'^search/$', views.search)
 )
