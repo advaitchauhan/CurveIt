@@ -303,6 +303,17 @@ def search(request):
             return profView(request, aClass.prof)
 
         #check if search term is a dept/num combo
+        #this is currently logically flawed, but i'll fix it later!
+        #for example a crosslisted COS306/ELE206 would match ELE306
+        if len(q.split(" ")) == 2:
+            qS = q.split(" ")
+            classes = Course_Specific.objects.filter(dept__icontains=qS[0], num__icontains=qS[1])
+            if (len(classes) > 0):
+                #context = {'classes': classes}
+                #return render(request, 'curves/results.html', context)
+                aClass = classes[0]
+                return courseView(request, aClass.dept, aClass.num)
+
 
         #check if search term is part of a class title?
         classes = Course_Specific.objects.filter(name__icontains=q)
