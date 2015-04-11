@@ -314,9 +314,21 @@ def search(request):
                 aClass = classes[0]
                 return courseView(request, aClass.dept, aClass.num)
 
+        #check if the search term is just a number?
+        classes = Course_Specific.objects.filter(num__iexact=q)
+        if (len(classes) == 1):
+            aClass = classes[0]
+            return courseView(request, aClass.dept, aClass.num)
+        if (len(classes) > 0):
+            context = {'classes': classes}
+            return render(request, 'curves/results.html', context)
+
         #check if search term is part of a class title?
         classes = Course_Specific.objects.filter(name__icontains=q)
-        if (len(classes) > 0):
+        if (len(classes) == 1):
+            aClass = classes[0]
+            return courseView(request, aClass.dept, aClass.num)
+        elif (len(classes) > 0):
             context = {'classes': classes}
             return render(request, 'curves/results.html', context)
         else:
