@@ -1,4 +1,4 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific
@@ -239,8 +239,8 @@ def add_data(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             curData = form.cleaned_data
-            if curData["pastSemClass"] == "N/A":
-                raise Http404("Page Not Found")
+            if curData["pastSemClass"] == "N/A" or curData["grade"] == "N/A":
+                return render(request, 'curves/404.html')
             try:
                 thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
                 thisGrade = curData["grade"] # gets grade chosen
@@ -350,3 +350,9 @@ def search(request):
     else:
         return HttpResponse('Please submit a search term.')
     return HttpResponse(message)
+
+def handler404(request):
+    response = render_to_response('curves/404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response

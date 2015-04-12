@@ -5,13 +5,15 @@ from curves.models import Course_Specific, User
 class Course_SpecificForm(forms.ModelForm):
     curClasses = Course_Specific.objects.filter(semester="S2015")
     curClassesList = []
+    curGradesList = Course_Specific.CHOICES
+    initial = ("N/A", "N/A")
     for j in range (0, len(curClasses)):
         curClass = (curClasses[j].__unicode__(), curClasses[j].__unicode__())
         curClassesList.append(curClass)
     curClassesList.sort()
-    initial = ("N/A", "N/A")
-    curClassesList.insert(0, initial)
-    pastSemClass = forms.ChoiceField(choices=curClassesList, help_text="Class", required=True)
+    curClassesList.insert(0,initial)
+    curGradesList.insert(0,initial)
+    pastSemClass = forms.ChoiceField(choices=curClassesList, help_text="Class")
     grade = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
     # An inline class to provide additional information on the form.
     class Meta:
