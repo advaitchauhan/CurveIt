@@ -9,7 +9,9 @@ class Course_SpecificForm(forms.ModelForm):
         curClass = (curClasses[j].__unicode__(), curClasses[j].__unicode__())
         curClassesList.append(curClass)
     curClassesList.sort()
-    pastSemClass = forms.ChoiceField(choices=curClassesList, help_text="Class")
+    initial = ("N/A", "N/A")
+    curClassesList.insert(0, initial)
+    pastSemClass = forms.ChoiceField(choices=curClassesList, help_text="Class", required=True)
     grade = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
     # An inline class to provide additional information on the form.
     class Meta:

@@ -14,7 +14,6 @@
         {% csrf_token %}
         {% for field in form.visible_fields %}
             <ol>
-            {{ field.errors }}
             {{ field.help_text }}
             {{ field }}
             </ol>

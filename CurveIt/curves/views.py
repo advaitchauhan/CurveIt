@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific
@@ -239,6 +239,8 @@ def add_data(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             curData = form.cleaned_data
+            if curData["pastSemClass"] == "N/A":
+                raise Http404("Page Not Found")
             try:
                 thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
                 thisGrade = curData["grade"] # gets grade chosen
