@@ -1,4 +1,10 @@
+@font-face {
+    font-family: Dense;
+    src: url('../fonts/Dense-Regular.otf')
+}
+
 body {
+	font-family: Dense;
     background-color: #005266;
     padding-top: 65px;
 }
