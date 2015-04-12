@@ -30,11 +30,14 @@ def main():
   
   for course in courses:
     profs = course["profs"]
-    if len(profs) > 0:
-      thisProf = (profs[0])["name"]
-      names = thisProf.replace(" ", "+")
-    else:
-      thisProf = ""
+    thisProf = ""
+    for i in range(0, len(profs)):
+      curProf = (profs[i])["name"]
+      names = curProf.replace(" ", "*")
+      if i < (len(profs) - 1):
+        thisProf += names + "+" 
+      else:
+        thisProf += names
     listings = course["listings"]
     theseDepts = []
     theseNums = []
@@ -55,7 +58,7 @@ def main():
       else:
         thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=names, semester="S2015", num_A_plus=20, num_A=30, num_A_minus=35, num_B_plus=20, num_B=11, num_B_minus=8, num_C_plus=4))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2015", num_A_plus=20, num_A=30, num_A_minus=35, num_B_plus=20, num_B=11, num_B_minus=8, num_C_plus=4))
 
   for i in range(0, len(courseSpecifics)):
       courseSpecifics[i].save()

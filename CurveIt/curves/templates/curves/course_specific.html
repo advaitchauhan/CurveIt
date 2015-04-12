@@ -4,7 +4,10 @@
 {% load mathfilters %}
 {% load static %}
 <h1 class="title">{{ name }}</h1>
-<h3>Taught by: <a class = "prof" href="/curves/prof/{{ prof }}/">{{ profForPrint }}</a><br /></h3>
+<h3>Taught by: </h3>
+{% for c, print in profs %}
+<h3><a class = "prof" href="/curves/prof/{{ c }}/">{{ print }}</a><br /></h3>
+{% endfor %}
 
 <ul class="nav nav-tabs">
 	<li role="presentation"><a href="/curves/{{ course.dept }}/{{ course.num }}">View All Semesters</a></li>
@@ -36,6 +39,5 @@
 			</tr>
 	{% endfor %}
 </table>
-
 <script src = "{% static 'js/highchartsscript.js' %}"></script>
 {% endblock %}

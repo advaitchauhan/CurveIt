@@ -90,10 +90,9 @@ def deptSpecificView(request, cdept, ctime):
 
 
 @login_required
-# ex: curves/prof/Brian+W.+Kernighan. Plot of all time aggregate distribution, links to
+# ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
-    print "hello"
     allSemAllCourse = get_list_or_404(Course_Specific, prof__contains = cprof)
     print cprof
     sem_list = []
@@ -123,7 +122,7 @@ def profView(request, cprof):
 
     dist = zip(GRADES, numGrades)
     print cprof
-    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("+", " "), 'prof': cprof, 'dist': dist}
+    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -156,7 +155,7 @@ def profSpecificView(request, cprof, ctime):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
-    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("+", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
+    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -177,16 +176,19 @@ def courseView(request, cdept, cnum):
     numGrades = [0] * len(GRADES);
     for course in course_list:
         sem_list.append(course.semester)
-        for p in prof_list:
-            if course.prof == p:
-                break
-        else:
-            prof_list.append(course.prof)
+        curProf = course.prof
+        curProfs = curProf.split("+")
+        for c in curProfs:
+            for p in prof_list:
+                if c == p:
+                    break   
+            else:
+                prof_list.append(c)
         grades = course.getAllGrades()
         for i in range(0, len(grades)):
             numGrades[i] += grades[i]
     for p in prof_list:
-        thisProf = p.replace("+", " ")
+        thisProf = p.replace("*", " ")
         prof_names_list.append(thisProf)
 
     print prof_names_list
@@ -215,8 +217,15 @@ def courseSpecificView(request, cdept, cnum, ctime):
     dist = zip(GRADES, numGrades)
     print dist
     total = sum(numGrades)
-    
-    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profForPrint': course.prof.replace("+", " "), 'prof': course.prof}
+
+    curProfsForPrint = []
+    curProfs = []
+    profs = course.prof.split("+")
+    for p in profs:
+        curProfs.append(p)
+        curProfsForPrint.append(p.replace("*", " "))
+    profs = zip(curProfs, curProfsForPrint)
+    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
@@ -297,10 +306,13 @@ def search(request):
         #check if the search term is part of a professor?
         classes = Course_Specific.objects.filter(prof__icontains=q)
         if (len(classes) > 0):
-            #context = {'classes': classes}
-            #return render(request, 'curves/results.html', context)
-            aClass = classes[0]
-            return profView(request, aClass.prof)
+            context = {'classes': classes}
+            return render(request, 'curves/results.html', context)
+            for c in classes:
+                profs = c.prof.split("+")
+                for p in profs:
+                    if q.lower() in p.lower():
+                        return profView(request, p)
 
         #check if search term is a dept/num combo
         #this is currently logically flawed, but i'll fix it later!
@@ -315,7 +327,7 @@ def search(request):
                 return courseView(request, aClass.dept, aClass.num)
 
         #check if the search term is just a number?
-        classes = Course_Specific.objects.filter(num__iexact=q)
+        classes = Course_Specific.objects.filter(num__icontains=q)
         if (len(classes) == 1):
             aClass = classes[0]
             return courseView(request, aClass.dept, aClass.num)
