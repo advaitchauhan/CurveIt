@@ -1,5 +1,10 @@
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
 <h1> Results of Search </h1>
 <ul>
 {% for course in classes %}
 	<li> <a href = "/curves/{{course.dept}}/{{course.num}}"> {{ course }} </li>
 {% endfor %}
+{% endblock %}
