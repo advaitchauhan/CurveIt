@@ -5,7 +5,13 @@
 
 body {
 	font-family: Dense;
-    background-color: #005266;
+    /*background-color: #005266;
+    background: rgb(255, 154, 51);   
+    background: rgba(255, 154, 101, 0.6);*/
+
+    background: url(../img/Princeton.jpg) no-repeat center center;
+    background-size: cover;
+
     padding-top: 65px;
 }
 
@@ -25,5 +31,20 @@ body {
 	font-size: 200%;
 }
 
+.navbar-custom {
+    background-color:#ff9a65;
+    color:#ffffff;
+    border-radius:0;
+}
 
+.navbar-custom .navbar-nav > li > a {
+    color:#fff;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color:transparent;
+}
+.navbar-custom .navbar-brand {
+    color:#eeeeee;
+}
 

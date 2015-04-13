@@ -16,35 +16,58 @@ $('._numGrade').each(function(index){
 $(function makechart() { 
 	$('#container').highcharts({
         chart: {
-        	backgroundColor: '#000000',
+        	backgroundColor: 'rgba(255, 255, 255, 0.4)',
             type: 'column'
         },
         title: {
-            text: plotTitle
+            text: plotTitle,
+            style: {
+                    color: "#FFFFFF"
+            }
         },
         xAxis: {
         	categories: _grades,
         	title: {
         		text: "Grades",
-        		color: '#00CCFF'
-        	}
+                lineColor: "#FFFFFF",
+                style: {
+                    color: "#FFFFFF"
+                }   
+        	},
+            labels: {
+                style: {
+                    color: "#FFFFFF"
+                }
+
+            }
         },
         yAxis: {
         	title: {
-        		text: "Numbers"
-        	}
+        		text: "Numbers",
+                style: {
+                    color: "#FFFFFF"
+                }
+        	},
+            labels: {
+                style: {
+                    color: "#FFFFFF",
+                }
+
+            }
         },
         plotOptions: {
 			column: {
     			pointPadding: 0,
     			borderWidth: 0.5,
                 groupPadding: 0,
+                color: "#FF9A65",
                 borderColor: "#000000"
 			}
 		},
 		legend: {
 			enabled: false
 		},
+        
 		tooltip: {
 			pointFormat: 'Count: <b>{point.y}</b><br/>'
 		},
