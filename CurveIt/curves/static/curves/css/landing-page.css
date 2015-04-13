@@ -23,7 +23,7 @@ h4,
 h5,
 h6 {
 font-family: Dense, Helvetica,Arial,sans-serif;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .topnav {
@@ -55,8 +55,10 @@ font-family: Dense, Helvetica,Arial,sans-serif;
     text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
     font-size: 50px;
     color: white;
-    background: rgb(170, 187, 97); /* Fallback */
-    background: rgba(170, 187, 97, 0.5);
+/*    background: rgb(170, 187, 97);   
+    background: rgba(170, 187, 97, 0.5);*/
+    background: rgb(255, 154, 51);   
+    background: rgba(255, 154, 101, 0.6);
 }
 
 .intro-message > h3 {
