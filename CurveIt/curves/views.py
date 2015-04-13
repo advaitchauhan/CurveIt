@@ -349,13 +349,15 @@ def search(request):
         #check if the search term is part of a professor?
         classes = Course_Specific.objects.filter(prof__icontains=q)
         if (len(classes) > 0):
-            context = {'classes': classes}
-            return render(request, 'curves/results.html', context)
-            for c in classes:
-                profs = c.prof.split("+")
-                for p in profs:
-                    if q.lower() in p.lower():
-                        return profView(request, p)
+            #context = {'classes': classes}
+            #return render(request, 'curves/results.html', context)
+            #logic works temporarily, need autocomplete because currently
+            #will just display view of the first found professor that matches query!
+            c = classes[0]
+            profs = c.prof.split("+")
+            for p in profs:
+                if q.lower() in p.lower():
+                    return profView(request, p)
 
         #check if search term is a dept/num combo
         #this is currently logically flawed, but i'll fix it later!
