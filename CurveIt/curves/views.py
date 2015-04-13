@@ -377,7 +377,14 @@ def search(request):
             aClass = classes[0]
             return courseView(request, aClass.dept, aClass.num)
         if (len(classes) > 0):
-            context = {'classes': classes}
+            uniqueClasses = []
+            for c in classes:
+                for u in uniqueClasses:
+                    if u.dept == c.dept:
+                        break
+                else:
+                    uniqueClasses.append(c)
+            context = {'classes': uniqueClasses}
             return render(request, 'curves/results.html', context)
 
         #check if search term is part of a class title?
