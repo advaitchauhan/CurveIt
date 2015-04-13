@@ -233,61 +233,102 @@ def courseSpecificView(request, cdept, cnum, ctime):
 # page for user to input class/grade
 def add_data(request):
     # A HTTP POST?
+    y = range(1,4)
+    z = range(4, 8)
+    requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
+    requiredGrades = map(lambda x: "grade" + str(x), y)
+    optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
+    optionalGrades = map(lambda x: "grade" + str(x), z)
     if request.method == 'POST':
         form = Course_SpecificForm(request.POST)
 
         # Have we been provided with a valid form?
         if form.is_valid():
             curData = form.cleaned_data
-            if curData["pastSemClass"] == "N/A" or curData["grade"] == "N/A":
-                return render(request, 'curves/404.html')
+            print curData
             try:
-                thisClass = curData["pastSemClass"] # i.e. AAS 210/MUS 253: Intro to...
-                thisGrade = curData["grade"] # gets grade chosen
-                thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
-                lastString = thisClassInfo[len(thisClassInfo)-1]
-                lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
-                thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
+                for i in range(0, len(requiredClasses)):
+                    c = requiredClasses[i]
+                    g = requiredGrades[i]
+                    thisClass = curData[c] # i.e. AAS 210/MUS 253: Intro to...
+                    thisGrade = curData[g] # gets grade chosen
+                    print thisGrade
+                    thisClass.addGrade(thisGrade)
+                    thisClass.save()
+                for i in range(0, len(optionalClasses)):
+                    thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
+                    if thisClass != None:
+                        thisGrade = curData[optionalGrades[i]] # gets grade chosen
+                        thisClass.addGrade("D_grade")
+                        thisClass.save()
+                # thisClass2 = curData["pastSemClass2"] # i.e. AAS 210/MUS 253: Intro to...
+                # thisGrade2 = curData["grade2"] # gets grade chosen
+                # thisClass2.addGrade(thisGrade2)
+                # thisClass2.save()
+                # thisClass3 = curData["pastSemClass3"] # i.e. AAS 210/MUS 253: Intro to...
+                # thisGrade3 = curData["grade3"] # gets grade chosen
+                # thisClass3.addGrade(thisGrade3)
+                # thisClass3.save()
+                # thisClass4 = curData["pastSemClass4"] # i.e. AAS 210/MUS 253: Intro to...
+                # if thisClass4 != None:
+                #     thisGrade4 = curData["grade4"] # gets grade chosen
+                #     thisClass4.addGrade(thisGrade4)
+                #     thisClass4.save()
+                # thisClass5 = curData["pastSemClass5"] # i.e. AAS 210/MUS 253: Intro to...
+                # if thisClass5 != None:
+                #     thisGrade5 = curData["grade5"] # gets grade chosen
+                #     thisClass5.addGrade(thisGrade5)
+                #     thisClass5.save()
+                # thisClass6 = curData["pastSemClass6"] # i.e. AAS 210/MUS 253: Intro to...
+                # if thisClass6 != None:
+                #     thisGrade6 = curData["grade6"] # gets grade chosen
+                #     thisClass6.addGrade(thisGrade6)
+                #     thisClass6.save()
+                # thisClass7 = curData["pastSemClass7"] # i.e. AAS 210/MUS 253: Intro to...
+                # if thisClass7 != None:
+                #     thisGrade7 = curData["grade7"] # gets grade chosen
+                #     thisClass7.addGrade(thisGrade7)
+                #     thisClass7.save()
+                # thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
+                # lastString = thisClassInfo[len(thisClassInfo)-1]
+                # lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
+                # thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
 
-                # now thisClassInfo is a list of all dist/num pairs
-                thisClassInfo = thisClassInfo[:-1] 
-                thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
+                # # now thisClassInfo is a list of all dist/num pairs
+                # thisClassInfo = thisClassInfo[:-1] 
+                # thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
 
-                # will be a list of depts in format AAS+MUS
-                depts = ""
-                # will be a list of nums 210+253
-                nums = ""
+                # # will be a list of depts in format AAS+MUS
+                # depts = ""
+                # # will be a list of nums 210+253
+                # nums = ""
 
-                for i in range(0, len(thisClassInfo)):
-                    curListings = thisClassInfo[i].split()
-                    thisDept = curListings[0]
-                    thisNum = curListings[1]
-                    if i == (len(thisClassInfo) - 1):
-                        depts += thisDept
-                        nums += thisNum
-                    else:
-                        depts += thisDept + "+"
-                        nums += thisNum + "+"
+                # for i in range(0, len(thisClassInfo)):
+                #     curListings = thisClassInfo[i].split()
+                #     thisDept = curListings[0]
+                #     thisNum = curListings[1]
+                #     if i == (len(thisClassInfo) - 1):
+                #         depts += thisDept
+                #         nums += thisNum
+                #     else:
+                #         depts += thisDept + "+"
+                #         nums += thisNum + "+"
 
-                thisClass = get_object_or_404(Course_Specific, dept=depts, num=nums, semester=CURRENTSEMESTER)
+                # thisClass = get_object_or_404(Course_Specific, dept=depts, num=nums, semester=CURRENTSEMESTER)
 
-                thisClass.addGrade(thisGrade)
-                thisClass.save()
             except Course_Specific.DoesNotExist:
                 thisClass = None
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return courseSpecificView(request, thisClass.dept, thisClass.num, CURRENTSEMESTER)
-        else:
-            # The supplied form contained errors - just print them to the terminal.
-            print form.errors
+            return search_form(request)
     else:
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
 
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
+    print "gagjaw"
     return render(request, 'curves/add_data.html', {'form': form})
 
 def search_form(request):

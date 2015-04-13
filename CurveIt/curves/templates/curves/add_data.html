@@ -7,17 +7,25 @@
 
 <body>
     <h1 class = "title">Add Data</h1>
+    <h4> Please enter at least three classes and three
+    grades from last semester. We will not store grades associated with individual students - all of the data is aggregrated into our database immediately, so this is completely anonymous. </h4>
 
 <!-- Form to enter grade for a course -->
     <form class = "option" id="data_form" method="post" action="/curves/add_data/">
 
-        {% csrf_token %}
+    {% csrf_token %}
+
+      <table class="table table-bordered">
         {% for field in form.visible_fields %}
-            <ol>
-            {{ field.help_text }}
-            {{ field }}
-            </ol>
+            <tr>
+                <td>{{ field.help_text}}</td>
+                <td>{{ field }}</td>                 
+                {% if field.errors %}
+                    <td class="alert alert-danger">{{ field.errors }}</td>
+                {% endif %}
+            </tr>
         {% endfor %}
+    </table>
 
        <input type="submit" name="submit" value="Add Data"/>
            </form>
