@@ -69,6 +69,10 @@ $(function makechart() {
 			enabled: false
 		},
         
+        credits: {
+            enabled: false
+        },
+
 		tooltip: {
 			pointFormat: 'Count: <b>{point.y}</b><br/>'
 		},
