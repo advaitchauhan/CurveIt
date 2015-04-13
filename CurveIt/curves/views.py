@@ -339,12 +339,13 @@ def search(request):
         q = request.GET['q']
 
         #check if search term is a department?
-        classes = Course_Specific.objects.filter(dept__iexact=q)
-        if (len(classes) > 0):
-            #context = {'classes': classes}
-            #return render(request, 'curves/results.html', context)
-            aClass = classes[0]
-            return deptView(request, aClass.dept)
+        if len(q) == 3:
+            classes = Course_Specific.objects.filter(dept__iexact=q)
+            if (len(classes) > 0):
+                #context = {'classes': classes}
+                #return render(request, 'curves/results.html', context)
+                aClass = classes[0]
+                return deptView(request, aClass.dept)
 
         #check if the search term is part of a professor?
         classes = Course_Specific.objects.filter(prof__icontains=q)
@@ -372,20 +373,21 @@ def search(request):
                 return courseView(request, aClass.dept, aClass.num)
 
         #check if the search term is just a number?
-        classes = Course_Specific.objects.filter(num__icontains=q)
-        if (len(classes) == 1):
-            aClass = classes[0]
-            return courseView(request, aClass.dept, aClass.num)
-        if (len(classes) > 0):
-            uniqueClasses = []
-            for c in classes:
-                for u in uniqueClasses:
-                    if u.dept == c.dept:
-                        break
-                else:
-                    uniqueClasses.append(c)
-            context = {'classes': uniqueClasses}
-            return render(request, 'curves/results.html', context)
+        if len(q) <= 4:
+            classes = Course_Specific.objects.filter(num__icontains=q)
+            if (len(classes) == 1):
+                aClass = classes[0]
+                return courseView(request, aClass.dept, aClass.num)
+            if (len(classes) > 0):
+                uniqueClasses = []
+                for c in classes:
+                    for u in uniqueClasses:
+                        if u.dept == c.dept:
+                            break
+                    else:
+                        uniqueClasses.append(c)
+                context = {'classes': uniqueClasses}
+                return render(request, 'curves/results.html', context)
 
         #check if search term is part of a class title?
         classes = Course_Specific.objects.filter(name__icontains=q)
