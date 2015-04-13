@@ -32,7 +32,8 @@ body {
 }
 
 .navbar-custom {
-    background-color:#ff9a65;
+    background: rgb(255, 154, 51); 
+    background-color: rgba(255, 154, 101, 0.7);
     color:#ffffff;
     border-radius:0;
 }

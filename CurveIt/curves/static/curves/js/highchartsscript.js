@@ -16,7 +16,7 @@ $('._numGrade').each(function(index){
 $(function makechart() { 
 	$('#container').highcharts({
         chart: {
-        	backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        	backgroundColor: 'rgba(255, 255, 255, 0.1)',
             type: 'column'
         },
         title: {
@@ -60,7 +60,8 @@ $(function makechart() {
     			pointPadding: 0,
     			borderWidth: 0.5,
                 groupPadding: 0,
-                color: "#FF9A65",
+                color: 'rgb(255, 154, 51)',
+                color: 'rgba(255, 154, 101, 0.7)',
                 borderColor: "#000000"
 			}
 		},
