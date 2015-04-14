@@ -33,7 +33,7 @@ body {
 
 .navbar-custom {
     background: rgb(255, 154, 51); 
-    background-color: rgba(255, 154, 101, 0.7);
+    background-color: rgba(255, 154, 101, 0.8);
     color:#ffffff;
     border-radius:0;
 }
@@ -53,4 +53,12 @@ body {
     max-height: 400px;
     overflow: hidden;
     overflow-y: auto;
+}
+
+.highcharts-container{
+    background-color: rgba(0,0,0,0.8)
+}
+
+.h3 > a {
+    color: black;
 }

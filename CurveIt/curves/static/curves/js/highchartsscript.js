@@ -19,12 +19,12 @@ $(function makechart() {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
             type: 'column'
         },
-        title: {
-            text: plotTitle,
-            style: {
-                    color: "#FFFFFF"
-            }
-        },
+        // title: {
+        //     text: plotTitle,
+        //     style: {
+        //             color: "#FFFFFF"
+        //     }
+        // },
         xAxis: {
         	categories: _grades,
         	title: {
