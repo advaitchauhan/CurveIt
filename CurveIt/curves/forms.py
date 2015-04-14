@@ -9,11 +9,11 @@ class Course_SpecificForm(forms.Form):
     curClasses = Course_Specific.objects.filter(semester="S2015")
     curGradesList = Course_Specific.CHOICES
     curGradesList.insert(0, ("N/A", "N/A"))
-    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
+    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True)
     grade1 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
-    pastSemClass2 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
+    pastSemClass2 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True)
     grade2 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
-    pastSemClass3 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
+    pastSemClass3 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True)
     grade3 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
     pastSemClass4 = forms.ModelChoiceField(queryset = curClasses, help_text="Class", required=False)
     grade4 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
@@ -102,6 +102,8 @@ class Course_SpecificForm(forms.Form):
     def clean(self):
         cleaned_data = super(Course_SpecificForm, self).clean()
         y = range(1,4)
+        required_Courses = []
+        optional_Courses = []
         requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
         requiredGrades = map(lambda x: "grade" + str(x), y)
         z = range(4, 8)
@@ -109,15 +111,30 @@ class Course_SpecificForm(forms.Form):
         optionalGrades = map(lambda x: "grade" + str(x), z)
         for i in range(0, len(requiredClasses)):
             thisGrade = cleaned_data.get(requiredGrades[i])
+            thisClass = cleaned_data.get(requiredClasses[i])
+            required_Courses.append(thisClass)
             if thisGrade == "N/A":
-                self.add_error(requiredGrades[i], "Please enter grade")
+                self.add_error(requiredGrades[i], "This field is required.")
         for i in range(0, len(optionalClasses)):
             thisClass = cleaned_data.get(optionalClasses[i])
+            optional_Courses.append(thisClass)
             thisGrade = cleaned_data.get(optionalGrades[i])
             if thisGrade == "N/A" and thisClass != None:
-                self.add_error(optionalGrades[i], "Please enter grade")
+                self.add_error(optionalGrades[i], "Please enter grade.")
             elif thisGrade != "N/A" and thisClass == None:
-                self.add_error(optionalClasses[i], "Please enter class")
+                self.add_error(optionalClasses[i], "Please enter class.")
+        for i in range(0, len(required_Courses)):
+            for j in range(0, len(required_Courses)):
+                if i != j:
+                    if required_Courses[i] != None and required_Courses[j] != None:
+                        if required_Courses[i] == required_Courses[j]:
+                            self.add_error(requiredClasses[j], "Please do not select a class more than once.")
+        for i in range(0, len(optional_Courses)):
+            for j in range(0, len(optional_Courses)):
+                if i != j:
+                    if optional_Courses[i] != None and optional_Courses[j] != None:
+                        if optional_Courses[i] == optional_Courses[j]:
+                            self.add_error(optionalClasses[j], "Please do not select a class more than once")
 
 class SearchForm(forms.Form):
     curClasses = Course_Specific.objects.filter(semester="S2015")
