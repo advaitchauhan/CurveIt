@@ -14,7 +14,6 @@
     <form class = "option" id="data_form" method="post" action="/curves/add_data/">
 
     {% csrf_token %}
-
       <table class="table table-bordered">
         {% for field in form.visible_fields %}
             <tr>

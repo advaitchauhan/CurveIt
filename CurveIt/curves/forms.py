@@ -6,15 +6,14 @@ grades = []
 
 # form to get a class and a grade from a user
 class Course_SpecificForm(forms.Form):
-    error = {'required': 'Please select a class'}
     curClasses = Course_Specific.objects.filter(semester="S2015")
     curGradesList = Course_Specific.CHOICES
     curGradesList.insert(0, ("N/A", "N/A"))
-    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=False)
+    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
     grade1 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
-    pastSemClass2 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=False)
+    pastSemClass2 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
     grade2 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
-    pastSemClass3 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=False)
+    pastSemClass3 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True, error_messages={'required': 'Please enter class'})
     grade3 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
     pastSemClass4 = forms.ModelChoiceField(queryset = curClasses, help_text="Class", required=False)
     grade4 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
@@ -42,64 +41,83 @@ class Course_SpecificForm(forms.Form):
     #             raise forms.ValidationError("Please select a grade")
     #     return self.cleaned_data
 
-    def clean_grade1(self):
-        grade = self.cleaned_data["grade1"]
-        thisClass = self.cleaned_data["pastSemClass1"]
-        if grade == "N/A" or thisClass == None:
-            raise forms.ValidationError("Please select a class and a grade")
-        return grade
+    # def clean_grade1(self):
+    #     grade = self.cleaned_data["grade1"]
+    #     thisClass = self.cleaned_data["pastSemClass1"]
+    #     if grade == "N/A" or thisClass == None:
+    #         raise forms.ValidationError("Please select a class and a grade")
+    #     return grade
 
-    def clean_grade2(self):
-        grade = self.cleaned_data["grade2"]
-        thisClass = self.cleaned_data["pastSemClass2"]
-        if grade == "N/A" or thisClass == None:
-            raise forms.ValidationError("Please select a class and a grade")
-        return grade
+    # def clean_grade2(self):
+    #     grade = self.cleaned_data["grade2"]
+    #     thisClass = self.cleaned_data["pastSemClass2"]
+    #     if grade == "N/A" or thisClass == None:
+    #         raise forms.ValidationError("Please select a class and a grade")
+    #     return grade
 
-    def clean_grade3(self):
-        grade = self.cleaned_data["grade3"]
-        thisClass = self.cleaned_data["pastSemClass3"]
-        if grade == "N/A" or thisClass == None:
-            raise forms.ValidationError("Please select a class and a grade")
-        return grade
+    # def clean_grade3(self):
+    #     grade = self.cleaned_data["grade3"]
+    #     thisClass = self.cleaned_data["pastSemClass3"]
+    #     if grade == "N/A" or thisClass == None:
+    #         raise forms.ValidationError("Please select a class and a grade")
+    #     return grade
 
-    def clean_grade4(self):
-        grade = self.cleaned_data["grade4"]
-        thisClass = self.cleaned_data["pastSemClass4"]
-        print thisClass
-        if grade == "N/A" and thisClass != None:
-            raise forms.ValidationError("Please enter a grade")
-        elif grade != "N/A" and thisClass == None:
-            raise forms.ValidationError("Please select a class for this grade")
-        return grade
+    # def clean_grade4(self):
+    #     grade = self.cleaned_data["grade4"]
+    #     thisClass = self.cleaned_data["pastSemClass4"]
+    #     print thisClass
+    #     if grade == "N/A" and thisClass != None:
+    #         raise forms.ValidationError("Please enter a grade")
+    #     elif grade != "N/A" and thisClass == None:
+    #         raise forms.ValidationError("Please select a class for this grade")
+    #     return grade
 
-    def clean_grade5(self):
-        grade = self.cleaned_data["grade5"]
-        thisClass = self.cleaned_data["pastSemClass5"]
-        if grade == "N/A" and thisClass != None:
-            raise forms.ValidationError("Please enter a grade")
-        elif grade != "N/A" and thisClass == None:
-            raise forms.ValidationError("Please select a class for this grade")
-        return grade
+    # def clean_grade5(self):
+    #     grade = self.cleaned_data["grade5"]
+    #     thisClass = self.cleaned_data["pastSemClass5"]
+    #     if grade == "N/A" and thisClass != None:
+    #         raise forms.ValidationError("Please enter a grade")
+    #     elif grade != "N/A" and thisClass == None:
+    #         raise forms.ValidationError("Please select a class for this grade")
+    #     return grade
 
-    def clean_grade6(self):
-        grade = self.cleaned_data["grade6"]
-        thisClass = self.cleaned_data["pastSemClass6"]
-        if grade == "N/A" and thisClass != None:
-            raise forms.ValidationError("Please enter a grade")
-        elif grade != "N/A" and thisClass == None:
-            raise forms.ValidationError("Please select a class for this grade")
-        return grade
+    # def clean_grade6(self):
+    #     grade = self.cleaned_data["grade6"]
+    #     thisClass = self.cleaned_data["pastSemClass6"]
+    #     if grade == "N/A" and thisClass != None:
+    #         raise forms.ValidationError("Please enter a grade")
+    #     elif grade != "N/A" and thisClass == None:
+    #         raise forms.ValidationError("Please select a class for this grade")
+    #     return grade
 
-    def clean_grade7(self):
-        grade = self.cleaned_data["grade7"]
-        thisClass = self.cleaned_data["pastSemClass7"]
-        if grade == "N/A" and thisClass != None:
-            raise forms.ValidationError("Please enter a grade")
-        elif grade != "N/A" and thisClass == None:
-            raise forms.ValidationError("Please select a class for this grade")
-        return grade
+    # def clean_grade7(self):
+    #     grade = self.cleaned_data["grade7"]
+    #     thisClass = self.cleaned_data["pastSemClass7"]
+    #     if grade == "N/A" and thisClass != None:
+    #         raise forms.ValidationError("Please enter a grade")
+    #     elif grade != "N/A" and thisClass == None:
+    #         raise forms.ValidationError("Please select a class for this grade")
+    #     return grade
 
+    def clean(self):
+        cleaned_data = super(Course_SpecificForm, self).clean()
+        y = range(1,4)
+        requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
+        requiredGrades = map(lambda x: "grade" + str(x), y)
+        z = range(4, 8)
+        optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
+        optionalGrades = map(lambda x: "grade" + str(x), z)
+        for i in range(0, len(requiredClasses)):
+            thisGrade = cleaned_data.get(requiredGrades[i])
+            if thisGrade == "N/A":
+                self.add_error(requiredGrades[i], "Please enter grade")
+        for i in range(0, len(optionalClasses)):
+            thisClass = cleaned_data.get(optionalClasses[i])
+            thisGrade = cleaned_data.get(optionalGrades[i])
+            if thisGrade == "N/A" and thisClass != None:
+                self.add_error(optionalGrades[i], "Please enter grade")
+            elif thisGrade != "N/A" and thisClass == None:
+                self.add_error(optionalClasses[i], "Please enter class")
 
 class SearchForm(forms.Form):
     curClasses = Course_Specific.objects.filter(semester="S2015")
