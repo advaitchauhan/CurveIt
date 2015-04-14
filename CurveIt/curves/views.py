@@ -245,21 +245,19 @@ def add_data(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             curData = form.cleaned_data
-            print curData
             try:
                 for i in range(0, len(requiredClasses)):
                     c = requiredClasses[i]
                     g = requiredGrades[i]
                     thisClass = curData[c] # i.e. AAS 210/MUS 253: Intro to...
                     thisGrade = curData[g] # gets grade chosen
-                    print thisGrade
                     thisClass.addGrade(thisGrade)
                     thisClass.save()
                 for i in range(0, len(optionalClasses)):
                     thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
                     if thisClass != None:
                         thisGrade = curData[optionalGrades[i]] # gets grade chosen
-                        thisClass.addGrade("D_grade")
+                        thisClass.addGrade(thisGrade)
                         thisClass.save()
                 # thisClass2 = curData["pastSemClass2"] # i.e. AAS 210/MUS 253: Intro to...
                 # thisGrade2 = curData["grade2"] # gets grade chosen
