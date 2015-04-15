@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
-from curves.models import Course_Specific
+from curves.models import Course_Specific, User
 from curves.forms import Course_SpecificForm
 import json
 
@@ -235,6 +235,7 @@ def add_data(request):
     # A HTTP POST?
     y = range(1,4)
     z = range(4, 8)
+    currentnetid = request.user.username
     requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
     requiredGrades = map(lambda x: "grade" + str(x), y)
     optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
@@ -244,6 +245,9 @@ def add_data(request):
 
         # Have we been provided with a valid form?
         if form.is_valid():
+            thisUser = User.objects.get(netid=currentnetid)
+            thisUser.entered()
+            thisUser.save()
             curData = form.cleaned_data
             try:
                 for i in range(0, len(requiredClasses)):

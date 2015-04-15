@@ -83,8 +83,22 @@ class Course_Specific(models.Model):
 		return result + self.name
 		
 class User(models.Model):
-	netid = models.CharField(max_length = 20) # e.g. 'tylerh'
+	netid = models.CharField(max_length = 50) # e.g. 'tylerh'
+	name = models.CharField(max_length = 100, default="")
+	year = models.CharField(max_length = 4, default="")
 	has_Entered = models.BooleanField(default = False)
 
+	def getNetid(self):
+		return self.netid
+
+	def enteredOrNot(self):
+		return self.has_Entered
+
+	def getYear(self):
+		return self.year
+
+	def entered(self):
+		self.has_Entered = True
+
 	def __unicode__(self):
-		return self.netid + ": " + self.has_Entered
+		return self.netid
