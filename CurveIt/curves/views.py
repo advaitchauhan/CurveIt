@@ -122,7 +122,7 @@ def profView(request, cprof):
 
     dist = zip(GRADES, numGrades)
     print cprof
-    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist}
+    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -155,7 +155,7 @@ def profSpecificView(request, cprof, ctime):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
-    context = {'course_list': course_list, 'sem_list': sem_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
+    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
     return render(request, 'curves/prof_specific.html', context)
 
 
