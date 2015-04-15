@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific, User
 from curves.forms import Course_SpecificForm
@@ -14,10 +14,18 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 def index(request):
     return render(request, 'curves/index.html')
 
+def loggedIn(request):
+    currentnetid = request.user.username
+    thisUser = User.objects.get(netid=currentnetid)
+    return thisUser.enteredOrNot()
+
+
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     # get all courses registered under the department, including those that are cross listed
     course_list = get_list_or_404(Course_Specific, dept__contains = cdept) # includes all semesters
     
@@ -56,6 +64,8 @@ def deptView(request, cdept):
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 def deptSpecificView(request, cdept, ctime):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
 
@@ -93,6 +103,8 @@ def deptSpecificView(request, cdept, ctime):
 # ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     allSemAllCourse = get_list_or_404(Course_Specific, prof__contains = cprof)
     print cprof
     sem_list = []
@@ -128,8 +140,8 @@ def profView(request, cprof):
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester, links to other semesters
 def profSpecificView(request, cprof, ctime):
-    print "hello2"
-    print cprof
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     allsemallcourse = get_list_or_404(Course_Specific, prof__contains = cprof)
 
     course_list = []
@@ -163,6 +175,8 @@ def profSpecificView(request, cprof, ctime):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     # gets list of this course over all semesters
     course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
 
@@ -204,6 +218,8 @@ def courseView(request, cdept, cnum):
 # ex: curves/COS/333/S2015.  Plot of grade distribution for course taught during
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     # course specific to the semester
     course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
     # course over all semesters
@@ -334,9 +350,13 @@ def add_data(request):
     return render(request, 'curves/add_data.html', {'form': form})
 
 def search_form(request):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     return render(request, 'curves/search_form.html')
 
 def search(request):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
     if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
         q = request.GET['q']
 
