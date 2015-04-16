@@ -91,8 +91,8 @@ class User(models.Model):
 	def getNetid(self):
 		return self.netid
 
-	def enteredOrNot(self):
-		return self.has_Entered
+	def hasAccess(self):
+		return self.has_Entered or (self.year == "2018")
 
 	def getYear(self):
 		return self.year

@@ -17,7 +17,7 @@ def index(request):
 def loggedIn(request):
     currentnetid = request.user.username
     thisUser = User.objects.get(netid=currentnetid)
-    return thisUser.enteredOrNot()
+    return (thisUser.hasAccess())
 
 
 @login_required 
