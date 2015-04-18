@@ -26,8 +26,8 @@ urlpatterns = patterns('',
 	# new mapping
 	url(r'^add_data/$', views.add_data, name='add_data'),
 
-	#search bar form
-	url(r'^search_form/$', views.search_form),
+	#after data has been added
+	url(r'^after_data/$', views.after_data, name = 'after_data'),
 
 	#intermediary url for search queries
 	url(r'^search/$', views.search)

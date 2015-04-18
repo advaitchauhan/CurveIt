@@ -339,7 +339,7 @@ def add_data(request):
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return search_form(request)
+            return redirect('/curves/after_data')
     else:
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
@@ -349,10 +349,10 @@ def add_data(request):
     print "gagjaw"
     return render(request, 'curves/add_data.html', {'form': form})
 
-def search_form(request):
+def after_data(request):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
-    return render(request, 'curves/search_form.html')
+    return render(request, 'curves/after_data.html')       
 
 def search(request):
     if loggedIn(request) == False:
@@ -420,7 +420,8 @@ def search(request):
             context = {'classes': classes}
             return render(request, 'curves/results.html', context)
         else:
-            return HttpResponse('Nothing found!')
+            context = {'query': q}
+            return render (request, 'curves/invalid.html', context)
     else:
         return HttpResponse('Please submit a search term.')
     return HttpResponse(message)
