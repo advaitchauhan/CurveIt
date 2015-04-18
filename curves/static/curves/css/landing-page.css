@@ -31,7 +31,8 @@ font-family: Dense, Helvetica,Arial,sans-serif;
     padding-bottom: 50px;
     text-align: center;
     color: #f8f8f8;
-    background: url(../img/Princeton.jpg) no-repeat center center;
+    /*background: url(../img/Princeton.jpg) no-repeat center center;*/
+    background: url(../img/gates.jpg) no-repeat center center;
     background-size: cover;
 }
 
@@ -50,6 +51,7 @@ font-family: Dense, Helvetica,Arial,sans-serif;
     background: rgba(170, 187, 97, 0.5);*/
     background: rgb(255, 154, 51);   
     background: rgba(255, 154, 101, 0.6);
+    background: rgba(230, 91, 5, 0.8);
 }
 
 .intro-message > h3 {

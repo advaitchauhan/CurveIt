@@ -9,7 +9,7 @@ body {
     background: rgb(255, 154, 51);   
     background: rgba(255, 154, 101, 0.6);*/
 
-    background: url(../img/Princeton.jpg) no-repeat center center;
+    background: url(../img/gates.jpeg) no-repeat center center;
     background-size: cover;
 
     padding-top: 65px;
@@ -32,8 +32,8 @@ body {
 }
 
 .navbar-custom {
-    background: rgb(255, 154, 51); 
-    background-color: rgba(255, 154, 101, 0.8);
+    /*background: rgb(255, 154, 51); */
+    background-color: rgba(230, 91, 5, 0.6);
     color:#ffffff;
     border-radius:0;
 }

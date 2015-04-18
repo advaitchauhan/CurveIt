@@ -60,8 +60,8 @@ $(function makechart() {
     			pointPadding: 0,
     			borderWidth: 0.5,
                 groupPadding: 0,
-                color: 'rgb(255, 154, 51)',
-                color: 'rgba(255, 154, 101, 0.7)',
+                // color: 'rgb(255, 154, 51)',
+                color: 'rgba(230, 91, 5, 0.6)',
                 borderColor: "#000000"
 			}
 		},
