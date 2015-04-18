@@ -1,4 +1,4 @@
-#!/Users/smbhat/COS333/CurveIt/venv/bin/python
+#!/Users/tylerh/Documents/CurveIt/venv/bin/python
 from django.core import management
 
 if __name__ == "__main__":
