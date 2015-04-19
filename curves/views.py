@@ -54,6 +54,12 @@ def loggedIn(request):
     thisUser = User.objects.get(netid=currentnetid)
     return (thisUser.hasAccess())
 
+def alreadyEntered(request):
+    currentnetid = request.user.username
+    print currentnetid
+    thisUser = User.objects.get(netid=currentnetid)
+    print thisUser
+    return thisUser.has_Entered
 
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
@@ -283,6 +289,9 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
+    if alreadyEntered(request):
+        print "he;;p"
+        return redirect('/curves')
     # A HTTP POST?
     y = range(1,4)
     z = range(4, 8)
