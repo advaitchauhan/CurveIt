@@ -23,6 +23,10 @@ body {
 
 }
 
+.notactive {
+    color: white;
+}
+
 .listofclasses {
 	color: white;
 }
@@ -62,6 +66,10 @@ body {
 
 .h3 > a {
     color: black;
+}
+
+.navbar-center {
+    text-align: center;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; color: black; }
