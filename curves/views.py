@@ -59,7 +59,7 @@ def deptView(request, cdept):
     total = sum(numGrades)
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'dept': depts[cdept], 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -96,7 +96,7 @@ def deptSpecificView(request, cdept, ctime):
     dist = zip(GRADES, numGrades)
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept_specific.html', context)
 
 
