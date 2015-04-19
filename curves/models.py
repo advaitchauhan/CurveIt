@@ -81,6 +81,38 @@ class Course_Specific(models.Model):
 			else:
 				result += depts[i] + " " + nums[i] + "/"         
 		return result + self.name
+
+	def printFields(self):
+		searchList = {}
+		# {'prof': ['a', 'b'], 'title': 'a', 'dept': 'COS'}
+
+		#parse out professor strings
+		profStrings = []
+		profs = self.prof.split("+")
+		for p in profs:
+			profStrings.append(p.replace('*', ' '))
+
+		#parse out department strings
+		depts = self.dept.split("+") 
+
+
+		#parse out class title
+		titleString = "" 
+		nums = self.num.split("+")
+		# return string in format "COS 126/ EGR 126 General Computer Science"
+		for i in range(0, len(depts)):
+			if i == (len(depts)-1):
+				titleString += depts[i] + " " + nums[i] + ": "
+			else:
+				titleString += depts[i] + " " + nums[i] + "/" 
+		titleString += self.name
+
+		#add them all to the dictionary
+		searchList['title'] = titleString
+		searchList['depts'] = depts
+		searchList['profs'] = profStrings
+
+		return searchList
 		
 class User(models.Model):
 	netid = models.CharField(max_length = 50) # e.g. 'tylerh'

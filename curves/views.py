@@ -13,7 +13,41 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 @login_required
 
 def index(request):
-    return render(request, 'curves/index.html')
+    #code here that goes through all the course-specifics and generates three lists of strings,
+    #profs, depts, and courses, and we then pass this on as context to index.html.
+    classes = Course_Specific.objects.all()
+
+    allProfs = []
+    allDepts = []
+    allTitles = []
+    allCombined = []
+    allSearchFields = {}
+
+    for c in classes:
+        fields = c.printFields()
+        if not fields['title'] in allTitles:
+            allTitles.append(fields['title'])
+
+        for prof in fields['profs']:
+            if not prof in allProfs:
+                allProfs.append(prof)
+
+        for dept in fields['depts']:
+            if not dept in allDepts:
+                allDepts.append(dept)
+
+    allCombined = allDepts + allTitles + allProfs 
+    allCombinedJSON = json.dumps(allCombined)
+
+    allSearchFields['profs'] = allProfs
+    allSearchFields['depts'] = allDepts
+    allSearchFields['titles'] = allTitles
+
+    allFieldsJSON = json.dumps(allSearchFields)
+    allProfsJSON = json.dumps(allProfs)
+
+    context = {'allFieldsJSON': allFieldsJSON, 'allProfsJSON': allProfsJSON, 'allCombinedJSON': allCombinedJSON}
+    return render(request, 'curves/index.html', context)
 
 def loggedIn(request):
     currentnetid = request.user.username

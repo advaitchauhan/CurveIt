@@ -1,4 +1,6 @@
 $(function(){
+
+  var profs = {{ allProfs | safe }};
   var princeton = 
   [
 	  {value: 'Rosen',		 data: {cat: 'Professor'}},
@@ -14,12 +16,16 @@ $(function(){
 	  {value: 'Bhat', 		data: {cat: 'Student'}},
 	  {value: 'Okafor',		 data: {cat: 'Student'}},
 	  {value: 'Chauhan', 	data: {cat: 'Student'}}
-  ]
+  ];
+  // var profs = document.getElementById("myVar").value;
+  // for ( var prof in profs)
+  // {
+  // 	 console.log(profs[prof]);
+  // }
 
   // setup autocomplete function pulling from currencies[] array
   $('#autocomplete').autocomplete({
-    lookup: princeton,
-    groupby: 'cat'
+    lookup: princeton
   });
   
 });
