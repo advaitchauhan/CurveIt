@@ -395,6 +395,11 @@ def search(request):
     if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
         q = request.GET['q']
 
+        #check if search term exactly matches a Course's unicode print
+        for c in Course_Specific.objects.all():
+            if unicode(c) == q:
+                return courseView(request, c.dept, c.num)
+
         #check if search term is a department?
         if len(q) == 3:
             classes = Course_Specific.objects.filter(dept__iexact=q)
