@@ -6,6 +6,11 @@
 
 body,
 html {
+    background: url(../img/gates.jpg) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
     width: 100%;
     height: 100%;
 }
@@ -27,13 +32,13 @@ font-family: Dense, Helvetica,Arial,sans-serif;
 }
 
 .intro-header {
-    padding-top: 50px; /* If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! */
-    padding-bottom: 50px;
+    /*padding-top: 50px;  If you're making other pages, make sure there is 50px of padding to make sure the navbar doesn't overlap content! 
+    padding-bottom: 50px;*/
     text-align: center;
     color: #f8f8f8;
     /*background: url(../img/Princeton.jpg) no-repeat center center;*/
-    background: url(../img/gates.jpg) no-repeat center center;
-    background-size: cover;
+    /*background: url(../img/gates.jpg) no-repeat center center;
+    background-size: cover;*/
 }
 
 .intro-message {

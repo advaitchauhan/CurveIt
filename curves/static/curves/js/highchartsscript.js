@@ -13,18 +13,23 @@ $('._numGrade').each(function(index){
 	_numGrades.push(parseInt($(this).text()));
 });
 
+var dataSum = 0;
+for (var i=0; i < _numGrades.length; i++) {
+    dataSum += _numGrades[i]
+};
+
 $(function makechart() { 
 	$('#container').highcharts({
         chart: {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
             type: 'column'
         },
-        // title: {
-        //     text: plotTitle,
-        //     style: {
-        //             color: "#FFFFFF"
-        //     }
-        // },
+         title: {
+             text: 'Total Grades Entered: ' + dataSum,
+            style: {
+                     color: "#FFFFFF"
+             }
+        },
         xAxis: {
         	categories: _grades,
         	title: {
@@ -39,7 +44,8 @@ $(function makechart() {
                     color: "#FFFFFF"
                 }
 
-            }
+            },
+            reversed: true
         },
         yAxis: {
         	title: {
@@ -49,6 +55,10 @@ $(function makechart() {
                 }
         	},
             labels: {
+                formatter: function() {
+                    var pcnt = (this.value / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt) + '%';
+                },
                 style: {
                     color: "#FFFFFF",
                 }
