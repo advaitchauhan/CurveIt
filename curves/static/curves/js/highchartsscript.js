@@ -39,7 +39,8 @@ $(function makechart() {
                     color: "#FFFFFF"
                 }
 
-            }
+            },
+            reversed: true
         },
         yAxis: {
         	title: {
