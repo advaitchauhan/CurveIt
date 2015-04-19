@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404, redirec
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific, User
 from curves.forms import Course_SpecificForm
+from deptscript import depts
 import json
 
 CURRENTSEMESTER = "S2015"
@@ -58,7 +59,7 @@ def deptView(request, cdept):
     total = sum(numGrades)
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'dept': cdept, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'dept': depts[cdept], 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -370,29 +371,40 @@ def search(request):
                 return deptView(request, aClass.dept)
 
         #check if the search term is part of a professor?
-        classes = Course_Specific.objects.filter(prof__icontains=q)
-        if (len(classes) > 0):
+        qS = q.split(" ")
+        classes = Course_Specific.objects.filter(prof__icontains=qS[0])
+        for i in range(0, len(qS)):
+            classes = classes.filter(prof__icontains=qS[i])
             #context = {'classes': classes}
             #return render(request, 'curves/results.html', context)
             #logic works temporarily, need autocomplete because currently
             #will just display view of the first found professor that matches query!
-            c = classes[0]
-            profs = c.prof.split("+")
+        if len(classes) > 0:
+            profs = classes[0].prof.split("+")
             for p in profs:
-                if q.lower() in p.lower():
-                    return profView(request, p)
+                for s in qS:
+                    if s.lower() not in p.lower():
+                        break
+                    else:
+                        return profView(request, p)
 
         #check if search term is a dept/num combo
         #this is currently logically flawed, but i'll fix it later!
-        #for example a crosslisted COS306/ELE206 would match ELE306
+        #for example a crosslisted COS306/ELE206 would match ELE306    <-- fixed
         if len(q.split(" ")) == 2:
             qS = q.split(" ")
             classes = Course_Specific.objects.filter(dept__icontains=qS[0], num__icontains=qS[1])
             if (len(classes) > 0):
                 #context = {'classes': classes}
                 #return render(request, 'curves/results.html', context)
-                aClass = classes[0]
-                return courseView(request, aClass.dept, aClass.num)
+                for c in classes:
+                    depts = c.dept.split("+")
+                    print depts
+                    nums = c.num.split("+")
+                    print nums
+                    for i in range(0, len(nums)):
+                        if (depts[i] == qS[0].upper()) and (nums[i] == qS[1]):
+                            return courseView(request, c.dept, c.num)
 
         #check if the search term is just a number?
         if len(q) <= 4:
@@ -417,7 +429,15 @@ def search(request):
             aClass = classes[0]
             return courseView(request, aClass.dept, aClass.num)
         elif (len(classes) > 0):
-            context = {'classes': classes}
+            uniqueClasses = []
+            for c in classes:
+                print "hi"
+                for u in uniqueClasses:
+                    if u.dept == c.dept and u.num == c.num:
+                        break
+                else:
+                    uniqueClasses.append(c)
+            context = {'classes': uniqueClasses}
             return render(request, 'curves/results.html', context)
         else:
             context = {'query': q}
@@ -427,7 +447,6 @@ def search(request):
     return HttpResponse(message)
 
 def handler404(request):
-    response = render_to_response('curves/404.html', {},
-                                  context_instance=RequestContext(request))
+    response = render(request, 'curves/404.html')
     response.status_code = 404
     return response

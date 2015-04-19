@@ -31,4 +31,7 @@ urlpatterns = patterns('',
 
 	#intermediary url for search queries
 	url(r'^search/$', views.search)
+
+	#nothing found
+# 	url(r'^.*$', views.handler404, name="404")
 )
