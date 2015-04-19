@@ -3,31 +3,34 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{dept}}: {{ deptForPrint }}</h1>
+<div class="title-div">
+  <h1 class="title">{{dept}}: {{ deptForPrint }}</h1>
 
-<div class="dropdown">
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		    Select an Individual Class
-		    <span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		    {% for course in course_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
-			{% endfor %}
-		  </ul>
-		</div>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      Select an Individual Class
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+      {% for course in course_list %}
+        <li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/curves/{{ dept }}">View All Semesters</a></li>
-	{% for s in sem_list %}
-  		 		{% if s == sem %}
-  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ sem }}/">{{ sem }} </a> </li>
+    <li role="presentation"><a href="/curves/{{ dept }}">View All Semesters</a></li>
+    {% for s in sem_list %}
+                {% if s == sem %}
+                <li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ sem }}/">{{ sem }} </a> </li>
 
-  		 		{% else %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
+                {% else %}
+                <li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
 
-  		 		{% endif %}
-	{% endfor %}
+                {% endif %}
+    {% endfor %}
   <!--<li role="presentation" class="active"><a href="#"></a></li>
   <li role="presentation"><a href="#">Profile</a></li>
   <li role="presentation"><a href="#">Messages</a></li>-->
@@ -37,14 +40,14 @@
 
 <!-- First generate (hidden) table from which to reference data for chart -->
 <table class="thisTable">
-	{% for grade, number in dist %}
-	<!-- Optional functionality: only show grades that make up >x% of grades; may be
-	     useful for deciding whether to show PDF  -->
-			<tr>
-				<td class="_grade" hidden>{{ grade }}</td>
-				<td class="_numGrade" hidden>{{ number }}</td>
-			</tr>
-	{% endfor %}
+    {% for grade, number in dist %}
+    <!-- Optional functionality: only show grades that make up >x% of grades; may be
+         useful for deciding whether to show PDF  -->
+            <tr>
+                <td class="_grade" hidden>{{ grade }}</td>
+                <td class="_numGrade" hidden>{{ number }}</td>
+            </tr>
+    {% endfor %}
 </table>
 
 <script src = "{% static 'curves/js/highchartsscript.js' %}"></script>
