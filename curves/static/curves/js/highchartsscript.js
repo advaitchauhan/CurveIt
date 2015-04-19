@@ -13,6 +13,11 @@ $('._numGrade').each(function(index){
 	_numGrades.push(parseInt($(this).text()));
 });
 
+var dataSum = 0;
+for (var i=0; i < _numGrades.length; i++) {
+    dataSum += _numGrades[i]
+};
+
 $(function makechart() { 
 	$('#container').highcharts({
         chart: {
@@ -50,6 +55,10 @@ $(function makechart() {
                 }
         	},
             labels: {
+                formatter: function() {
+                    var pcnt = (this.value / dataSum) * 100;
+                    return Highcharts.numberFormat(pcnt) + '%';
+                },
                 style: {
                     color: "#FFFFFF",
                 }
