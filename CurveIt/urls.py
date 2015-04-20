@@ -11,3 +11,4 @@ urlpatterns = patterns('',
     url(r'^accounts/login/', 'django_cas_ng.views.login'), 
     url(r'logout/$', 'django_cas_ng.views.logout'),
 )
+handler404 = 'curves.views.handler404'

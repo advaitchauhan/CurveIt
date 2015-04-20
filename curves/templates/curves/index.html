@@ -69,7 +69,7 @@
     <script src="{% static 'curves/js/bootstrap.min.js' %}"></script>
 
     <!-- Autocomplete.JS Javascript -->
-    <script src= "{% static 'curves/js/jquery.autocomplete.min.js' %}"></script>
+    <script src= "{% static 'curves/js/jquery.autocomplete.js' %}"></script>
 <!--     // <script src= "{% static 'curves/js/princeton-autocomplete.js' %}"></script> -->
 
     <script type = "text/javascript">
@@ -80,23 +80,14 @@
       var princeton = 
       [
           {value: 'Rosen',       data: {cat: 'Professor'}},
-          {value: 'Kernighan',  data: {cat: 'Professor'}},
-          {value: 'Specter',    data: {cat: 'Professor'}} ,
-          {value: 'Hoffman',    data: {cat: 'Student'}},
-          {value: 'Steinberg', data: {cat: 'Professor'}},
-          {value: 'Weinstein', data: {cat: 'Professor'}} ,
-          {value: 'Goldman',    data: {cat: 'Professor'}},
-          {value: 'Wang',       data: {cat: 'Student'}},
-          {value: 'Albari',      data: {cat: 'Student'}},
-          {value: 'Gosse',      data: {cat: 'Student'}},
-          {value: 'Bhat',       data: {cat: 'Student'}},
-          {value: 'Okafor',      data: {cat: 'Student'}},
-          {value: 'Chauhan',    data: {cat: 'Student'}}
+          {value: 'Rosen5638',  data: {cat: 'Student'}},
       ];
 
       // setup autocomplete function pulling from currencies[] array
       $('#autocomplete').autocomplete({
-        lookup: allFields
+        lookup: allFields,
+        groupBy: 'cat',
+        triggerSelectOnValidInput: false
       });
       
     });

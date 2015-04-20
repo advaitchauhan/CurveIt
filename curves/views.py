@@ -18,35 +18,49 @@ def index(request):
     classes = Course_Specific.objects.all()
 
     allProfs = []
+    allProfsExact = []
     allDepts = []
+    allDeptsExact = []
     allTitles = []
+    allTitlesExact = []
     allCombined = []
-    allSearchFields = {}
 
     for c in classes:
         fields = c.printFields()
-        if not fields['title'] in allTitles:
-            allTitles.append(fields['title'])
+        if fields['title'] not in allTitlesExact:
+            curDict = {}
+            curData = {}
+            curDict["value"] = fields['title']
+            curData["cat"] = "Name"
+            curDict["data"] = curData
+            allTitles.append(curDict)
+            allTitlesExact.append(fields['title'])
 
         for prof in fields['profs']:
-            if not prof in allProfs:
-                allProfs.append(prof)
+            if prof not in allProfsExact:
+                curDict = {}
+                curData = {}
+                curDict["value"] = prof
+                curData["cat"] = "Professor"
+                curDict["data"] = curData
+                allProfs.append(curDict)
+                allProfsExact.append(prof)
 
         for dept in fields['depts']:
-            if not dept in allDepts:
-                allDepts.append(dept)
+            if dept not in allDeptsExact:
+                curDict = {}
+                curData = {}
+                curDict["value"] = dept
+                curData["cat"] = "Departments"
+                curDict["data"] = curData
+                allDepts.append(curDict)
+                allDeptsExact.append(dept)
 
-    allCombined = allDepts + allTitles + allProfs 
+    allCombined = allDepts + allTitles + allProfs
+    print allCombined
     allCombinedJSON = json.dumps(allCombined)
 
-    allSearchFields['profs'] = allProfs
-    allSearchFields['depts'] = allDepts
-    allSearchFields['titles'] = allTitles
-
-    allFieldsJSON = json.dumps(allSearchFields)
-    allProfsJSON = json.dumps(allProfs)
-
-    context = {'allFieldsJSON': allFieldsJSON, 'allProfsJSON': allProfsJSON, 'allCombinedJSON': allCombinedJSON}
+    context = {'allCombinedJSON': allCombinedJSON}
     return render(request, 'curves/index.html', context)
 
 def loggedIn(request):
