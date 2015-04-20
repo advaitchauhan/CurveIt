@@ -30,8 +30,5 @@ urlpatterns = patterns('',
 	url(r'^after_data/$', views.after_data, name = 'after_data'),
 
 	#intermediary url for search queries
-	url(r'^search/$', views.search),
-
-	url(r'^.*$', views.handler404)
+	url(r'^search/$', views.search)
 )
-handler404 = 'views.handler404'
