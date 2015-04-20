@@ -57,7 +57,6 @@ def index(request):
                 allDeptsExact.append(dept)
 
     allCombined = allDepts + allTitles + allProfs
-    print allCombined
     allCombinedJSON = json.dumps(allCombined)
 
     context = {'allCombinedJSON': allCombinedJSON}

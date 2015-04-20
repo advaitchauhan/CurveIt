@@ -9,10 +9,10 @@ urlpatterns = patterns('',
 	url(r'^(?P<cdept>[A-Za-z]{3,3})/$', views.deptView, name = 'deptView'), 
 
 	#dept-specific view
-	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<ctime>(F|S)\d{4,4})$', views.deptSpecificView, name = 'deptSpecificView'), 
+	url(r'^(?P<cdept>[A-Za-z]{3,3})/(?P<ctime>(F|S)\d{4,4})/$', views.deptSpecificView, name = 'deptSpecificView'), 
 
 	#prof-specific view
-	url(r'^prof/(?P<cprof>[^\+]+)/(?P<ctime>(F|S)\d{4,4})$', views.profSpecificView, name = 'profSpecificView'),
+	url(r'^prof/(?P<cprof>[^\+]+)/(?P<ctime>(F|S)\d{4,4})$/', views.profSpecificView, name = 'profSpecificView'),
 
 	#professor view
 	url(r'^prof/(?P<cprof>[^\+]+)/$', views.profView, name = 'profView'),

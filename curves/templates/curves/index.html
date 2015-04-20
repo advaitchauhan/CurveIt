@@ -87,7 +87,9 @@
       $('#autocomplete').autocomplete({
         lookup: allFields,
         groupBy: 'cat',
-        triggerSelectOnValidInput: false
+        triggerSelectOnValidInput: false,
+        lookupLimit: 8,
+        minChars: 2
       });
       
     });
