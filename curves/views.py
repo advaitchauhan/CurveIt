@@ -159,8 +159,8 @@ def deptSpecificView(request, cdept, ctime):
 def profView(request, cprof):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
-    allSemAllCourse = get_list_or_404(Course_Specific, prof__contains = cprof)
-    print cprof
+    allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+    print "Justin"
     sem_list = []
     course_list = []
 
@@ -194,9 +194,12 @@ def profView(request, cprof):
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester, links to other semesters
 def profSpecificView(request, cprof, ctime):
+    print "Tye"
+    print cprof
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
-    allsemallcourse = get_list_or_404(Course_Specific, prof__contains = cprof)
+    print "tyler is cool"
+    allsemallcourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
 
     course_list = []
     sem_list = []
