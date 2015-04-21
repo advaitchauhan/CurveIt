@@ -18,7 +18,7 @@
 		</div>
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/prof/{{ prof }}">View All Semesters</a></li>
+	<li role="presentation"><a href="/prof/{{ prof }}/">View All Semesters</a></li>
 	{% for s in sem_list %}
   		 		{% if s == sem %}
   		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/prof/{{ prof }}/{{ sem }}/">{{ sem }} </a> </li>

@@ -5,6 +5,6 @@
 <h1> Results of Search </h1>
 <ul>
 {% for course in classes %}
-	<li> <a href = "/{{course.dept}}/{{course.num}}"> {{ course }} </li>
+	<li> <a href = "/{{course.dept}}/{{course.num}}/"> {{ course }} </li>
 {% endfor %}
 {% endblock %}

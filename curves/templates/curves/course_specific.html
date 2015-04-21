@@ -10,7 +10,7 @@
 {% endfor %}
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/curves/{{ course.dept }}/{{ course.num }}">View All Semesters</a></li>
+	<li role="presentation"><a href="/{{ course.dept }}/{{ course.num }}/">View All Semesters</a></li>
 
 	{% for s in sem_list %}  		 		
   		 		{% if s == course.semester %}
