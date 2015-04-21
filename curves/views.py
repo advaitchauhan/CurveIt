@@ -81,8 +81,9 @@ def deptView(request, cdept):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # get all courses registered under the department, including those that are cross listed
-    course_list = get_list_or_404(Course_Specific, dept__icontains = cdept) # includes all semesters
-    
+    course_list = Course_Specific.objects.filter(dept__icontains = cdept) # includes all semesters
+    if not course_list:
+        return render(request, 'curves/404.html')
     # construct list of unique course titles
     uniqueCourse_list = []
     # construct a list of all semesters for which we have data
@@ -123,7 +124,9 @@ def deptSpecificView(request, cdept, ctime):
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
     # check that the dept exists for the semester
-    checkExists = get_list_or_404(Course_Specific, dept__contains = cdept, semester = ctime)
+    course_list = Course_Specific.objects.filter(dept__contains = cdept, semester=ctime) # includes all semesters
+    if not course_list:
+        return render(request, 'curves/404.html')
 
     # all courses for current semester
     course_list = []
@@ -163,8 +166,9 @@ def profView(request, cprof):
 
     if loggedIn(request) == False:
         return redirect('/add_data/')
-    allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
-
+    allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
+    if not allSemAllCourse:
+        return render(request, 'curves/404.html')
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
     uniqueProfs = []
     for a in allSemAllCourse:
@@ -216,10 +220,13 @@ def profView(request, cprof):
 def profSpecificView(request, cprof, ctime):
     if loggedIn(request) == False:
         return redirect('/add_data/')
-    allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+    allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
+    if not allSemAllCourse:
+        return render(request, 'curves/404.html')
     # check that the prof data exists for the semester
-    checkExists = get_list_or_404(Course_Specific, prof__icontains = cprof, semester = ctime)
-
+    checkExists = Course_Specific.objects.filter(prof__icontains = cprof, semester=ctime)
+    if not checkExists:
+        return render(request, 'curves/404.html')
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
     uniqueProfs = []
     for a in allSemAllCourse:
@@ -268,8 +275,9 @@ def courseView(request, cdept, cnum):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # gets list of this course over all semesters
-    course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
-
+    course_list = Course_Specific.objects.filter(dept=cdept, num=cnum)
+    if not course_list:
+        return render(request, 'curves/404.html')
 
     # list of all semesters this class was taught
     sem_list = []
@@ -312,9 +320,16 @@ def courseSpecificView(request, cdept, cnum, ctime):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # course specific to the semester
-    course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
+    courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = ctime)
+    if not courseList:
+        print "jsagklsahgjasdgjasglksajgs"
+        return render(request, 'curves/404.html')
+    else:
+        course = courseList[0]
     # course over all semesters
-    course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)    
+    course_list = Course_Specific.objects.filter(dept = cdept, num = cnum)
+    if not course_list:
+        return render(request, 'curves/404.html')   
     # all semesters for which this class was taught
     sem_list = []
     for c in course_list:
