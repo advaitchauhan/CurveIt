@@ -162,6 +162,19 @@ def profView(request, cprof):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+    # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+    uniqueProfs = []
+    for a in allSemAllCourse:
+        profs = a.prof
+        for p in profs:
+            if p.replace("%", "+") not in uniqueProfs:
+                uniqueProfs.append(p.replace("%", "+"))
+    for u in uniqueProfs:
+        if cprof == u:
+            break
+    else:
+        return render(request, '/404.html')
+
     print "Justin"
     sem_list = []
     course_list = []
