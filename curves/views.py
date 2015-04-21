@@ -159,23 +159,28 @@ def deptSpecificView(request, cdept, ctime):
 # ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
+
+
     if loggedIn(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
     uniqueProfs = []
     for a in allSemAllCourse:
-        profs = a.prof
+        profs = a.prof.split("+")
         for p in profs:
-            if p.replace("%", "+") not in uniqueProfs:
-                uniqueProfs.append(p.replace("%", "+"))
+            if p not in uniqueProfs:
+                uniqueProfs.append(p)
+
     for u in uniqueProfs:
         if cprof == u:
             break
     else:
-        return render(request, '/404.html')
+        return render(request, 'curves/404.html')
 
-    print "Justin"
+
+
     sem_list = []
     course_list = []
 
@@ -209,20 +214,30 @@ def profView(request, cprof):
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester, links to other semesters
 def profSpecificView(request, cprof, ctime):
-    print "Tye"
-    print cprof
     if loggedIn(request) == False:
         return redirect('/add_data/')
-    print "tyler is cool"
-    allsemallcourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+    allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
     # check that the prof data exists for the semester
     checkExists = get_list_or_404(Course_Specific, prof__icontains = cprof, semester = ctime)
 
+    # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+    uniqueProfs = []
+    for a in allSemAllCourse:
+        profs = a.prof.split("+")
+        for p in profs:
+            if p not in uniqueProfs:
+                uniqueProfs.append(p)
+
+    for u in uniqueProfs:
+        if cprof == u:
+            break
+    else:
+        return render(request, 'curves/404.html')
 
     course_list = []
     sem_list = []
 
-    for c in allsemallcourse:
+    for c in allSemAllCourse:
         # create a list of all classes in the current semester
         if c.semester == ctime:
             course_list.append(c)
