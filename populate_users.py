@@ -4,11 +4,11 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CurveIt.settings')
 import django
 django.setup()
-from curves.models import User
+from curves.models import Student
 
 def main():
 	Users = []
-	User.objects.all().delete()
+	Student.objects.all().delete()
 	jsonFile = open("students.json")
 	studentList = json.loads(jsonFile.readline())
 	for student in studentList:
@@ -17,7 +17,7 @@ def main():
 		year = student[1]
 		email = student[2]
 		netid = email[0:email.index("@")]
-		Users.append(User(netid=netid, name=name, year=year))
+		Users.append(Student(netid=netid, name=name, year=year))
 
 	for user in Users:
 		user.save()

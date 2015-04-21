@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from curves.models import Course_Specific, User
+from curves.models import Course_Specific, Student
 from curves.forms import Course_SpecificForm
 from deptscript import depts
 import json
@@ -64,13 +64,13 @@ def index(request):
 
 def loggedIn(request):
     currentnetid = request.user.username
-    thisUser = User.objects.get(netid=currentnetid)
+    thisUser = Student.objects.get(netid=currentnetid)
     return (thisUser.hasAccess())
 
 def alreadyEntered(request):
     currentnetid = request.user.username
     print currentnetid
-    thisUser = User.objects.get(netid=currentnetid)
+    thisUser = Student.objects.get(netid=currentnetid)
     print thisUser
     return thisUser.has_Entered
 
@@ -79,9 +79,9 @@ def alreadyEntered(request):
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     # get all courses registered under the department, including those that are cross listed
-    course_list = get_list_or_404(Course_Specific, dept__contains = cdept) # includes all semesters
+    course_list = get_list_or_404(Course_Specific, dept__icontains = cdept) # includes all semesters
     
     # construct list of unique course titles
     uniqueCourse_list = []
@@ -112,14 +112,14 @@ def deptView(request, cdept):
     total = sum(numGrades)
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 def deptSpecificView(request, cdept, ctime):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
 
@@ -158,7 +158,7 @@ def deptSpecificView(request, cdept, ctime):
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
     print "Justin"
     sem_list = []
@@ -197,7 +197,7 @@ def profSpecificView(request, cprof, ctime):
     print "Tye"
     print cprof
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     print "tyler is cool"
     allsemallcourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
 
@@ -233,7 +233,7 @@ def profSpecificView(request, cprof, ctime):
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     # gets list of this course over all semesters
     course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
 
@@ -276,7 +276,7 @@ def courseView(request, cdept, cnum):
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     # course specific to the semester
     course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
     # course over all semesters
@@ -321,7 +321,7 @@ def add_data(request):
 
         # Have we been provided with a valid form?
         if form.is_valid():
-            thisUser = User.objects.get(netid=currentnetid)
+            thisUser = Student.objects.get(netid=currentnetid)
             thisUser.entered()
             thisUser.save()
             curData = form.cleaned_data
@@ -399,7 +399,7 @@ def add_data(request):
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return redirect('/after_data')
+            return redirect('/after_data/')
     else:
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
@@ -411,12 +411,12 @@ def add_data(request):
 
 def after_data(request):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     return render(request, 'curves/after_data.html')       
 
 def search(request):
     if loggedIn(request) == False:
-        return redirect('/add_data')
+        return redirect('/add_data/')
     if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
         q = request.GET['q']
 

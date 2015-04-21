@@ -114,7 +114,7 @@ class Course_Specific(models.Model):
 
 		return searchList
 		
-class User(models.Model):
+class Student(models.Model):
 	netid = models.CharField(max_length = 50) # e.g. 'tylerh'
 	name = models.CharField(max_length = 100, default="")
 	year = models.CharField(max_length = 4, default="")

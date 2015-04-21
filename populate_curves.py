@@ -6,7 +6,7 @@ django.setup()
 
 from random import randint
 
-from curves.models import Course_Specific, User
+from curves.models import Course_Specific, Student
 
 courses = []
 courses.append(Course_Specific(dept="MAT", num="201", name="Multivariable Calculus", prof="Sarkar", semester="S2015"))

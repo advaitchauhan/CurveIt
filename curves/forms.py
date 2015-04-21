@@ -1,5 +1,5 @@
 from django import forms
-from curves.models import Course_Specific, User
+from curves.models import Course_Specific, Student
 
 pastSemClasses = []
 grades = []

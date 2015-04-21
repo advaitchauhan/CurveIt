@@ -6,7 +6,7 @@ django.setup()
 
 import sys
 
-from curves.models import Course_Specific, User
+from curves.models import Course_Specific, Student
 
 courses = []
 coursesFound = []
