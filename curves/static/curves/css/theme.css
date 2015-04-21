@@ -9,12 +9,13 @@ html,body {
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
     background: rgba(255, 154, 101, 0.6);*/
+    background: rgba(0,0,0,0.7);
 
-    background: url(../img/gates.jpeg) no-repeat center center;
-    -webkit-background-size: cover;
+    /*background: url(../img/gates.jpeg) no-repeat center center;*/
+/*    -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover; */
     width: 100%;
     height: 100%;
 }

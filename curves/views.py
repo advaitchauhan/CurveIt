@@ -79,7 +79,7 @@ def alreadyEntered(request):
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     # get all courses registered under the department, including those that are cross listed
     course_list = get_list_or_404(Course_Specific, dept__contains = cdept) # includes all semesters
     
@@ -119,7 +119,7 @@ def deptView(request, cdept):
 # during the given semester.
 def deptSpecificView(request, cdept, ctime):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
 
@@ -158,7 +158,7 @@ def deptSpecificView(request, cdept, ctime):
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     allSemAllCourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
     print "Justin"
     sem_list = []
@@ -197,7 +197,7 @@ def profSpecificView(request, cprof, ctime):
     print "Tye"
     print cprof
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     print "tyler is cool"
     allsemallcourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
 
@@ -233,7 +233,7 @@ def profSpecificView(request, cprof, ctime):
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     # gets list of this course over all semesters
     course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
 
@@ -276,7 +276,7 @@ def courseView(request, cdept, cnum):
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     # course specific to the semester
     course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
     # course over all semesters
@@ -307,7 +307,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
 def add_data(request):
     if alreadyEntered(request):
         print "he;;p"
-        return redirect('/curves')
+        return redirect('/')
     # A HTTP POST?
     y = range(1,4)
     z = range(4, 8)
@@ -399,7 +399,7 @@ def add_data(request):
 
             # Now call the index() view.
             # The user will be shown the homepage.
-            return redirect('/curves/after_data')
+            return redirect('/after_data')
     else:
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
@@ -411,12 +411,12 @@ def add_data(request):
 
 def after_data(request):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     return render(request, 'curves/after_data.html')       
 
 def search(request):
     if loggedIn(request) == False:
-        return redirect('/curves/add_data')
+        return redirect('/add_data')
     if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
         q = request.GET['q']
 

@@ -6,7 +6,7 @@
 <h1 class="title">{{ name }}</h1>
 <h3>Taught by: </h3>
 {% for c, print in profs %}
-<h3><a class = "prof" href="/curves/prof/{{ c }}/">{{ print }}</a><br /></h3>
+<h3><a class = "prof" href="/prof/{{ c }}/">{{ print }}</a><br /></h3>
 {% endfor %}
 
 <ul class="nav nav-tabs">
@@ -14,10 +14,10 @@
 
 	{% for s in sem_list %}  		 		
   		 		{% if s == course.semester %}
-  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
+  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/{{ course.semester }}/">{{course.semester}} </a> </li>
 
   		 		{% else %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/{{ s }}/">{{s}} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/{{ s }}/">{{s}} </a> </li>
 
   		 		{% endif %}
 	{% endfor %}

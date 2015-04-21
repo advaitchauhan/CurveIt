@@ -12,19 +12,19 @@
 		  </button>
 		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 		    {% for course in course_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
 			{% endfor %}
 		  </ul>
 		</div>
 
 <ul class="nav nav-tabs">
-	<li role="presentation"><a href="/curves/prof/{{ prof }}">View All Semesters</a></li>
+	<li role="presentation"><a href="/prof/{{ prof }}">View All Semesters</a></li>
 	{% for s in sem_list %}
   		 		{% if s == sem %}
-  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/curves/prof/{{ prof }}/{{ sem }}/">{{ sem }} </a> </li>
+  		 		<li role = "presentation" class="active"> <a role ="menuitem"  tabindex="-1" href = "/prof/{{ prof }}/{{ sem }}/">{{ sem }} </a> </li>
 
   		 		{% else %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/prof/{{ prof }}/{{ s }}/">{{ s }} </a> </li>
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/prof/{{ prof }}/{{ s }}/">{{ s }} </a> </li>
 
   		 		{% endif %}
 	{% endfor %}
