@@ -122,6 +122,8 @@ def deptSpecificView(request, cdept, ctime):
         return redirect('/add_data/')
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
+    # check that the dept exists for the semester
+    checkExists = get_list_or_404(Course_Specific, dept__contains = cdept, semester = ctime)
 
     # all courses for current semester
     course_list = []
@@ -200,6 +202,9 @@ def profSpecificView(request, cprof, ctime):
         return redirect('/add_data/')
     print "tyler is cool"
     allsemallcourse = get_list_or_404(Course_Specific, prof__icontains = cprof)
+    # check that the prof data exists for the semester
+    checkExists = get_list_or_404(Course_Specific, prof__icontains = cprof, semester = ctime)
+
 
     course_list = []
     sem_list = []
@@ -236,6 +241,7 @@ def courseView(request, cdept, cnum):
         return redirect('/add_data/')
     # gets list of this course over all semesters
     course_list = get_list_or_404(Course_Specific, dept=cdept, num=cnum)
+
 
     # list of all semesters this class was taught
     sem_list = []
@@ -278,7 +284,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # course specific to the semester
-    course = Course_Specific.objects.get(dept = cdept, num = cnum, semester = ctime)
+    course = get_object_or_404(Course_Specific, dept = cdept, num = cnum, semester = ctime)
     # course over all semesters
     course_list = get_list_or_404(Course_Specific, dept = cdept, num = cnum)    
     # all semesters for which this class was taught
