@@ -99,7 +99,7 @@ AUTHENTICATION_BACKENDS = (
 CAS_SERVER_URL = "https://fed.princeton.edu/cas/login"
 
 
---- HEROKU, POSTGRES ----
+# --- HEROKU, POSTGRES ----
 
 Parse database configuration from $DATABASE_URL
 import dj_database_url
