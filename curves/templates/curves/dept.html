@@ -3,19 +3,23 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{dept}}: {{ deptForPrint }}</h1>
-		<!-- Dropdown of courses in the department across all semesters -->
-		<div class="dropdown dropdown-tip dropwdown-scroll">
-		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-		    Select an Individual Class
-		    <span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		    {% for course in course_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
-			{% endfor %}
-		  </ul>
-		</div>
+<div class="title-div">
+	<h1 class="title">{{dept}}: {{ deptForPrint }}</h1>
+	
+	<!-- Dropdown of courses in the department across all semesters -->
+	<div class="dropdown dropdown-tip dropwdown-scroll">
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+	    Select an Individual Class
+	    <span class="caret"></span>
+	  </button>
+	  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+	    {% for course in course_list %}
+		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+		{% endfor %}
+	  </ul>
+	</div>
+</div>
+
 
 		<!-- Tabs to all semesters in which courses from this department are offered -->
 		<ul class="nav nav-tabs">

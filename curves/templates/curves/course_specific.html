@@ -3,11 +3,14 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<h1 class="title">{{ name }}</h1>
-<h3>Taught by: </h3>
-{% for c, print in profs %}
-<h3><a class = "prof" href="/prof/{{ c }}/">{{ print }}</a><br /></h3>
-{% endfor %}
+<div class="title-div">
+	<h1 class="title">{{ name }}</h1>
+	<h3>Taught by: </h3>
+	{% for c, print in profs %}
+	<h3><a class = "prof" href="/prof/{{ c }}/">{{ print }}</a><br /></h3>
+	{% endfor %}
+</div>
+
 
 <ul class="nav nav-tabs">
 	<li role="presentation"><a href="/{{ course.dept }}/{{ course.num }}/">View All Semesters</a></li>
