@@ -30,74 +30,6 @@ class Course_SpecificForm(forms.Form):
         model = Course_Specific
         fields = ('pastSemClass1', 'grade1', 'pastSemClass2', 'grade2', 'pastSemClass3', 'grade3', 'pastSemClass4', 'grade4', 'pastSemClass5', 'grade5', 'pastSemClass6', 'grade6', 'pastSemClass7', 'grade7')
 
-    # def clean(self):
-    #     print "hey there"
-    #     for i in range(0, len(pastSemClasses)):
-    #         print "yo"
-    #         print self.cleaned_data[grades[i]]
-    #         grade = self.cleaned_data[grades[i]]
-    #         if grade == "N/A":
-    #             print "yesiwajgs"
-    #             raise forms.ValidationError("Please select a grade")
-    #     return self.cleaned_data
-
-    # def clean_grade1(self):
-    #     grade = self.cleaned_data["grade1"]
-    #     thisClass = self.cleaned_data["pastSemClass1"]
-    #     if grade == "N/A" or thisClass == None:
-    #         raise forms.ValidationError("Please select a class and a grade")
-    #     return grade
-
-    # def clean_grade2(self):
-    #     grade = self.cleaned_data["grade2"]
-    #     thisClass = self.cleaned_data["pastSemClass2"]
-    #     if grade == "N/A" or thisClass == None:
-    #         raise forms.ValidationError("Please select a class and a grade")
-    #     return grade
-
-    # def clean_grade3(self):
-    #     grade = self.cleaned_data["grade3"]
-    #     thisClass = self.cleaned_data["pastSemClass3"]
-    #     if grade == "N/A" or thisClass == None:
-    #         raise forms.ValidationError("Please select a class and a grade")
-    #     return grade
-
-    # def clean_grade4(self):
-    #     grade = self.cleaned_data["grade4"]
-    #     thisClass = self.cleaned_data["pastSemClass4"]
-    #     print thisClass
-    #     if grade == "N/A" and thisClass != None:
-    #         raise forms.ValidationError("Please enter a grade")
-    #     elif grade != "N/A" and thisClass == None:
-    #         raise forms.ValidationError("Please select a class for this grade")
-    #     return grade
-
-    # def clean_grade5(self):
-    #     grade = self.cleaned_data["grade5"]
-    #     thisClass = self.cleaned_data["pastSemClass5"]
-    #     if grade == "N/A" and thisClass != None:
-    #         raise forms.ValidationError("Please enter a grade")
-    #     elif grade != "N/A" and thisClass == None:
-    #         raise forms.ValidationError("Please select a class for this grade")
-    #     return grade
-
-    # def clean_grade6(self):
-    #     grade = self.cleaned_data["grade6"]
-    #     thisClass = self.cleaned_data["pastSemClass6"]
-    #     if grade == "N/A" and thisClass != None:
-    #         raise forms.ValidationError("Please enter a grade")
-    #     elif grade != "N/A" and thisClass == None:
-    #         raise forms.ValidationError("Please select a class for this grade")
-    #     return grade
-
-    # def clean_grade7(self):
-    #     grade = self.cleaned_data["grade7"]
-    #     thisClass = self.cleaned_data["pastSemClass7"]
-    #     if grade == "N/A" and thisClass != None:
-    #         raise forms.ValidationError("Please enter a grade")
-    #     elif grade != "N/A" and thisClass == None:
-    #         raise forms.ValidationError("Please select a class for this grade")
-    #     return grade
 
     def clean(self):
         cleaned_data = super(Course_SpecificForm, self).clean()
@@ -135,22 +67,3 @@ class Course_SpecificForm(forms.Form):
                     if optional_Courses[i] != None and optional_Courses[j] != None:
                         if optional_Courses[i] == optional_Courses[j]:
                             self.add_error(optionalClasses[j], "Please do not select a class more than once")
-
-class SearchForm(forms.Form):
-    curClasses = Course_Specific.objects.filter(semester="S2015")
-    curClassesList = []
-    for j in range (0, len(curClasses)):
-        curClass = (curClasses[j].__unicode__(), curClasses[j].__unicode__())
-        curClassesList.append(curClass)
-    curClassesList.sort()
-    curProfs = []
-    curDepts = []
-    for c in Course_Specific.objects.all():
-        if c.prof not in curProfs:
-            curProfs.append(c.prof)
-        if c.dept not in curDepts:
-            curDepts.append(c.dept)
-    curProfs.sort()
-    curDepts.sort()
-    allChoices = curClassesList + curProfs + curDepts
-    search = forms.ChoiceField(choices = allChoices, help_text = "Class, Dept, or Professor")

@@ -387,7 +387,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
 def add_data(request):
     if alreadyEntered(request):
         print "he;;p"
-        return redirect('/')
+        return redirect('/after_data/')
     # A HTTP POST?
     y = range(1,4)
     z = range(4, 8)
