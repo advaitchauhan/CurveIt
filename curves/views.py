@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from curves.models import Course_Specific, Student
+from curves.models import Course_Specific, Student, QueryList
 from curves.forms import Course_SpecificForm
 from deptscript import depts
 import json
@@ -15,51 +15,61 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 def index(request):
     #code here that goes through all the course-specifics and generates three lists of strings,
     #profs, depts, and courses, and we then pass this on as context to index.html.
-    classes = Course_Specific.objects.all()
+    cachedList = QueryList.objects.all()
+    if len(cachedList) == 0:
+        print "recomputing list..."
+        classes = Course_Specific.objects.all()
 
-    allProfs = []
-    allProfsExact = []
-    allDepts = []
-    allDeptsExact = []
-    allTitles = []
-    allTitlesExact = []
-    allCombined = []
+        allProfs = []
+        allProfsExact = []
+        allDepts = []
+        allDeptsExact = []
+        allTitles = []
+        allTitlesExact = []
+        allCombined = []
 
-    for c in classes:
-        fields = c.printFields()
-        if fields['title'] not in allTitlesExact:
-            curDict = {}
-            curData = {}
-            curDict["value"] = fields['title']
-            curData["cat"] = "Name"
-            curDict["data"] = curData
-            allTitles.append(curDict)
-            allTitlesExact.append(fields['title'])
-
-        for prof in fields['profs']:
-            if prof not in allProfsExact:
+        for c in classes:
+            fields = c.printFields()
+            if fields['title'] not in allTitlesExact:
                 curDict = {}
                 curData = {}
-                curDict["value"] = prof
-                curData["cat"] = "Professor"
+                curDict["value"] = fields['title']
+                curData["cat"] = "Name"
                 curDict["data"] = curData
-                allProfs.append(curDict)
-                allProfsExact.append(prof)
+                allTitles.append(curDict)
+                allTitlesExact.append(fields['title'])
 
-        for dept in fields['depts']:
-            if dept not in allDeptsExact:
-                curDict = {}
-                curData = {}
-                curDict["value"] = dept
-                curData["cat"] = "Departments"
-                curDict["data"] = curData
-                allDepts.append(curDict)
-                allDeptsExact.append(dept)
+            for prof in fields['profs']:
+                if prof not in allProfsExact:
+                    curDict = {}
+                    curData = {}
+                    curDict["value"] = prof
+                    curData["cat"] = "Professor"
+                    curDict["data"] = curData
+                    allProfs.append(curDict)
+                    allProfsExact.append(prof)
 
-    allCombined = allDepts + allTitles + allProfs
-    allCombinedJSON = json.dumps(allCombined)
+            for dept in fields['depts']:
+                if dept not in allDeptsExact:
+                    curDict = {}
+                    curData = {}
+                    curDict["value"] = dept
+                    curData["cat"] = "Departments"
+                    curDict["data"] = curData
+                    allDepts.append(curDict)
+                    allDeptsExact.append(dept)
 
-    context = {'allCombinedJSON': allCombinedJSON}
+        allCombined = allDepts + allTitles + allProfs
+        allCombinedJSON = json.dumps(allCombined)
+
+        q = QueryList()
+        q.qlist = allCombinedJSON
+        q.save()
+
+    else:
+        q = cachedList[0]
+
+    context = {'allCombinedJSON': q.qlist}
     return render(request, 'curves/index.html', context)
 
 def loggedIn(request):
@@ -112,8 +122,11 @@ def deptView(request, cdept):
     dist = zip(GRADES, numGrades)
     total = sum(numGrades)
 
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -153,8 +166,11 @@ def deptSpecificView(request, cdept, ctime):
 
     dist = zip(GRADES, numGrades)
 
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True)}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -211,8 +227,11 @@ def profView(request, cprof):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
-    print cprof
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist}
+
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
+    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -264,7 +283,11 @@ def profSpecificView(request, cprof, ctime):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist}
+
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
+    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -310,7 +333,11 @@ def courseView(request, cdept, cnum):
     dist = zip(GRADES, numGrades)
     profs = zip(prof_list, prof_names_list)
     total = sum(numGrades) 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse}
+
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
+    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -347,7 +374,11 @@ def courseSpecificView(request, cdept, cnum, ctime):
         curProfs.append(p)
         curProfsForPrint.append(p.replace("*", " "))
     profs = zip(curProfs, curProfsForPrint)
-    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs}
+
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+
+    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     return render(request, 'curves/course_specific.html', context)
 
@@ -550,10 +581,14 @@ def search(request):
                         break
                 else:
                     uniqueClasses.append(c)
-            context = {'classes': uniqueClasses}
+            cachedList = QueryList.objects.all()
+            qc = cachedList[0]
+            context = {'classes': uniqueClasses, 'allCombinedJSON': qc.qlist}
             return render(request, 'curves/results.html', context)
         else:
-            context = {'query': q}
+            cachedList = QueryList.objects.all()
+            qc = cachedList[0]
+            context = {'query': q, 'allCombinedJSON': qc.qlist}
             return render (request, 'curves/invalid.html', context)
     else:
         return HttpResponse('Please submit a search term.')

@@ -51,4 +51,20 @@
 </table>
 
 <script src = "{% static 'curves/js/highchartsscript.js' %}"></script>
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+</script>
 {% endblock %}

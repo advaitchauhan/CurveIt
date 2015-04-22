@@ -113,6 +113,11 @@ class Course_Specific(models.Model):
 		searchList['profs'] = profStrings
 
 		return searchList
+
+class QueryList(models.Model):
+	qlist = models.TextField(null = True)
+	def __unicode__(self):
+		return self.qlist
 		
 class Student(models.Model):
 	netid = models.CharField(max_length = 50) # e.g. 'tylerh'

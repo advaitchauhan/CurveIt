@@ -81,12 +81,6 @@
 
       //var profs = {{ allProfsJSON | safe }};
       var allFields = {{ allCombinedJSON | safe}};
-      var princeton = 
-      [
-          {value: 'Rosen',       data: {cat: 'Professor'}},
-          {value: 'Rosen5638',  data: {cat: 'Student'}},
-      ];
-
       // setup autocomplete function pulling from currencies[] array
       $('#autocomplete').autocomplete({
         lookup: allFields,
@@ -98,7 +92,6 @@
       
     });
     </script>
-
 
     <!-- Typahead.JS Javascript -->
 <!--     // <script src= "{% static 'curves/js/typahead.bundle.min.js' %}"></script>
