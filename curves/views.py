@@ -53,7 +53,7 @@ def index(request):
                 if dept not in allDeptsExact:
                     curDict = {}
                     curData = {}
-                    curDict["value"] = dept
+                    curDict["value"] = dept + ": " + depts[dept]
                     curData["cat"] = "Departments"
                     curDict["data"] = curData
                     allDepts.append(curDict)
