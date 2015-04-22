@@ -514,6 +514,16 @@ def search(request):
                 aClass = classes[0]
                 return deptView(request, aClass.dept)
 
+        if q.find(":") != -1:
+            dept = (q.split(":"))[0]
+            classes = Course_Specific.objects.filter(dept__iexact=dept)
+            if (len(classes) > 0):
+                #context = {'classes': classes}
+                #return render(request, 'curves/results.html', context)
+                aClass = classes[0]
+                return deptView(request, aClass.dept)
+
+
         #check if the search term is part of a professor?
         qS = q.split(" ")
         classes = Course_Specific.objects.filter(prof__icontains=qS[0])
