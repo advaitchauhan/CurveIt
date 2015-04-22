@@ -4,13 +4,20 @@
 {% load mathfilters %}
 {% load static %}
 <div class="title-div">
-	<h1 class="title">{{ name }}</h1>
-	<h3>Taught by: </h3>
-	{% for c, print in profs %}
-	<h3><a class = "prof" href="/prof/{{ c }}/">{{ print }}</a><br /></h3>
-	{% endfor %}
-</div>
+  <h1 class="title">{{ name }}</h1>
 
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      Professors for this Semester
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+      {% for p,name in profs %}
+          <li> <a href = "/prof/{{ p }}/"> {{ name }}</a></li>
+      {% endfor %}    
+    </ul>
+  </div>
+</div>
 
 <ul class="nav nav-tabs">
 	<li role="presentation"><a href="/{{ course.dept }}/{{ course.num }}/">View All Semesters</a></li>
