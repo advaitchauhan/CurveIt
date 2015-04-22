@@ -3,8 +3,13 @@
     src: url('../fonts/Dense-Regular.otf')
 }
 
+@font-face {
+    font-family: Dual;
+    src: url('../fonts/Dual-300.otf')
+}
+
 html,body {
-	font-family: Dense;
+	  font-family: Dense;
     color: white;
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
@@ -26,7 +31,7 @@ body {
 
 .title {
 	color: white;
-	font-size: 400%;
+	font-size: 200%;
 }
 
 .title-div {
@@ -48,7 +53,7 @@ body {
 
 .option {
 	color: grey;
-	font-size: 200%;
+	font-size: 100%;
 }
 
 .navbar-custom {
@@ -76,8 +81,9 @@ body {
 }
 
 .highcharts-container{
-    background-color: rgba(0,0,0,0.8)
+    background-color: rgba(0,0,0,.8);
 }
+
 
 .h3 > a {
     color: black;
