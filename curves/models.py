@@ -6,6 +6,7 @@ from django.db import models
 class Course_Specific(models.Model):
 	CHOICES = [("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D_grade", "D_grade"), ("F_grade", "F_grade"), ("D_PDF", "D_PDF"), ("F_PDF", "F_PDF"), ("P_PDF", "P_PDF")]
 	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
+	
 	dept = models.CharField(max_length = 40) # e.g. 'COS'
 	num = models.CharField(max_length = 40) # e.g. '333'
 	name = models.CharField(max_length = 200) # e.g. 'Advanced Programming Techniques'
@@ -25,6 +26,7 @@ class Course_Specific(models.Model):
 	num_D_PDF = models.IntegerField(default = 0)
 	num_F_PDF = models.IntegerField(default = 0)
 	num_P_PDF = models.IntegerField(default = 0)
+	titleString = models.CharField(default = "blank", max_length = 200)
 
 	# increment grade counter for string grade (e.g. "A, B-, etc")
 	def addGrade(self, grade):

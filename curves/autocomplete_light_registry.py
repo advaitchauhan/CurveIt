@@ -1,12 +1,12 @@
 import autocomplete_light
 from models import Course_Specific
 
-autocomplete_light.register(Course_Specific,
 
-	search_fields = ['semester', 'prof', 'dept', 'num', 'name'],
+autocomplete_light.register(Course_Specific,
+	search_fields = ['titleString', 'prof'],
     attrs={
     # This will set the input placeholder attribute:
-    'placeholder': 'Other things?',
+    'placeholder': 'Select a Class',
     # This will set the yourlabs.Autocomplete.minimumCharacters
     # options, the naming conversion is handled by jQuery
     'data-autocomplete-minimum-characters': 1,
@@ -17,7 +17,7 @@ autocomplete_light.register(Course_Specific,
 	# yourlabs.Widget.maximumValues (jQuery handles the naming
 	# conversion).
 	widget_attrs={
-	    'data-widget-maximum-values': 4,
+	    # 'data-widget-maximum-values': 4,
 	    'class': 'modern-style',
     },	
 )
