@@ -1,3 +1,6 @@
+import autocomplete_light
+autocomplete_light.autodiscover()
+
 from django import forms
 from curves.models import Course_Specific, Student
 
@@ -9,7 +12,7 @@ class Course_SpecificForm(forms.Form):
     curClasses = Course_Specific.objects.filter(semester="S2015")
     curGradesList = Course_Specific.CHOICES
     curGradesList.insert(0, ("N/A", "N/A"))
-    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True)
+    pastSemClass1 = forms.ModelChoiceField(queryset = curClasses, widget=autocomplete_light.ChoiceWidget('CourseSpecificWidget'), help_text="Class*", required=True)
     grade1 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")
     pastSemClass2 = forms.ModelChoiceField(queryset = curClasses, help_text="Class*", required=True)
     grade2 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade*")

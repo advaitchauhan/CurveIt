@@ -1,3 +1,6 @@
+import autocomplete_light
+autocomplete_light.autodiscover()
+
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -392,19 +395,29 @@ def add_data(request):
     y = range(1,4)
     z = range(4, 8)
     currentnetid = request.user.username
+
+    #generate the variable names of values in the form.cleaned_data dictionary
+    #pastSemClass1, pastSemClass2... 
+    #grade1, grade2...
     requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
     requiredGrades = map(lambda x: "grade" + str(x), y)
     optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
     optionalGrades = map(lambda x: "grade" + str(x), z)
+
+
     if request.method == 'POST':
         form = Course_SpecificForm(request.POST)
 
         # Have we been provided with a valid form?
         if form.is_valid():
+
+            #acknowledge student's adding of data
             thisUser = Student.objects.get(netid=currentnetid)
             thisUser.entered()
             thisUser.save()
-            curData = form.cleaned_data
+            curData = form.cleaned_data #this is the data from the form
+
+            #add grade to class for each class
             try:
                 for i in range(0, len(requiredClasses)):
                     c = requiredClasses[i]
