@@ -30,23 +30,32 @@ class Course_SpecificForm(forms.Form):
         model = Course_Specific
         fields = ('pastSemClass1', 'grade1', 'pastSemClass2', 'grade2', 'pastSemClass3', 'grade3', 'pastSemClass4', 'grade4', 'pastSemClass5', 'grade5', 'pastSemClass6', 'grade6', 'pastSemClass7', 'grade7')
 
-
+    #method for ERROR CHECKING
     def clean(self):
         cleaned_data = super(Course_SpecificForm, self).clean()
         y = range(1,4)
         required_Courses = []
         optional_Courses = []
+
+        #CREATE list of names of objects in the cleaned_data.form
+        #pastSemClass1, pastSemClass2... (names of)
+        #grade1, grade2...
         requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
         requiredGrades = map(lambda x: "grade" + str(x), y)
         z = range(4, 8)
         optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
         optionalGrades = map(lambda x: "grade" + str(x), z)
+
+
+        #grab the required classes
         for i in range(0, len(requiredClasses)):
             thisGrade = cleaned_data.get(requiredGrades[i])
             thisClass = cleaned_data.get(requiredClasses[i])
             required_Courses.append(thisClass)
             if thisGrade == "N/A":
                 self.add_error(requiredGrades[i], "This field is required.")
+
+        #grab the optional classes, perform error checking with the grabbed classes
         for i in range(0, len(optionalClasses)):
             thisClass = cleaned_data.get(optionalClasses[i])
             optional_Courses.append(thisClass)

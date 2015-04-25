@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mathfilters',
     'curves',
-    'autocomplete_light'
+    'autocomplete_light',
+    'crispy_forms'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,6 +99,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CAS_SERVER_URL = "https://fed.princeton.edu/cas/login"
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # # --- HEROKU, POSTGRES ----

@@ -124,6 +124,7 @@ class Student(models.Model):
 	name = models.CharField(max_length = 100, default="")
 	year = models.CharField(max_length = 4, default="")
 	has_Entered = models.BooleanField(default = False)
+	# is_Prof = models.BooleanField(default = False)
 
 	def getNetid(self):
 		return self.netid
@@ -136,6 +137,9 @@ class Student(models.Model):
 
 	def entered(self):
 		self.has_Entered = True
+
+	# def isProf(self):
+	# 	self.is_Prof = True
 
 	def __unicode__(self):
 		return self.netid
