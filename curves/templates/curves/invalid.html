@@ -1,9 +1,11 @@
 {% extends 'curves/base.html' %}
 {% block content %}
 
-<h1> We're sorry :( No match found for {{ query }}. Try another search! </h1>
-
-
+{% if query != "BLANK" %}
+<h3>  We're sorry. No match found for "{{ query }}". Try another search! </h3>
+{% else %}
+<h3>  Please enter a proper search term </h3>
+{% endif %}
 
 <script type = "text/javascript">
 $(function(){

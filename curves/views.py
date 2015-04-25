@@ -550,10 +550,17 @@ def search(request):
             context = {'query': q, 'allCombinedJSON': qc.qlist}
             return render (request, 'curves/invalid.html', context)
     else:
-        return HttpResponse('Please submit a search term.')
+        cachedList = QueryList.objects.all()
+        qc = cachedList[0]
+        context = {'query': "BLANK", 'allCombinedJSON': qc.qlist}
+        return render (request, 'curves/invalid.html', context)
+
     return HttpResponse(message)
 
 def handler404(request):
-    response = render(request, 'curves/404.html')
+    cachedList = QueryList.objects.all()
+    qc = cachedList[0]
+    context = {'allCombinedJSON': qc.qlist}
+    response = render(request, 'curves/404.html', context)
     response.status_code = 404
     return response
