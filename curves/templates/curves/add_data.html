@@ -28,8 +28,13 @@
                 {% endif %}
             </tr>
         {% endfor %}
-    </table>
-
+        </table>
        <input type="submit" name="submit" value="Add Data"/>
-           </form>
+    </form>
+
+<!-- jQuery -->
+<script src="{% static 'curves/js/jquery.js' %}"></script>
+{% include 'autocomplete_light/static.html' %}
+
+</body>
 {% endblock %}

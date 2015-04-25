@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/login/', 'django_cas_ng.views.login'), 
     url(r'logout/$', 'django_cas_ng.views.logout'),
-    url(r'^.*$', 'curves.views.handler404')
+    url(r'^.*$', 'curves.views.handler404'),
+    url(r'^autocomplete/', include('autocomplete_light.urls'))
 )
 handler404 = 'curves.views.handler404'

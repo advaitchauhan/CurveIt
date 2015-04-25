@@ -9,4 +9,21 @@ Thanks so much for sharing grades with us. Once again, they are totally anonymou
 Now get exploring by typing a course name, department, or professor into the search bar! <br>
 </p>
 
+
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+});
+</script>
+
 {% endblock %}

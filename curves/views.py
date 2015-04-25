@@ -419,61 +419,6 @@ def add_data(request):
                         thisGrade = curData[optionalGrades[i]] # gets grade chosen
                         thisClass.addGrade(thisGrade)
                         thisClass.save()
-                # thisClass2 = curData["pastSemClass2"] # i.e. AAS 210/MUS 253: Intro to...
-                # thisGrade2 = curData["grade2"] # gets grade chosen
-                # thisClass2.addGrade(thisGrade2)
-                # thisClass2.save()
-                # thisClass3 = curData["pastSemClass3"] # i.e. AAS 210/MUS 253: Intro to...
-                # thisGrade3 = curData["grade3"] # gets grade chosen
-                # thisClass3.addGrade(thisGrade3)
-                # thisClass3.save()
-                # thisClass4 = curData["pastSemClass4"] # i.e. AAS 210/MUS 253: Intro to...
-                # if thisClass4 != None:
-                #     thisGrade4 = curData["grade4"] # gets grade chosen
-                #     thisClass4.addGrade(thisGrade4)
-                #     thisClass4.save()
-                # thisClass5 = curData["pastSemClass5"] # i.e. AAS 210/MUS 253: Intro to...
-                # if thisClass5 != None:
-                #     thisGrade5 = curData["grade5"] # gets grade chosen
-                #     thisClass5.addGrade(thisGrade5)
-                #     thisClass5.save()
-                # thisClass6 = curData["pastSemClass6"] # i.e. AAS 210/MUS 253: Intro to...
-                # if thisClass6 != None:
-                #     thisGrade6 = curData["grade6"] # gets grade chosen
-                #     thisClass6.addGrade(thisGrade6)
-                #     thisClass6.save()
-                # thisClass7 = curData["pastSemClass7"] # i.e. AAS 210/MUS 253: Intro to...
-                # if thisClass7 != None:
-                #     thisGrade7 = curData["grade7"] # gets grade chosen
-                #     thisClass7.addGrade(thisGrade7)
-                #     thisClass7.save()
-                # thisClassInfo = thisClass.split("/") # i.e. ["AAS 210", "MUS 253: Intro to..."]
-                # lastString = thisClassInfo[len(thisClassInfo)-1]
-                # lastDept = (lastString)[0:lastString.index(":")] # gets department i.e. "MUS 253"
-                # thisName = (lastString)[(lastString.index(":") + 2):] # gets name i.e. "Intro to...""
-
-                # # now thisClassInfo is a list of all dist/num pairs
-                # thisClassInfo = thisClassInfo[:-1] 
-                # thisClassInfo.append(lastDept) # i.e. ["AAS 210", "MUS 253"]
-
-                # # will be a list of depts in format AAS+MUS
-                # depts = ""
-                # # will be a list of nums 210+253
-                # nums = ""
-
-                # for i in range(0, len(thisClassInfo)):
-                #     curListings = thisClassInfo[i].split()
-                #     thisDept = curListings[0]
-                #     thisNum = curListings[1]
-                #     if i == (len(thisClassInfo) - 1):
-                #         depts += thisDept
-                #         nums += thisNum
-                #     else:
-                #         depts += thisDept + "+"
-                #         nums += thisNum + "+"
-
-                # thisClass = get_object_or_404(Course_Specific, dept=depts, num=nums, semester=CURRENTSEMESTER)
-
             except Course_Specific.DoesNotExist:
                 thisClass = None
 
@@ -492,7 +437,11 @@ def add_data(request):
 def after_data(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
-    return render(request, 'curves/after_data.html')       
+
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
+    return render(request, 'curves/after_data.html', context)       
 
 def search(request):
     if loggedIn(request) == False:
