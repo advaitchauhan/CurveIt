@@ -22,12 +22,17 @@ $(function makechart() {
 	$('#container').highcharts({
         chart: {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            type: 'column'
+            type: 'column',
+            style: {
+                fontFamily: 'dense',
+                fontSize: '24px'
+            }
         },
          title: {
              text: 'Total Grades Entered: ' + dataSum,
             style: {
-                     color: "#FFFFFF"
+                     color: "#FFFFFF",
+                     fontSize: '26px'
              }
         },
         xAxis: {
@@ -41,14 +46,17 @@ $(function makechart() {
         	},
             labels: {
                 style: {
-                    color: "#FFFFFF"
+                    color: "#FFFFFF",
+                    fontSize: '16px'
                 }
 
             },
             reversed: true
         },
         yAxis: {
-        	title: {
+        	valueDecimals: 1,
+
+            title: {
         		text: "Numbers",
                 style: {
                     color: "#FFFFFF"
@@ -57,13 +65,16 @@ $(function makechart() {
             labels: {
                 formatter: function() {
                     var pcnt = (this.value / dataSum) * 100;
-                    return Highcharts.numberFormat(pcnt) + '%';
+                    return pcnt.toFixed(2) + ' %';
                 },
                 style: {
                     color: "#FFFFFF",
+                    fontSize: '16px'
                 }
 
             }
+
+
         },
         plotOptions: {
 			column: {
@@ -83,9 +94,20 @@ $(function makechart() {
             enabled: false
         },
 
-		tooltip: {
-			pointFormat: 'Count: <b>{point.y}</b><br/>'
-		},
+		//tooltip: {
+		//	pointFormat: 'Count: <b>{point.y}</b><br/>'
+		//},
+
+        tooltip: {
+            formatter: function () {
+               var pcnt = (this.y / dataSum) * 100;
+                    return this.x + ' count: ' + this.y + '<br>' + 'Percent: ' + Highcharts.numberFormat(pcnt) + '%';
+                },
+                style: {
+                    fontSize: '16px'
+                }
+        },
+
         series: [{
         	name: plotTitle, 
         	data: _numGrades

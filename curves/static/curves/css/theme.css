@@ -8,13 +8,13 @@
     src: url('../fonts/Dual-300.otf')
 }
 
-html,body {
+body {
 	  font-family: Dense;
     color: white;
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
     background: rgba(255, 154, 101, 0.6);*/
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.9);
 
     /*background: url(../img/gates.jpeg) no-repeat center center;*/
 /*    -webkit-background-size: cover;
