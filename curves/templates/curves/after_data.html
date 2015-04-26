@@ -1,29 +1,43 @@
-{% extends 'curves/base.html' %}
+{% extends 'curves/index.html' %}
+
+
+
 {% block content %}
 
-<h1> Thank You! <h1>
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        <h3 class="modal-title">Thank you!</h3>
+      </div>
+      <div class="modal-body">
+        <p><h4>Thanks so much for sharing grades with us. Once again, they are totally anonymous, and are only added to the aggregate grade data for each class. It’s you and your contribution of data that lets us provide this service and help bring transparency to grading at Princeton!
 
-<p>
-Thanks so much for sharing grades with us. Once again, they are totally anonymous, and are only added to the aggregate grade data for each class. It’s you and your contribution of data that lets us provide this service and help bring transparency to grading at Princeton!
+Now get exploring by typing a course name, department, or professor into the search bar! </h4></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Get Curvy!</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
-Now get exploring by typing a course name, department, or professor into the search bar! <br>
-</p>
+
+<!-- <div class="modal fade " id="myModal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <p>One fine body…</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">Close</a>
+    <a href="#" class="btn btn-primary">Save changes</a>
+  </div>
+</div> -->
 
 
-<script type = "text/javascript">
-$(function(){
-
-  //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allCombinedJSON | safe}};
-  // setup autocomplete function pulling from currencies[] array
-  $('#autocomplete').autocomplete({
-    lookup: allFields,
-    groupBy: 'cat',
-    triggerSelectOnValidInput: false,
-    lookupLimit: 8,
-    minChars: 2
-  });
-});
-</script>
 
 {% endblock %}

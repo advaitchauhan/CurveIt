@@ -47,6 +47,7 @@ body {
     color: white;
 }
 
+
 .listofclasses {
 	color: white;
 }
@@ -94,6 +95,14 @@ body {
 
 .h3 > a {
     color: black;
+}
+
+.modal-backdrop {
+   background-color: rgba(0,100,0,.8);
+}
+
+.modal-header {
+  background-color: rgba(0,100,0,.8);
 }
 
 /*.btn-search {

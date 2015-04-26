@@ -21,6 +21,7 @@
     <link href="{% static 'curves/css/landing-page.css' %}" rel="stylesheet">
     <link href="{% static 'curves/css/typeaheadjs.css' %}" rel="stylesheet">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,6 +32,12 @@
 </head>
 
 <body>
+
+
+     {% block content %}
+
+    {% endblock %}
+
 
 <!-- Autocomplete solution: code here with a for loop that contains three hidden lists
     for profs, dept, and courses (taken from context). Then, in the princeton-autocomplete,
@@ -81,6 +88,12 @@
     <!-- Autocomplete.JS Javascript -->
     <script src= "{% static 'curves/js/jquery.autocomplete.js' %}"></script>
 <!--     // <script src= "{% static 'curves/js/princeton-autocomplete.js' %}"></script> -->
+
+     <script type="text/javascript">
+     $(window).load(function(){
+            $('#myModal').modal('show');
+        });
+    </script>
 
     <script type = "text/javascript">
     $(function(){
