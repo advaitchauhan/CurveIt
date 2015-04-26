@@ -84,6 +84,10 @@ body {
     background-color: rgba(0,0,0,.8);
 }
 
+.combinedForm {
+    font-size: 16px;
+    color: orange;
+}
 
 .h3 > a {
     color: black;

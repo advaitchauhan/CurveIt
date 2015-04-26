@@ -9,9 +9,10 @@
 <title>Curves</title>
 
 <body>
-    <h1 class = "title">Add Data</h1>
-    <h2> Please enter at least three classes and three
-    grades from last semester. We will not store grades associated with individual students - all of the data is aggregrated into our database immediately, so this is completely anonymous. </h2>
+    <h3 style = "color: orange"> Please enter at least three classes and three
+    grades from last semester, up to a maximum of 6 classes. </h3>
+
+    <h3> NOTE: The confidentiality of your grades is of utmost importance to us. We do not store grades associated with individual students - all of the data is aggregrated into our database immediately. </h3>
 
 <!-- Form to enter grade for a course -->
     <form class = "option" id="data_form" method="post" action="/add_data/">
@@ -21,18 +22,68 @@
         <p class="alert alert-danger">
         Please make sure all required fields are complete and that each selected class has a corresponding grade</p>
     {% endif %} -->
-      <table class="table table-bordered">
+      <br>
+      <div class = "combinedForm">
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass1 }} </li>
+          <li> {{ form.grade1 }} </li>
+        </ul>
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass2 }} </li>
+          <li> {{ form.grade2 }} </li>
+        </ul>
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass3 }} </li>
+          <li> {{ form.grade3 }} </li>
+        </ul>
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass4 }} </li>
+          <li> {{ form.grade4 }} </li>
+        </ul>
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass5 }} </li>
+          <li> {{ form.grade5 }} </li>
+        </ul>
+
+        <ul class = "list-inline">
+          <li> {{ form.pastSemClass6 }} </li>
+          <li> {{ form.grade6 }} </li>
+        </ul>
+
+      </div>
+
+<!--       <div class = "courseForm">
+        <ul class = "list-unstyled">
         {% for field in form.visible_fields %}
-            {% if field.label}
-            <tr>
-                <td>{{ field }}</td>                 
+              {% if field.label == "courseInput" %}
+                <li>{{ field }}</li>                 
                 {% if field.errors %}
-                    <td class="alert alert-danger">{{ field.errors }}</td>
+                    <li class="alert alert-danger">{{ field.errors }}</li>
                 {% endif %}
-            </tr>
+              {% endif %}
         {% endfor %}
-        </table>
-       <input type="submit" name="submit" value="Add Data"/>
+        </ul>
+      </div>
+
+      <div class = "gradeForm">
+        <ul class = "list-unstyled">
+        {% for field in form.visible_fields %}
+              {% if field.label == "gradeInput" %}
+                <li>{{ field }}</li>                 
+                {% if field.errors %}
+                    <li class="alert alert-danger">{{ field.errors }}</li>
+                {% endif %}
+              {% endif %}
+        {% endfor %}
+        </ul>
+      </div> -->
+      <br>
+      <button type="submit" class="btn btn-search" style ="width: 75px" value="Add Data">Add Data </button>
     </form>
 
 <!-- jQuery -->
