@@ -24,13 +24,13 @@ class Course_SpecificForm(forms.Form):
     grade5 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade")
     pastSemClass6 = forms.ModelChoiceField(queryset = curClasses, widget=autocomplete_light.ChoiceWidget('Course_SpecificAutocomplete'), label = "courseInput", help_text="Class*", required=False)
     grade6 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade")
-    pastSemClass7 = forms.ModelChoiceField(queryset = curClasses, widget=autocomplete_light.ChoiceWidget('Course_SpecificAutocomplete'), label = "courseInput", help_text="Class*", required=False)
-    grade7 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade")
+    # pastSemClass7 = forms.ModelChoiceField(queryset = curClasses, widget=autocomplete_light.ChoiceWidget('Course_SpecificAutocomplete'), label = "courseInput", help_text="Class*", required=False)
+    # grade7 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade")
 
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Course_Specific
-        fields = ('pastSemClass1', 'grade1', 'pastSemClass2', 'grade2', 'pastSemClass3', 'grade3', 'pastSemClass4', 'grade4', 'pastSemClass5', 'grade5', 'pastSemClass6', 'grade6', 'pastSemClass7', 'grade7')
+        fields = ('pastSemClass1', 'grade1', 'pastSemClass2', 'grade2', 'pastSemClass3', 'grade3', 'pastSemClass4', 'grade4', 'pastSemClass5', 'grade5', 'pastSemClass6', 'grade6')
 
     #method for ERROR CHECKING
     def clean(self):
@@ -44,7 +44,7 @@ class Course_SpecificForm(forms.Form):
         #grade1, grade2...
         requiredClasses = map(lambda x: "pastSemClass" + str(x), y)
         requiredGrades = map(lambda x: "grade" + str(x), y)
-        z = range(4, 8)
+        z = range(4, 7)
         optionalClasses = map(lambda x: "pastSemClass" + str(x), z)
         optionalGrades = map(lambda x: "grade" + str(x), z)
 

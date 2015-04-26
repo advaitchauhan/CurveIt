@@ -388,12 +388,12 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
-    if alreadyEntered(request):
-        print "he;;p"
-        return redirect('/after_data/')
+    # if alreadyEntered(request):
+    #     print "he;;p"
+    #     return redirect('/after_data/')
     # A HTTP POST?
     y = range(1,4)
-    z = range(4, 8)
+    z = range(4, 7)
     currentnetid = request.user.username
 
     #generate the variable names of values in the form.cleaned_data dictionary
@@ -406,10 +406,12 @@ def add_data(request):
 
 
     if request.method == 'POST':
+        print "ADvait"
         form = Course_SpecificForm(request.POST)
 
         # Have we been provided with a valid form?
         if form.is_valid():
+            print "hank"
 
             #acknowledge student's adding of data
             thisUser = Student.objects.get(netid=currentnetid)
@@ -438,6 +440,9 @@ def add_data(request):
             # Now call the index() view.
             # The user will be shown the homepage.
             return redirect('/after_data/')
+        else:
+            print "sfjg"
+            print form.errors
     else:
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
