@@ -442,10 +442,11 @@ def add_data(request):
         # If the request was not a POST, display the form to enter details.
         form = Course_SpecificForm()
 
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    print "gagjaw"
-    return render(request, 'curves/add_data.html', {'form': form})
+    return render(request, 'curves/add_data.html', {'form': form, 'allCombinedJSON': q.qlist})
 
 def after_data(request):
     if loggedIn(request) == False:

@@ -26,8 +26,7 @@ class Course_SpecificForm(forms.Form):
     grade6 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
     pastSemClass7 = forms.ModelChoiceField(queryset = curClasses, widget=autocomplete_light.ChoiceWidget('Course_SpecificAutocomplete'), help_text="Class*", required=False)
     grade7 = forms.ChoiceField(choices=Course_Specific.CHOICES, help_text="Grade")
-    # pastSemClass = forms.ChoiceField(choices=curClassesList, help_text="Class")
-    # An inline class to provide additional information on the form.
+
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Course_Specific
