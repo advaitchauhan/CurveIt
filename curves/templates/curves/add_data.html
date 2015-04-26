@@ -69,22 +69,29 @@
           {% endif %}
         </ul>
 
-<!--         <ul class = "list-inline">
+
+        <ul class = "list-inline">
           <li> {{ form.pastSemClass5 }} </li>
           <li> {{ form.grade5 }} </li>
-          {% if form.grade5.errors or form.pastSemClass5.errors%}
+          {% if form.pastSemClass5.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass5.errors }}</li>
+          {% endif %}
+          {% if form.grade5.errors%}
               <li class="alert alert-danger">{{ form.grade5.errors }}</li>
           {% endif %}
         </ul>
 
+
         <ul class = "list-inline">
           <li> {{ form.pastSemClass6 }} </li>
           <li> {{ form.grade6 }} </li>
-          {% if form.grade6.errors or form.pastSemClass6.errors %}
+          {% if form.pastSemClass6.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass6.errors }}</li>
+          {% endif %}
+          {% if form.grade6.errors%}
               <li class="alert alert-danger">{{ form.grade6.errors }}</li>
           {% endif %}
-        </ul> -->
-
+        </ul>
       </div>
 
 <!--       <div class = "courseForm">
