@@ -74,6 +74,9 @@ body {
     color:#eeeeee;
 }
 
+.alert .alert-danger {
+}
+
 .dropdown-menu {
     max-height: 400px;
     overflow: hidden;

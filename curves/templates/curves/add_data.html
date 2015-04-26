@@ -28,32 +28,62 @@
         <ul class = "list-inline">
           <li> {{ form.pastSemClass1 }} </li>
           <li> {{ form.grade1 }} </li>
+          {% if form.pastSemClass1.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass1.errors }}</li>
+          {% endif %}
+          {% if form.grade1.errors%}
+              <li class="alert alert-danger">{{ form.grade1.errors }}</li>
+          {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li> {{ form.pastSemClass2 }} </li>
           <li> {{ form.grade2 }} </li>
+          {% if form.pastSemClass2.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass2.errors }}</li>
+          {% endif %}
+          {% if form.grade2.errors%}
+              <li class="alert alert-danger">{{ form.grade2.errors }}</li>
+          {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li> {{ form.pastSemClass3 }} </li>
           <li> {{ form.grade3 }} </li>
+          {% if form.pastSemClass3.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass3.errors }}</li>
+          {% endif %}
+          {% if form.grade3.errors %}
+              <li class="alert alert-danger">{{ form.grade3.errors }}</li>
+          {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li> {{ form.pastSemClass4 }} </li>
           <li> {{ form.grade4 }} </li>
+          {% if form.pastSemClass4.errors%}
+              <li class="alert alert-danger">{{ form.pastSemClass4.errors }}</li>
+          {% endif %}
+          {% if form.grade4.errors%}
+              <li class="alert alert-danger">{{ form.grade2.errors }}</li>
+          {% endif %}
         </ul>
 
-        <ul class = "list-inline">
+<!--         <ul class = "list-inline">
           <li> {{ form.pastSemClass5 }} </li>
           <li> {{ form.grade5 }} </li>
+          {% if form.grade5.errors or form.pastSemClass5.errors%}
+              <li class="alert alert-danger">{{ form.grade5.errors }}</li>
+          {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li> {{ form.pastSemClass6 }} </li>
           <li> {{ form.grade6 }} </li>
-        </ul>
+          {% if form.grade6.errors or form.pastSemClass6.errors %}
+              <li class="alert alert-danger">{{ form.grade6.errors }}</li>
+          {% endif %}
+        </ul> -->
 
       </div>
 

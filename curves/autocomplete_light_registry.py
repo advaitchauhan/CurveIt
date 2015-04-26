@@ -3,7 +3,7 @@ from models import Course_Specific
 
 
 class Course_SpecificAutocomplete(autocomplete_light.AutocompleteModelBase):
-    search_fields = ['titleString', 'prof']
+    search_fields = ['titleString']
     attrs={
     # This will set the input placeholder attribute:
     'placeholder': 'Select a Class',
