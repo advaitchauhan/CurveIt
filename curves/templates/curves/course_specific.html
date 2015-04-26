@@ -11,7 +11,7 @@
       Professors for this Semester
       <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1" style="max-width: 100vw">
       {% for p,name in profs %}
           <li> <a href = "/prof/{{ p }}/"> {{ name }}</a></li>
       {% endfor %}    
