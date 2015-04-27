@@ -54,12 +54,17 @@ $(function makechart() {
 	$('#container').highcharts({
         chart: {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            type: 'column'
+            type: 'column',
+            style: {
+                fontFamily: 'dense',
+                fontSize: '24px'
+            }
         },
          title: {
             text: Class1name + " vs. " + Class2name,
             style: {
-                     color: "#FFFFFF"
+                     color: "#FFFFFF",
+                     fontSize: '26px'
              }
         },
         xAxis: {
@@ -73,7 +78,8 @@ $(function makechart() {
         	},
             labels: {
                 style: {
-                    color: "#FFFFFF"
+                    color: "#FFFFFF",
+                    fontSize: '16px'
                 }
 
             },
@@ -83,18 +89,19 @@ $(function makechart() {
         	title: {
         		text: "Percent",
                 style: {
-                    color: "#FFFFFF"
+                    color: "#FFFFFF",
                         }
-        	       },
+                    },              
             labels: {
                 formatter: function() {    
                     var pcnt = this.value;
-                    return Highcharts.numberFormat(pcnt) + '%';
-                    }   
-                }   
-                    /*style: {
-                        color: "#FFFFFF"
-                    }*/
+                    return pcnt.toFixed(0) + '%';
+                },   
+                style: {
+                    color: "#FFFFFF",
+                    fontSize: '16px'
+                }
+            },
         },
         
         plotOptions: {
@@ -126,6 +133,7 @@ $(function makechart() {
             enabled: true,
             itemStyle: {
                 color: '#FFFFFF',
+                fontSize: '16px',
                 }
         },
 
@@ -134,14 +142,19 @@ $(function makechart() {
                 var output;
                 if (this.series.name == Class1name) {
                     ouput = parseInt((this.y/100 * Class1dataSum));
-                    return 'Count: ' + ouput + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
+                    return this.series.name + ' ' + this.x + 'count: ' + ouput + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
                 }
                 else if (this.series.name == Class2name) {
                     output = parseInt((this.y/100 * Class2dataSum));
-                    return 'Count: ' + output + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
+                    return this.series.name + ' ' + this.x + ' count: ' + output + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
                 }
-                
+            },
+
+            style: {
+                fontSize: '16px'
             }
+                
+
 			//pointFormat: 'Count: <b>output</b><br/>'
 		},
         series: [{
