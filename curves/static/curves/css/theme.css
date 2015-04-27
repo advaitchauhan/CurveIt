@@ -44,6 +44,8 @@ body {
 
 .a-link {
   color: white;
+  text-decoration: underline;
+
 }
 
 .a-link:hover,
@@ -73,6 +75,21 @@ body {
 
 .listofclasses {
 	color: white;
+}
+
+.glyphicon-alert:before {
+  content: "\e209";
+}
+
+.alert-custom {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: white;
+  background-color: rgba(230, 91, 5, 0.6);
+  border-color: black;
+
 }
 
 .option {
