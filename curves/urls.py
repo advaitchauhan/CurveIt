@@ -30,5 +30,14 @@ urlpatterns = patterns('',
 	url(r'^after_data/$', views.after_data, name = 'after_data'),
 
 	#intermediary url for search queries
-	url(r'^search/$', views.search)
+	url(r'^search/$', views.search),
+
+	#compare departments
+	url(r'^compare/(?P<cdept1>[A-Za-z]{3,3})/(?P<cdept2>[A-Za-z]{3,3})/$', views.comparedeptView, name = 'comparedeptView'),
+
+	#compare courses
+	url(r'^compare/(?P<cdept1>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum1>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/(?P<cdept2>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum2>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/$', views.comparecourseView, name = 'comparecourseView'),
+
+
+
 )

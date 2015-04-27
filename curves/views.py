@@ -583,3 +583,164 @@ def handler404(request):
     response = render(request, 'curves/404.html', context)
     response.status_code = 404
     return response
+
+
+def comparedeptView(request, cdept1, cdept2):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
+    # get all courses registered under the department, including those that are cross listed
+    course_list1 = get_list_or_404(Course_Specific, dept__contains = cdept1) # includes all semesters
+    
+    # construct list of unique course titles
+    uniqueCourse_list1 = []
+    # construct a list of all semesters for which we have data
+    sem_list1 = []
+    for course in course_list1:
+        # get list of all distinct courses
+        for uniqueCourse in uniqueCourse_list1:
+            if course.num == uniqueCourse.num:
+                break
+        else:
+            uniqueCourse_list1.append(course)
+        # get list of all distinct semesters
+        for sem in sem_list1:
+            if course.semester == sem:
+                break
+        else:
+            sem_list1.append(course.semester)
+    # aggregate all time grade distribution
+    numGrades1 = [0] * len(GRADES)
+    for course in course_list1:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades1[i] += grades[i]
+
+    dist1 = zip(GRADES, numGrades1)
+    total1 = sum(numGrades1)
+
+
+    course_list2 = get_list_or_404(Course_Specific, dept__contains = cdept2) # includes all semesters
+        
+    # construct list of unique course titles
+    uniqueCourse_list2 = []
+    # construct a list of all semesters for which we have data
+    sem_list2 = []
+    for course in course_list2:
+        # get list of all distinct courses
+        for uniqueCourse in uniqueCourse_list2:
+            if course.num == uniqueCourse.num:
+                break
+        else:
+            uniqueCourse_list2.append(course)
+        # get list of all distinct semesters
+        for sem in sem_list2:
+            if course.semester == sem:
+                break
+        else:
+            sem_list2.append(course.semester)
+
+    # aggregate all time grade distribution
+    numGrades2 = [0] * len(GRADES)
+    for course in course_list2:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades2[i] += grades[i]
+
+    dist2 = zip(GRADES, numGrades2)
+    total2 = sum(numGrades2)
+
+
+
+    # sem_list sorted in reverse so that they appear in reverse chronological order
+    context = {'dept1ForPrint': depts[cdept1], 'dept1': cdept1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'sem_list1': sorted(sem_list1, reverse=True), 'dept2ForPrint': depts[cdept2], 'dept2': cdept2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2, 'sem_list2': sorted(sem_list2, reverse=True)}
+    return render(request, 'curves/compdepttodept.html', context)
+
+
+@login_required
+# ex: curves/COS/333. Plot of all time aggregate distribution, links to 
+# courseSpecific for each semester
+def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
+    if loggedIn(request) == False:
+        return redirect('/add_data/')
+    # gets list of this course over all semesters
+    course_list1 = Course_Specific.objects.filter(dept=cdept1, num=cnum1)
+    if not course_list1:
+        return render(request, 'curves/404.html')
+
+    # list of all semesters this class was taught
+    sem_list1 = []
+
+    # list of all professors who have taught this class
+    prof_list1 = []
+    prof_names_list1 = []
+
+    numGrades1 = [0] * len(GRADES);
+    for course in course_list1:
+        sem_list1.append(course.semester)
+        curProf1 = course.prof
+        curProfs1 = curProf1.split("+")
+        for c in curProfs1:
+            for p in prof_list1:
+                if c == p:
+                    break   
+            else:
+                prof_list1.append(c)
+        grades1 = course.getAllGrades()
+        for i in range(0, len(grades1)):
+            numGrades1[i] += grades1[i]
+    for p in prof_list1:
+        thisProf1 = p.replace("*", " ")
+        prof_names_list1.append(thisProf1)
+
+    print prof_names_list1
+    # in order to pass in name of this class
+    curCourse1 = course_list1[0]
+    dist1 = zip(GRADES, numGrades1)
+    profs1 = zip(prof_list1, prof_names_list1)
+    total1 = sum(numGrades1) 
+
+    cachedList1 = QueryList.objects.all()
+    q1 = cachedList1[0]
+
+    #second course
+    course_list2 = Course_Specific.objects.filter(dept=cdept2, num=cnum2)
+    if not course_list2:
+        return render(request, 'curves/404.html')
+
+    # list of all semesters this class was taught
+    sem_list2 = []
+
+    # list of all professors who have taught this class
+    prof_list2 = []
+    prof_names_list2 = []
+
+    numGrades2 = [0] * len(GRADES);
+    for course in course_list2:
+        sem_list2.append(course.semester)
+        curProf2 = course.prof
+        curProfs2 = curProf2.split("+")
+        for c in curProfs2:
+            for p in prof_list2:
+                if c == p:
+                    break   
+            else:
+                prof_list2.append(c)
+        grades2 = course.getAllGrades()
+        for i in range(0, len(grades2)):
+            numGrades2[i] += grades2[i]
+    for p in prof_list2:
+        thisProf2 = p.replace("*", " ")
+        prof_names_list2.append(thisProf2)
+
+    print prof_names_list2
+    # in order to pass in name of this class
+    curCourse2 = course_list2[0]
+    dist2 = zip(GRADES, numGrades2)
+    profs2 = zip(prof_list2, prof_names_list2)
+    total2 = sum(numGrades2) 
+
+    cachedList2 = QueryList.objects.all()
+    q2 = cachedList2[0]
+
+    context = {'sem_list1': sorted(sem_list1, reverse=True), 'profs1': profs1, 'dist1': dist1,'total1': total1, 'name1': curCourse1.__unicode__(), 'course1': curCourse1, 'allCombinedJSON1': q1.qlist, 'sem_list2': sorted(sem_list2, reverse=True), 'profs2': profs2, 'dist2': dist2,'total2': total2, 'name2': curCourse2.__unicode__(), 'course2': curCourse2, 'allCombinedJSON2': q2.qlist}
+    return render(request, 'curves/comparecourse.html', context)

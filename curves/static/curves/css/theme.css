@@ -8,6 +8,16 @@
     src: url('../fonts/Dual-300.otf')
 }
 
+.h2 {
+  {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+}
+
 body {
 	  font-family: Dense;
     color: white;

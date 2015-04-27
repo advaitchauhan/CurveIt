@@ -1,0 +1,50 @@
+{% extends 'curves/comparedept.html' %}
+{% load mathfilters %}
+{% load static %}
+{% block top %}
+
+
+</div>
+		<div class="dropdown dropdown-tip dropwdown-scroll">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		    Select an Individual {{dept2}} Class
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+		    {% for course in course_list2 %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+			{% endfor %}
+		  </ul>
+		</div>
+
+
+
+
+{% endblock %}
+
+{% block tabs %}
+
+<ul class="nav nav-tabs navbar-right">
+			<li role="presentation" class="active"><a href="#">View All Semesters of {{dept2 }}</a></li>
+			{% for s in sem_list2 %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ dept2 }}/{{ s }}/">{{ s }} </a> </li>
+			{% endfor %}
+	  	</ul> 
+
+		<div id="container" style="width:100%; height:400px;"></div>
+
+{% endblock %}
+
+{% block table %}
+
+<table class="thisTable2">
+			{% for grade, number in dist2 %}
+			<!-- Optional functionality: only show grades that make up >x% of grades; may be
+			     useful for deciding whether to show PDF  -->
+					<tr>
+						<td class="_grade" hidden>{{ grade }}</td>
+						<td class="_numGrade2" hidden>{{ number }}</td>
+					</tr>
+			{% endfor %}
+		</table>
+{% endblock %}

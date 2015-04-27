@@ -1,0 +1,67 @@
+<!-- HTML template for displaying the aggregrate grade distribution for a department, as well as links to all the classes in that department -->
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
+<div class = "title-div">
+<h1 class="title">Comparing 
+	<a href="http://www.ivybound.net/wp-content/uploads/2014/10/tyler-h.jpg"> {{dept1}}: {{ dept1ForPrint }} 
+	</a> to {{dept2}}: {{ dept2ForPrint }}</h1>
+</div>
+<div class = "title-div">
+		<!-- Dropdown of courses in the department across all semesters -->
+		<div class="dropdown dropdown-tip dropwdown-scroll">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+		    Select an Individual {{dept1}} Class
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="dropdownMenu1">
+		    {% for course in course_list1 %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/curves/{{ course.dept }}/{{ course.num }}/"> {{ course }} </a> </li>
+			{% endfor %}
+		  </ul>
+		
+		{% block top %}
+		{% endblock %}
+	</div>
+
+		<!-- Tabs to all semesters in which courses from this department are offered -->
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="#">View All Semesters of {{ dept1 }}</a></li>
+			{% for s in sem_list1 %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ dept1 }}/{{ s }}/">{{ s }} </a> </li>
+			{% endfor %}
+		</u1>
+	  	{% block tabs %}
+	  	{% endblock %}
+
+		<!-- Generate (hidden) table from whichto reference data for chart -->
+		<table class="thisTable1">
+			{% for grade, number in dist1 %}
+			<!-- Optional functionality: only show grades that make up >x% of grades; may be
+			     useful for deciding whether to show PDF  -->
+					<tr>
+						<td class="_grade1" hidden>{{ grade }} </td>
+						<td class="_numGrade1" hidden>{{ number }}</td>
+					</tr>
+			{% endfor %}
+		</table>
+
+
+		{% block table %}
+		{% endblock %}
+<!-- {% endblock %} 
+
+{% block script %} -->
+<script>
+var Class1name = "";
+var Class2name = "";
+Class1name = "{{dept1}}";
+Class2name = "{{dept2}}";
+</script>
+<script src = "{% static 'curves/js/comphighchartsscript.js' %}"></script>
+<!--<script> var Class1name = '{{cdept1}}'</script>
+<script> var Class2name = '{{cdept2}}'</script>-->
+
+{% endblock %}
+

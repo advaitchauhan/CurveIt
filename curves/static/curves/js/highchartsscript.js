@@ -18,6 +18,21 @@ for (var i=0; i < _numGrades.length; i++) {
     dataSum += _numGrades[i]
 };
 
+var maxpcnt = 0;
+
+for (var i=0; i < _numGrades.length; i++) {
+    if ((_numGrades[i]/dataSum) > maxpcnt) {
+        maxpcnt = _numGrades[i]/dataSum;
+    }
+};
+
+var tickpos = [];
+
+if (maxpcnt > 50) {tickpos = [.2*dataSum, .4*dataSum, .6*dataSum, .8*dataSum, 1*dataSum];}
+else if (maxpcnt > 25) {tickpos = [.1*dataSum, .2*dataSum, .3*dataSum, .4*dataSum, .5*dataSum];}
+else {tickpos = [.05*dataSum, .1*dataSum, .15*dataSum, .2*dataSum, .25*dataSum];}
+
+
 $(function makechart() { 
 	$('#container').highcharts({
         chart: {
@@ -65,16 +80,16 @@ $(function makechart() {
             labels: {
                 formatter: function() {
                     var pcnt = (this.value / dataSum) * 100;
-                    return pcnt.toFixed(2) + ' %';
+                    return pcnt.toFixed(0) + ' %';
                 },
                 style: {
                     color: "#FFFFFF",
                     fontSize: '16px'
                 }
 
-            }
+            },
 
-
+            tickPositions: tickpos,
         },
         plotOptions: {
 			column: {
