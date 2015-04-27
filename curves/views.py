@@ -584,7 +584,7 @@ def handler404(request):
     response.status_code = 404
     return response
 
-
+@login_required
 def comparedeptView(request, cdept1, cdept2):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
@@ -693,3 +693,63 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
 
     context = {'dist1': dist1,'total1': total1, 'simpleName1': simpleName1, 'name1': curCourse1.__unicode__(), 'course1': curCourse1, 'allCombinedJSON1': q1.qlist, 'dist2': dist2,'total2': total2, 'simpleName2': simpleName2, 'name2': curCourse2.__unicode__(), 'course2': curCourse2, 'allCombinedJSON2': q2.qlist, 'cdept1': cdept1, 'cdept2': cdept2, 'cnum1': cnum1, 'cnum2': cnum2}
     return render(request, 'curves/comparecourse.html', context)
+
+@login_required
+def compareProfView(request, cprof1, cprof2):
+    if loggedIn(request) == False:
+        return redirect('/curves/add_data')
+    # get all courses registered under the department, including those that are cross listed
+    course_list1 = Course_Specific.objects.filter(prof__icontains = cprof1) # includes all semesters
+    if not course_list1:
+        return render(request, 'curves/404.html')
+    # construct list of unique course titles
+    uniqueCourse_list1 = []
+    # construct a list of all semesters for which we have data
+    for course in course_list1:
+        # get list of all distinct courses
+        for uniqueCourse in uniqueCourse_list1:
+            if course.num == uniqueCourse.num:
+                break
+        else:
+            uniqueCourse_list1.append(course)
+
+    # aggregate all time grade distribution
+    numGrades1 = [0] * len(GRADES)
+    for course in course_list1:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades1[i] += grades[i]
+
+    dist1 = zip(GRADES, numGrades1)
+    total1 = sum(numGrades1)
+
+
+    course_list2 = Course_Specific.objects.filter(prof__icontains = cprof2) # includes all semesters
+        
+    # construct list of unique course titles
+    uniqueCourse_list2 = []
+    # construct a list of all semesters for which we have data
+    sem_list2 = []
+    for course in course_list2:
+        # get list of all distinct courses
+        for uniqueCourse in uniqueCourse_list2:
+            if course.num == uniqueCourse.num:
+                break
+        else:
+            uniqueCourse_list2.append(course)
+
+    # aggregate all time grade distribution
+    numGrades2 = [0] * len(GRADES)
+    for course in course_list2:
+        grades = course.getAllGrades()
+        for i in range(0, len(grades)):
+            numGrades2[i] += grades[i]
+
+    dist2 = zip(GRADES, numGrades2)
+    total2 = sum(numGrades2)
+
+    print dist1
+    print dist2
+
+    context = {'prof1ForPrint': cprof1.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2}
+    return render(request, 'curves/compareprof.html', context)

@@ -38,6 +38,9 @@ urlpatterns = patterns('',
 	#compare courses
 	url(r'^compcourse/(?P<cdept1>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum1>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/(?P<cdept2>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum2>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/$', views.comparecourseView, name = 'comparecourseView'),
 
+	#compare professors
+	url(r'^compprof/(?P<cprof1>[^\+]+)/(?P<cprof2>[^\+]+)/$', views.compareProfView, name = 'compareProfView')
+
 
 
 )
