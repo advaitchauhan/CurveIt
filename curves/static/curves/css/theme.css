@@ -18,7 +18,7 @@
 
 }
 
-body {
+body, html {
 	  font-family: Dense;
     color: white;
     /*background-color: #005266;
