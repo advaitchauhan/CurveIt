@@ -57,7 +57,7 @@ $(function makechart() {
             type: 'column'
         },
          title: {
-             text: plotTitle,
+            text: Class1name + " vs. " + Class2name,
             style: {
                      color: "#FFFFFF"
              }
