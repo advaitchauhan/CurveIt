@@ -16,9 +16,11 @@
   padding-bottom: 0px;
 }
 
+
+
 }
 
-body {
+body, html {
 	  font-family: Dense;
     color: white;
     /*background-color: #005266;
@@ -38,6 +40,18 @@ body {
 
 body {
   padding-top: 65px;
+}
+
+.a-link {
+  color: white;
+  text-decoration: underline;
+
+}
+
+.a-link:hover,
+.a-link:focus {
+  color: rgba(230, 91, 5, .6);
+  text-decoration: underline;
 }
 
 .title {
@@ -63,6 +77,21 @@ body {
 	color: white;
 }
 
+.glyphicon-alert:before {
+  content: "\e209";
+}
+
+.alert-custom {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: white;
+  background-color: rgba(230, 91, 5, 0.6);
+  border-color: black;
+
+}
+
 .option {
 	color: grey;
 	font-size: 100%;
@@ -86,6 +115,9 @@ body {
     color:#eeeeee;
 }
 
+.tab-links {
+  color:white;
+}
 .alert .alert-danger {
 }
 
@@ -147,7 +179,7 @@ body {
 
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; color: black; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-selected { background: rgba(230, 91, 5, 0.3) }
+.autocomplete-suggestions strong { font-weight: bold; color: rgba(230, 91, 5, 1); }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }

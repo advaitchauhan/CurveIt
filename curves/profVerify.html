@@ -1,0 +1,45 @@
+<!-- Page from which users can add their grades to a specific course -->
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
+<!-- {% load crispy_forms_tags %}
+{% crispy form %}
+ -->
+<title>Curves</title>
+
+<body>
+    <h3 style = "color: orange"> Please enter grades from previous semester. </h3>
+
+<!-- Form to enter grade for a course -->
+    <form class = "option" id="data_form" method="post" action="/profVerify/">
+
+    {% csrf_token %}
+    { form }
+      <button type="submit" class="btn btn-search" style ="width: 75px" value="Add Data">Add Data </button>
+    }
+    </form>
+
+<!-- jQuery -->
+
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+});
+</script>
+
+<script src="{% static 'curves/js/jquery.js' %}"></script>
+{% include 'autocomplete_light/static.html' %}
+
+</body>
+{% endblock %}

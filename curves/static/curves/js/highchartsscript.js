@@ -69,12 +69,11 @@ $(function makechart() {
             reversed: true
         },
         yAxis: {
-        	valueDecimals: 1,
 
             title: {
-        		text: "Numbers",
+        		text: "Percent",
                 style: {
-                    color: "#FFFFFF"
+                    color: "#FFFFFF",
                 }
         	},
             labels: {

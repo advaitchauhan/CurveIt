@@ -1,0 +1,92 @@
+<!-- HTML template for displaying the aggregrate grade distribution for a department, as well as links to all the classes in that department -->
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
+<div class="title-div">
+  <h1 class="title"><a class = "a-link" href="/prof/{{prof1}}/"> {{prof1ForPrint}}
+  </a> vs. <a class = "a-link" href="/prof/{{prof2}}/"> {{prof2ForPrint}}
+  </a></h1>
+
+  <!--<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      Professors for this Course
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+      {% for p, name in profs1 %}
+          <li> <a href = "/prof/{{ p }}/"> {{ name }}</a></li>
+      {% endfor %}    
+    </ul>
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+      Professors for this Course
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+      {% for p,name in profs2 %}
+          <li> <a href = "/prof/{{ p }}/"> {{ name }}</a></li>
+      {% endfor %}    
+    </ul>
+  </div>-->
+</div>
+
+
+<!--<ul class="nav nav-tabs">
+	<li role="presentation" class="active"><a href="#">View All Semesters</a></li>
+	{% for s in sem_list %}
+  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ course.dept }}/{{ course.num }}/{{ s }}/">{{ s }} </a> </li>
+
+	{% endfor %}
+  </ul> 
+-->
+<div id="container" style="width:100%; height:400px;"></div>
+
+<!-- Generate (hidden) table from whichto reference data for chart -->
+<table class="thisTable1">
+	{% for grade, number in dist1 %}
+	<!-- Optional functionality: only show grades that make up >x% of grades; may be
+	     useful for deciding whether to show PDF  -->
+			<tr>
+				<td class="_grade1" hidden >{{ grade }}</td>
+				<td class="_numGrade1" hidden >{{ number }}</td>
+			</tr>
+	{% endfor %}
+</table>
+
+<table class="thisTable2">
+  {% for grade, number in dist2 %}
+  <!-- Optional functionality: only show grades that make up >x% of grades; may be
+       useful for deciding whether to show PDF  -->
+      <tr>
+        <td class="_grade" hidden >{{ grade }}</td>
+        <td class="_numGrade2" hidden >{{ number }}</td>
+      </tr>
+  {% endfor %}
+</table>
+
+<script>
+var Class1name = "";
+var Class2name = "";
+Class1name = "{{prof1ForPrint}}";
+Class2name = "{{prof2ForPrint}}";
+</script>
+<script src = "{% static 'curves/js/comphighchartsscript.js' %}"></script>
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+</script>
+{% endblock %}

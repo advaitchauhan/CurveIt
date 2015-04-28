@@ -25,7 +25,7 @@
 		<ul class="nav nav-tabs">
 			<li role="presentation" class="active"><a href="#">View All Semesters</a></li>
 			{% for s in sem_list %}
-  		 		<li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
+  		 		<li role = "presentation"> <a class="tab-links" role ="menuitem"  tabindex="-1" href = "/{{ dept }}/{{ s }}/">{{ s }} </a> </li>
 			{% endfor %}
 	  	</ul> 
 
