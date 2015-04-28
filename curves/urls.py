@@ -5,6 +5,9 @@ urlpatterns = patterns('',
 	#main view
 	url(r'^$', views.index, name = 'index'),
 
+	#intro view
+	url(r'^intro/$', views.intro, name = 'intro'),
+
 	#dept view
 	url(r'^(?P<cdept>[A-Za-z]{3,3})/$', views.deptView, name = 'deptView'), 
 

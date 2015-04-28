@@ -14,13 +14,18 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade
 
 # Create your views here.
 @login_required
+def intro(request):
+    return render(request, 'curves/intro.html')
+
+@login_required
 
 def index(request):
+    if loggedIn(request) == False:
+        return redirect('/intro/')
     #code here that goes through all the course-specifics and generates three lists of strings,
     #profs, depts, and courses, and we then pass this on as context to index.html.
     cachedList = QueryList.objects.all()
     if len(cachedList) == 0:
-        print "recomputing list..."
         classes = Course_Specific.objects.all()
 
         allProfs = []
@@ -75,17 +80,11 @@ def index(request):
     context = {'allCombinedJSON': q.qlist}
     return render(request, 'curves/index.html', context)
 
+# returns TRUE if user has a) already entered data OR b) is a freshman; else returns FALSE
 def loggedIn(request):
     currentnetid = request.user.username
     thisUser = Student.objects.get(netid=currentnetid)
     return (thisUser.hasAccess())
-
-def alreadyEntered(request):
-    currentnetid = request.user.username
-    print currentnetid
-    thisUser = Student.objects.get(netid=currentnetid)
-    print thisUser
-    return thisUser.has_Entered
 
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
@@ -330,7 +329,6 @@ def courseView(request, cdept, cnum):
         thisProf = p.replace("*", " ")
         prof_names_list.append(thisProf)
 
-    print prof_names_list
     # in order to pass in name of this class
     curCourse = course_list[0]
     dist = zip(GRADES, numGrades)
@@ -352,7 +350,6 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # course specific to the semester
     courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = ctime)
     if not courseList:
-        print "jsagklsahgjasdgjasglksajgs"
         return render(request, 'curves/404.html')
     else:
         course = courseList[0]
@@ -367,7 +364,6 @@ def courseSpecificView(request, cdept, cnum, ctime):
 
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
-    print dist
     total = sum(numGrades)
 
     curProfsForPrint = []
@@ -388,12 +384,12 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
-    # if alreadyEntered(request):
-    #     print "he;;p"
+    # if loggedIn(request):
     #     return redirect('/after_data/')
+
     # A HTTP POST?
     y = range(1,4)
-    z = range(4, 7)
+    z = range(4,7)
     currentnetid = request.user.username
 
     #generate the variable names of values in the form.cleaned_data dictionary
@@ -406,12 +402,10 @@ def add_data(request):
 
 
     if request.method == 'POST':
-        print "ADvait"
         form = Course_SpecificForm(request.POST)
 
         # Have we been provided with a valid form?
         if form.is_valid():
-            print "hank"
 
             #acknowledge student's adding of data
             thisUser = Student.objects.get(netid=currentnetid)
@@ -441,7 +435,6 @@ def add_data(request):
             # The user will be shown the homepage.
             return redirect('/after_data/')
         else:
-            print "sfjg"
             print form.errors
     else:
         # If the request was not a POST, display the form to enter details.
@@ -521,9 +514,7 @@ def search(request):
                 #return render(request, 'curves/results.html', context)
                 for c in classes:
                     depts = c.dept.split("+")
-                    print depts
                     nums = c.num.split("+")
-                    print nums
                     for i in range(0, len(nums)):
                         if (depts[i] == qS[0].upper()) and (nums[i] == qS[1]):
                             return courseView(request, c.dept, c.num)
@@ -553,7 +544,6 @@ def search(request):
         elif (len(classes) > 0):
             uniqueClasses = []
             for c in classes:
-                print "hi"
                 for u in uniqueClasses:
                     if u.dept == c.dept and u.num == c.num:
                         break
@@ -692,7 +682,6 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
         thisProf1 = p.replace("*", " ")
         prof_names_list1.append(thisProf1)
 
-    print prof_names_list1
     # in order to pass in name of this class
     curCourse1 = course_list1[0]
     dist1 = zip(GRADES, numGrades1)
@@ -732,7 +721,6 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
         thisProf2 = p.replace("*", " ")
         prof_names_list2.append(thisProf2)
 
-    print prof_names_list2
     # in order to pass in name of this class
     curCourse2 = course_list2[0]
     dist2 = zip(GRADES, numGrades2)
