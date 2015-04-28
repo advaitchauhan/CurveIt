@@ -134,6 +134,7 @@ def deptView(request, cdept):
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
+@login_required
 def deptSpecificView(request, cdept, ctime):
     if loggedIn(request) == False:
         return redirect('/add_data/')
@@ -453,6 +454,7 @@ def add_data(request):
     # Render the form with error messages (if any).
     return render(request, 'curves/add_data.html', {'form': form, 'allCombinedJSON': q.qlist})
 
+@login_required
 def after_data(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
@@ -462,6 +464,7 @@ def after_data(request):
     context = {'allCombinedJSON': q.qlist}
     return render(request, 'curves/after_data.html', context)       
 
+@login_required
 def search(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
@@ -576,6 +579,7 @@ def search(request):
 
     return HttpResponse(message)
 
+@login_required
 def handler404(request):
     cachedList = QueryList.objects.all()
     qc = cachedList[0]

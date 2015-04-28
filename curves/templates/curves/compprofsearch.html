@@ -1,0 +1,30 @@
+<!-- HTML template for displaying the aggregrate grade distribution for a department, as well as links to all the classes in that department -->
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}   
+<form class="form" action="/search/" method="get">
+  <div class="form-group">
+    <input type="text" id="autocomplete" style="width: 500px" placeholder="Search for a Professor" class="form-control" name="cprof1">
+    <input type="text" id="autocomplete" style="width: 500px" placeholder="Search for a Professor" class="form-control" name="cprof1">
+  </div>
+  <button type="submit" class="btn btn-search" style ="width: 75px" value="Search">Search </button>
+</form>
+<script src = "{% static 'curves/js/highchartsscript.js' %}"></script>
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+</script>
+{% endblock %}
