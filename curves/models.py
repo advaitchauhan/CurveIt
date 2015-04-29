@@ -27,7 +27,7 @@ class Course_Specific(models.Model):
 	num_F_PDF = models.IntegerField(default = 0)
 	num_P_PDF = models.IntegerField(default = 0)
 	titleString = models.CharField(default = "blank", max_length = 200)
-	avg = models.IntegerField(default = 0)
+	avg = models.DecimalField(default = 0, max_digits=3, decimal_places=2)
 
 	# increment grade counter for string grade (e.g. "A, B-, etc")
 	def addGrade(self, grade):
@@ -117,12 +117,12 @@ class Course_Specific(models.Model):
 
 		return searchList
 
-		def calcAvg(self):
-			total = num_A_plus * 4 + num_A * 4 + num_A_minus * 3.7 + num_B_plus * 3.3 + num_B * 3 + num_B_minus * 2.7 + num_C_plus * 2.3 + num_C * 2 + num_C_minus * 1.7 + (num_D_PDF + num_D_grade)
-			self.avg = total / self.getTotalGrades
+	def calcAvg(self):
+		total = self.num_A_plus * 4 + self.num_A * 4 + self.num_A_minus * 3.7 + self.num_B_plus * 3.3 + self.num_B * 3 + self.num_B_minus * 2.7 + self.num_C_plus * 2.3 + self.num_C * 2 + self.num_C_minus * 1.7 + (self.num_D_PDF + self.num_D_grade)
+		self.avg = total / self.getTotalGrades()
 
-		def getAvg(self):
-			return self.avg
+	def getAvg(self):
+		return self.avg
 
 class QueryList(models.Model):
 	qlist = models.TextField(null = True)

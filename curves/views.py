@@ -329,6 +329,12 @@ def courseView(request, cdept, cnum):
 
     # in order to pass in name of this class
     curCourse = course_list[0]
+
+
+    print "--here--"
+    print curCourse.getAvg()
+    print "--here--"
+
     dist = zip(GRADES, numGrades)
     profs = zip(prof_list, prof_names_list)
     total = sum(numGrades) 
