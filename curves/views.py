@@ -420,12 +420,14 @@ def add_data(request):
                     thisClass = curData[c] # i.e. AAS 210/MUS 253: Intro to...
                     thisGrade = curData[g] # gets grade chosen
                     thisClass.addGrade(thisGrade)
+                    thisClass.calcAvg()
                     thisClass.save()
                 for i in range(0, len(optionalClasses)):
                     thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
                     if thisClass != None:
                         thisGrade = curData[optionalGrades[i]] # gets grade chosen
                         thisClass.addGrade(thisGrade)
+                        thisClass.calcAvg()
                         thisClass.save()
             except Course_Specific.DoesNotExist:
                 thisClass = None
@@ -846,5 +848,113 @@ def compareCourseSelect(request):
 
     context = {'allCourseJSON': q.qlist}
     return render(request, 'curves/compcourselist.html', context)
+
+def getKey(item):
+    return item[1]
+
+@login_required
+def topTen(request):
+    if loggedIn(request) == False:
+        return redirect('/add_data/')
+
+    allSemAllCourse = Course_Specific.objects.all()
+
+    uniqueCourseList = []
+
+    for a in allSemAllCourse:
+        course = a.__unicode__()
+        if course not in uniqueCourseList:
+            uniqueCourseList.append(course)
+
+    uniqueDeptList = []
+
+    for c in allSemAllCourse:
+        depts = c.dept.split("+")
+        for d in depts:
+            if d not in uniqueDeptList:
+                uniqueDeptList.append(d)
+
+    uniqueProfList = []
+
+    for c in allSemAllCourse:
+        profs = c.prof.split("+")
+        for p in profs:
+            if p not in uniqueProfList:
+                uniqueProfList.append(p)
+
+    courseAvgList = []
+    for u in uniqueCourseList:
+        allSems = Course_Specific.objects.filter(name=u)
+        thisAvg = 0
+        thisTotal = 0
+        for a in allSems:
+            thisAvg += a.getAvg() * a.getTotalGrades()
+            thisTotal += a.getTotalGrades()
+        courseAvgList.append((u, thisAvg/thisTotal))
+
+    courseAvgList = sorted(courseAvglist, key=getKey, reverse=True)
+    i = 0
+    finalCourseList = []
+    for c in courseAvgList:
+        if i > 10:
+            break
+        else:
+            allClasses = Course_Specific.objects.filter(name=c)
+            allClassesTotal = 0
+            for a in allClasses:
+                allClassesTotal += a.getTotalGrades()
+            if allClassesTotal >= 10:
+                finalCourseList.append(c)
+
+    profAvgList = []
+    for p in uniqueProfList:
+        allSems = Course_Specific.objects.filter(prof__icontains=p)
+        thisAvg = 0
+        thisTotal = 0
+        for a in allSems:
+            thisAvg += a.getAvg() * a.getTotalGrades()
+            thisTotal += a.getTotalGrades()
+        profAvgList.append((p, thisAvg/thisTotal))
+
+    profAvgList = sorted(profAvglist, key=getKey)
+    i = 0
+    finalCourseList = []
+    for c in profAvgList:
+        if i > 10:
+            break
+        else:
+            allClasses = Course_Specific.objects.filter(prof__icontains=c)
+            allClassesTotal = 0
+            for a in allClasses:
+                allClassesTotal += a.getTotalGrades()
+            if allClassesTotal >= 10:
+                finalCourseList.append(c)
+
+    deptAvgList = []
+    for d in uniqueDeptList:
+        allSems = Course_Specific.objects.filter(dept__icontains=d)
+        thisAvg = 0
+        thisTotal = 0
+        for a in allSems:
+            thisAvg += a.getAvg() * a.getTotalGrades()
+            thisTotal += a.getTotalGrades()
+        deptAvgList.append((d, thisAvg/thisTotal))
+
+    deptAvgList = sorted(deptAvglist, key=getKey)
+    i = 0
+    finalCourseList = []
+    for c in deptAvgList:
+        if i > 10:
+            break
+        else:
+            allClasses = Course_Specific.objects.filter(dept__icontains=d)
+            allClassesTotal = 0
+            for a in allClasses:
+                allClassesTotal += a.getTotalGrades()
+            if allClassesTotal >= 10:
+                finalCourseList.append(c)
+
+
+
 
 
