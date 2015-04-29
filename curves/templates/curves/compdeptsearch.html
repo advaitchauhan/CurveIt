@@ -4,18 +4,18 @@
 {% load static %}
 
 <div class="title-div">
-  <h1 class="title"> Choose Professors to Compare </h1>
+  <h1 class="title"> Choose Departments to Compare </h1>
 </div>
 
-<form action="/compprof/" method="get" class="pure-form pure-form-stacked">
+<form action="/compdept/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style=" width50%" placeholder="Choose Professor 1" name="q1">
+        <input type="text" id = "autocompleteDept" class="form-control" style=" width50%" placeholder="Choose Department 1" name="q1">
     </div>
 </form>
 
-<form action="/compprof/" method="get" class="pure-form pure-form-stacked">
+<form action="/compdept/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style=" width50%" placeholder="Choose Professor 2" name="q2">
+        <input type="text" id = "autocompleteDept" class="form-control" style=" width50%" placeholder="Choose Department 2" name="q2">
     </div>
 </form>
 
@@ -38,14 +38,15 @@ $(function(){
 <script type = "text/javascript">
 $(function(){
   //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allProfJSON | safe}};
+  var allFields = {{ allDeptJSON | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocompleteProf').autocomplete({
+  $('#autocompleteDept').autocomplete({
     lookup: allFields,
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
     minChars: 2
   });
+  
 });
 </script>
 {% endblock %}

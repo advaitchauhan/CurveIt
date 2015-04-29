@@ -62,7 +62,7 @@ class Course_Specific(models.Model):
 
 	# returns total number of grades (non P)
 	def getTotalGrades(self):
-		return self.num_A_plus + self.num_A + self.num_A_minus + self.num_B_plus + self.num_B + self.num_B_minus + self.num_C_plus + self.num_C + self.num_C_minus + self.num_D_grade + self.num_F_grade + self.num_D_PDF + self.num_F_PDF
+		return self.num_A_plus + self.num_A + self.num_A_minus + self.num_B_plus + self.num_B + self.num_B_minus + self.num_C_plus + self.num_C + self.num_C_minus + self.num_D_grade + self.num_F_grade + self.num_D_PDF + self.num_F_PDF + self.num_P_PDF
 
 	# returns total number of PDF grades
 	def getTotalPDF(self):
@@ -70,7 +70,7 @@ class Course_Specific(models.Model):
 
 	# returns a list of all number of grades (A+ to F_PDF)
 	def getAllGrades(self):
-		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade]
+		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade, self.num_P_PDF]
 		return allGrades
 	
 	def __unicode__(self): 

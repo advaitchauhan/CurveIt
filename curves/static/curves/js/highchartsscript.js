@@ -28,9 +28,9 @@ for (var i=0; i < _numGrades.length; i++) {
 
 var tickpos = [];
 
-if (maxpcnt > 50) {tickpos = [.2*dataSum, .4*dataSum, .6*dataSum, .8*dataSum, 1*dataSum];}
-else if (maxpcnt > 25) {tickpos = [.1*dataSum, .2*dataSum, .3*dataSum, .4*dataSum, .5*dataSum];}
-else {tickpos = [.05*dataSum, .1*dataSum, .15*dataSum, .2*dataSum, .25*dataSum];}
+if (maxpcnt > 50) {tickpos = [0* dataSum, .2*dataSum, .4*dataSum, .6*dataSum, .8*dataSum, 1*dataSum];}
+else if (maxpcnt > 25) {tickpos = [0*dataSum, .1*dataSum, .2*dataSum, .3*dataSum, .4*dataSum, .5*dataSum];}
+else {tickpos = [0*dataSum, .05*dataSum, .1*dataSum, .15*dataSum, .2*dataSum, .25*dataSum];}
 
 
 $(function makechart() { 
@@ -53,7 +53,7 @@ $(function makechart() {
         xAxis: {
         	categories: _grades,
         	title: {
-        		text: "Grades",
+        		text: "Grade",
                 lineColor: "#FFFFFF",
                 style: {
                     color: "#FFFFFF"
@@ -92,14 +92,20 @@ $(function makechart() {
         },
         plotOptions: {
 			column: {
+                colorByPoint: true,
     			pointPadding: 0,
     			borderWidth: 0.5,
                 groupPadding: 0,
-                // color: 'rgb(255, 154, 51)',
-                color: 'rgba(230, 91, 5, 0.6)',
+                // colors: ['rgba(230, 91, 5, 0.6)','rgba(20, 91, 5, 0.6)']
                 borderColor: "#000000"
 			}
 		},
+        colors: ['rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
+             'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
+                 'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
+                     'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
+                         'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
+                             'rgba(230, 91, 5, 0.6', '#FFFFFF',],
 		legend: {
 			enabled: false
 		},
@@ -107,10 +113,6 @@ $(function makechart() {
         credits: {
             enabled: false
         },
-
-		//tooltip: {
-		//	pointFormat: 'Count: <b>{point.y}</b><br/>'
-		//},
 
         tooltip: {
             formatter: function () {

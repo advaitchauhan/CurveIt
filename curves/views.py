@@ -10,7 +10,7 @@ from deptscript import depts
 import json
 
 CURRENTSEMESTER = "S2015"
-GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D_grade", "F_grade"]
+GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
 
 # Create your views here.
 @login_required
@@ -18,7 +18,6 @@ def intro(request):
     return render(request, 'curves/intro.html')
 
 @login_required
-
 def index(request):
     if loggedIn(request) == False:
         return redirect('/intro/')
@@ -378,6 +377,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
 
     context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
+    print dist
     return render(request, 'curves/course_specific.html', context)
 
 @login_required
@@ -422,6 +422,7 @@ def add_data(request):
                     thisClass.addGrade(thisGrade)
                     thisClass.calcAvg()
                     thisClass.save()
+                    print thisGrade
                 for i in range(0, len(optionalClasses)):
                     thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
                     if thisClass != None:
@@ -671,11 +672,7 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
         grades2 = course.getAllGrades()
         for i in range(0, len(grades2)):
             numGrades2[i] += grades2[i]
-
-    for p in prof_list2:
-        thisProf2 = p.replace("*", " ")
-        prof_names_list2.append(thisProf2)
-
+            
     # in order to pass in name of this class
     curCourse2 = course_list2[0]
     dist2 = zip(GRADES, numGrades2)
@@ -847,7 +844,7 @@ def compareCourseSelect(request):
         q = cachedList[0]
 
     context = {'allCourseJSON': q.qlist}
-    return render(request, 'curves/compcourselist.html', context)
+    return render(request, 'curves/compcoursesearch.html', context)
 
 def getKey(item):
     return item[1]
