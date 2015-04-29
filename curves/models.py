@@ -120,6 +120,21 @@ class QueryList(models.Model):
 	qlist = models.TextField(null = True)
 	def __unicode__(self):
 		return self.qlist
+
+class QueryProfList(models.Model):
+	qlist = models.TextField(null = True)
+	def __unicode__(self):
+		return self.qlist
+
+class QueryDeptList(models.Model):
+	qlist = models.TextField(null = True)
+	def __unicode__(self):
+		return self.qlist
+
+class QueryCourseList(models.Model):
+	qlist = models.TextField(null = True)
+	def __unicode__(self):
+		return self.qlist
 		
 class Student(models.Model):
 	netid = models.CharField(max_length = 50) # e.g. 'tylerh'

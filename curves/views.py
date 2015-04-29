@@ -4,7 +4,7 @@ autocomplete_light.autodiscover()
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from curves.models import Course_Specific, Student, QueryList
+from curves.models import Course_Specific, Student, QueryList, QueryProfList, QueryCourseList, QueryDeptList
 from curves.forms import Course_SpecificForm
 from deptscript import depts
 import json
@@ -181,8 +181,6 @@ def deptSpecificView(request, cdept, ctime):
 # ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
-
-
     if loggedIn(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
@@ -671,13 +669,11 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
         grades2 = course.getAllGrades()
         for i in range(0, len(grades2)):
             numGrades2[i] += grades2[i]
-<<<<<<< HEAD
+
     for p in prof_list2:
         thisProf2 = p.replace("*", " ")
         prof_names_list2.append(thisProf2)
 
-=======
->>>>>>> d1d1a9af4b3356a86720794cdd74207647ca78f7
     # in order to pass in name of this class
     curCourse2 = course_list2[0]
     dist2 = zip(GRADES, numGrades2)
@@ -754,3 +750,101 @@ def compareProfView(request, cprof1, cprof2):
 
     context = {'prof1ForPrint': cprof1.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2}
     return render(request, 'curves/compareprof.html', context)
+
+@login_required
+# page where user can select two professors to compare
+def compareProfSelect(request):
+    if loggedIn(request) == False:
+        return redirect('/add_data/')
+
+    cachedList = QueryProfList.objects.all()
+    if len(cachedList) == 0:
+        allSemAllCourse = Course_Specific.objects.all()
+        if not allSemAllCourse:
+            return render(request, 'curves/404.html')
+
+        uniqueProfList = []
+
+        for c in allSemAllCourse:
+            profs = c.prof.split("+")
+            for p in profs:
+                if p not in uniqueProfList:
+                    uniqueProfList.append(p.replace("*", " "))
+
+        allProfJSON = json.dumps(uniqueProfList)
+
+        q = QueryProfList()
+        q.qlist = allProfJSON
+        q.save()
+
+    else:
+        q = cachedList[0]
+
+    context = {'allProfJSON': q.qlist}
+    return render(request, 'curves/compprofsearch.html', context)
+
+@login_required
+# page where user can select two professors to compare
+def compareDeptSelect(request):
+    if loggedIn(request) == False:
+        return redirect('/add_data/')
+
+    cachedList = QueryDeptList.objects.all()
+    if len(cachedList) == 0:
+        allSemAllCourse = Course_Specific.objects.all()
+        if not allSemAllCourse:
+            return render(request, 'curves/404.html')
+
+        uniqueDeptList = []
+
+        for c in allSemAllCourse:
+            depts = c.dept.split("+")
+            for d in depts:
+                if d not in uniqueDeptList:
+                    uniqueDeptList.append(d + ": " + depts[d])
+
+        allDeptJSON = json.dumps(uniqueDeptList)
+
+        q = QueryDeptList()
+        q.qlist = allDeptJSON
+        q.save()
+
+    else:
+        q = cachedList[0]
+
+    context = {'allDeptJSON': q.qlist}
+    return render(request, 'curves/compdeptsearch.html', context)
+
+@login_required
+# page where user can select two professors to compare
+def compareCourseSelect(request):
+    if loggedIn(request) == False:
+        return redirect('/add_data/')
+
+    cachedList = QueryCourseList.objects.all()
+    if len(cachedList) == 0:
+        allSemAllCourse = Course_Specific.objects.all()
+        if not allSemAllCourse:
+            return render(request, 'curves/404.html')
+
+        uniqueCourseList = []
+
+        for a in allSemAllCourse:
+            course = a.__unicode__()
+            for c in course:
+                if c not in uniqueCourseList:
+                    uniqueCourseList.append(c)
+
+        allCourseJSON = json.dumps(uniqueCourseList)
+
+        q = QueryCourseList()
+        q.qlist = allCourseJSON
+        q.save()
+
+    else:
+        q = cachedList[0]
+
+    context = {'allCourseJSON': q.qlist}
+    return render(request, 'curves/compcourselist.html', context)
+
+
