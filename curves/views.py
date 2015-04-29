@@ -866,14 +866,16 @@ def topTen(request):
 
     for a in allSemAllCourse:
         course = a.__unicode__()
+        index = course.index(":")
+        course = course[index+2:]
         if course not in uniqueCourseList:
             uniqueCourseList.append(course)
 
     uniqueDeptList = []
 
     for c in allSemAllCourse:
-        depts = c.dept.split("+")
-        for d in depts:
+        curdepts = c.dept.split("+")
+        for d in curdepts:
             if d not in uniqueDeptList:
                 uniqueDeptList.append(d)
 
@@ -885,6 +887,7 @@ def topTen(request):
             if p not in uniqueProfList:
                 uniqueProfList.append(p)
 
+
     courseAvgList = []
     for u in uniqueCourseList:
         allSems = Course_Specific.objects.filter(name=u)
@@ -895,19 +898,22 @@ def topTen(request):
             thisTotal += a.getTotalGrades()
         courseAvgList.append((u, thisAvg/thisTotal))
 
-    courseAvgList = sorted(courseAvglist, key=getKey, reverse=True)
+
+    courseAvgList = sorted(courseAvgList, key=getKey, reverse=True)
     i = 0
     finalCourseList = []
-    for c in courseAvgList:
-        if i > 10:
+    for course in courseAvgList:
+        if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(name=c)
+            print course[0]
+            allClasses = Course_Specific.objects.filter(name=course[0])
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
             if allClassesTotal >= 10:
-                finalCourseList.append(c)
+                finalCourseList.append(course[0])
+                i += 1
 
     profAvgList = []
     for p in uniqueProfList:
@@ -919,19 +925,20 @@ def topTen(request):
             thisTotal += a.getTotalGrades()
         profAvgList.append((p, thisAvg/thisTotal))
 
-    profAvgList = sorted(profAvglist, key=getKey)
+    profAvgList = sorted(profAvgList, key=getKey)
     i = 0
-    finalCourseList = []
-    for c in profAvgList:
-        if i > 10:
+    finalProfList = []
+    for prof in profAvgList:
+        if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(prof__icontains=c)
+            allClasses = Course_Specific.objects.filter(prof__icontains=prof[0])
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
             if allClassesTotal >= 10:
-                finalCourseList.append(c)
+                finalProfList.append(prof[0].replace("*", " "))
+                i += 1
 
     deptAvgList = []
     for d in uniqueDeptList:
@@ -943,19 +950,25 @@ def topTen(request):
             thisTotal += a.getTotalGrades()
         deptAvgList.append((d, thisAvg/thisTotal))
 
-    deptAvgList = sorted(deptAvglist, key=getKey)
+    deptAvgList = sorted(deptAvgList, key=getKey)
     i = 0
-    finalCourseList = []
-    for c in deptAvgList:
-        if i > 10:
+    finalDeptList = []
+    for dept in deptAvgList:
+        if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(dept__icontains=d)
+            allClasses = Course_Specific.objects.filter(dept__icontains=dept[0])
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
             if allClassesTotal >= 10:
-                finalCourseList.append(c)
+                thisDept = dept[0]
+                finalDeptList.append(dept[0] + ": " + depts[thisDept])
+                i += 1
+
+
+    context = {'finalDeptList': finalDeptList, 'finalCourseList': finalCourseList, 'finalProfList': finalProfList}
+    return render(request, 'curves/topten.html', context)
 
 
 
