@@ -7,15 +7,15 @@
   <h1 class="title"> Choose Professors to Compare </h1>
 </div>
 
-<form action="/compprof/" method="get" class="pure-form pure-form-stacked">
+<form action="/compcourse/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style=" width50%" placeholder="Choose Professor 1" name="q1">
+        <input type="text" id = "autocompleteCourse" class="form-control" style=" width50%" placeholder="Choose Course 1" name="q1">
     </div>
 </form>
 
-<form action="/compprof/" method="get" class="pure-form pure-form-stacked">
+<form action="/compcourse/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style=" width50%" placeholder="Choose Professor 2" name="q2">
+        <input type="text" id = "autocompleteCourse" class="form-control" style=" width50%" placeholder="Choose Course 2" name="q2">
     </div>
 </form>
 
@@ -38,9 +38,9 @@ $(function(){
 <script type = "text/javascript">
 $(function(){
   //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allProfJSON | safe}};
+  var allFields = {{ allCourseJSON | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocompleteProf').autocomplete({
+  $('#autocompleteCourse').autocomplete({
     lookup: allFields,
     triggerSelectOnValidInput: false,
     lookupLimit: 8,

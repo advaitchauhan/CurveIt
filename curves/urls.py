@@ -35,6 +35,15 @@ urlpatterns = patterns('',
 	#intermediary url for search queries
 	url(r'^search/$', views.search),
 
+	#url for choosing departments to compare
+	url(r'^choosedept/$', views.compareDeptSelect),
+
+	#url for choosing professors to compare
+	url(r'^chooseprof/$', views.compareProfSelect),
+
+	#url for choosing professors to compare
+	url(r'^choosecourse/$', views.compareCourseSelect),
+
 	#compare departments
 	url(r'^compdept/(?P<cdept1>[A-Za-z]{3,3})/(?P<cdept2>[A-Za-z]{3,3})/$', views.comparedeptView, name = 'comparedeptView'),
 

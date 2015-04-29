@@ -845,6 +845,6 @@ def compareCourseSelect(request):
         q = cachedList[0]
 
     context = {'allCourseJSON': q.qlist}
-    return render(request, 'curves/compcourselist.html', context)
+    return render(request, 'curves/compcoursesearch.html', context)
 
 
