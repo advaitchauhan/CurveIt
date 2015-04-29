@@ -9,24 +9,25 @@
 
 <form action="/compdept/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteDept" class="form-control" style=" width50%" placeholder="Choose Department 1" name="q1">
+        <input type="text" id = "autocompleteDept" class="form-control" style="width: 30%" placeholder="Choose Department 1" name="q1">
     </div>
+
+    <div class="form-group">
+        <input type="text" id = "autocompleteDept" class="form-control" style="width: 30%" placeholder="Choose Department 2" name="q2">
+    </div>
+
+    <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Depts">Compare Departments</button>
 </form>
 
-<form action="/compdept/" method="get" class="pure-form pure-form-stacked">
-    <div class="form-group">
-        <input type="text" id = "autocompleteDept" class="form-control" style=" width50%" placeholder="Choose Department 2" name="q2">
-    </div>
-</form>
+
 
 <script type = "text/javascript">
 $(function(){
   //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allCombinedJSON | safe}};
+  var allFields = {{ allDeptJSON | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocomplete').autocomplete({
+  $('.form-control').autocomplete({
     lookup: allFields,
-    groupBy: 'cat',
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
     minChars: 2
@@ -38,10 +39,11 @@ $(function(){
 <script type = "text/javascript">
 $(function(){
   //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allDeptJSON | safe}};
+  var allFields = {{ allCombinedJSON | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocompleteDept').autocomplete({
+  $('#autocomplete').autocomplete({
     lookup: allFields,
+    groupBy: 'cat',
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
     minChars: 2

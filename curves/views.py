@@ -785,7 +785,10 @@ def compareProfSelect(request):
     else:
         q = cachedList[0]
 
-    context = {'allProfJSON': q.qlist}
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
+
+    context = {'allProfJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compprofsearch.html', context)
 
 @login_required
@@ -803,8 +806,8 @@ def compareDeptSelect(request):
         uniqueDeptList = []
 
         for c in allSemAllCourse:
-            depts = c.dept.split("+")
-            for d in depts:
+            deps = c.dept.split("+")
+            for d in deps:
                 if d not in uniqueDeptList:
                     uniqueDeptList.append(d + ": " + depts[d])
 
@@ -817,7 +820,10 @@ def compareDeptSelect(request):
     else:
         q = cachedList[0]
 
-    context = {'allDeptJSON': q.qlist}
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
+
+    context = {'allDeptJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compdeptsearch.html', context)
 
 @login_required
@@ -849,7 +855,10 @@ def compareCourseSelect(request):
     else:
         q = cachedList[0]
 
-    context = {'allCourseJSON': q.qlist}
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
+
+    context = {'allCourseJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compcoursesearch.html', context)
 
 def getKey(item):
