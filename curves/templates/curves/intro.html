@@ -1,6 +1,26 @@
-<html>
-this is a temporary intro page
-</br>
+{% extends 'curves/index.html' %}
+
+{% block content %}
+
+<div class="modal fade" data-keyboard="false" data-backdrop="static" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        <h3 class="modal-title">Welcome to PrincetonCurveIt!!!</h3>
+      </div>
+      <div class="modal-body">
+        <p><h3>Hello, and welcome to Princeton CurveIt, Princeton's one and only grade distribution data service.  In order to view data we ask that you share last semester's grades with us. Don't worry, the grades are totally anonymous and are only added to the aggregate grade data for each class!! It’s you and your contribution of data that lets us provide this service and help bring transparency to grading at Princeton!! If you are ready to enter your grades and be apart of PrincetonCurveIt, click Add Grades below!!
+          <br><br></br></br>
+        	*Note: You will be unable to view data until you enter one semester's worth of grades</h3></p>
+      </div>
+      <div class="modal-footer">
+		<button class="btn btn-search" onclick= "location.href='/add_data/'">Add Data</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}
 <a href = "/add_data/">Get Started!</a>
 
-</html>
