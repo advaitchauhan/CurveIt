@@ -135,6 +135,7 @@ font-family: Dense, Helvetica,Arial,sans-serif;
     }
 }
 
+body.modal-open { overflow:inherit; padding-right:inherit !important; }
 
 .btn-search {
   background-color: hsl(0, 0%, 16%) !important;

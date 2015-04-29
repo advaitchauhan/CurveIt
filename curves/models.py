@@ -4,7 +4,7 @@ from django.db import models
 # Techniques' taught by a specific professor during a specific
 # semester)
 class Course_Specific(models.Model):
-	CHOICES = [("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D_grade", "D_grade"), ("F_grade", "F_grade"), ("D_PDF", "D_PDF"), ("F_PDF", "F_PDF"), ("P_PDF", "P_PDF")]
+	CHOICES = [("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D", "D"), ("F", "F"), ("P", "P")]
 	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
 	
 	dept = models.CharField(max_length = 40) # e.g. 'COS'
@@ -21,11 +21,9 @@ class Course_Specific(models.Model):
 	num_C_plus = models.IntegerField(default = 0)
 	num_C = models.IntegerField(default = 0)
 	num_C_minus = models.IntegerField(default = 0)
-	num_D_grade = models.IntegerField(default = 0)
-	num_F_grade = models.IntegerField(default = 0)
-	num_D_PDF = models.IntegerField(default = 0)
-	num_F_PDF = models.IntegerField(default = 0)
-	num_P_PDF = models.IntegerField(default = 0)
+	num_D = models.IntegerField(default = 0)
+	num_F = models.IntegerField(default = 0)
+	num_P = models.IntegerField(default = 0)
 	titleString = models.CharField(default = "blank", max_length = 200)
 	avg = models.DecimalField(default = 0, max_digits=3, decimal_places=2)
 
@@ -49,28 +47,20 @@ class Course_Specific(models.Model):
 			self.num_C += 1
 		elif grade == "C-":
 			self.num_C_minus += 1
-		elif grade == "D_grade":
-			self.num_D_grade += 1
-		elif grade == "F_grade":
-			self.num_F_grade += 1
-		elif grade == "D_PDF":
-			self.num_D_PDF += 1
-		elif grade == "F_PDF":
-			self.num_F_PDF += 1
-		elif grade == "P_PDF":
-			self.num_P_PDF += 1
+		elif grade == "D":
+			self.num_D += 1
+		elif grade == "F":
+			self.num_F += 1
+		elif grade == "P":
+			self.num_P += 1
 
 	# returns total number of grades (non P)
 	def getTotalGrades(self):
-		return self.num_A_plus + self.num_A + self.num_A_minus + self.num_B_plus + self.num_B + self.num_B_minus + self.num_C_plus + self.num_C + self.num_C_minus + self.num_D_grade + self.num_F_grade + self.num_D_PDF + self.num_F_PDF + self.num_P_PDF
-
-	# returns total number of PDF grades
-	def getTotalPDF(self):
-		return self.num_P_PDF + self.num_D_PDF + self.num_F_PDF
+		return self.num_A_plus + self.num_A + self.num_A_minus + self.num_B_plus + self.num_B + self.num_B_minus + self.num_C_plus + self.num_C + self.num_C_minus + self.num_D + self.num_F
 
 	# returns a list of all number of grades (A+ to F_PDF)
 	def getAllGrades(self):
-		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D_grade, self.num_F_grade, self.num_P_PDF]
+		allGrades = [self.num_A_plus, self.num_A, self.num_A_minus, self.num_B_plus, self.num_B, self.num_B_minus, self.num_C_plus, self.num_C, self.num_C_minus, self.num_D, self.num_F, self.num_P]
 		return allGrades
 	
 	def __unicode__(self): 
@@ -118,7 +108,7 @@ class Course_Specific(models.Model):
 		return searchList
 
 	def calcAvg(self):
-		total = self.num_A_plus * 4 + self.num_A * 4 + self.num_A_minus * 3.7 + self.num_B_plus * 3.3 + self.num_B * 3 + self.num_B_minus * 2.7 + self.num_C_plus * 2.3 + self.num_C * 2 + self.num_C_minus * 1.7 + (self.num_D_PDF + self.num_D_grade)
+		total = self.num_A_plus * 4 + self.num_A * 4 + self.num_A_minus * 3.7 + self.num_B_plus * 3.3 + self.num_B * 3 + self.num_B_minus * 2.7 + self.num_C_plus * 2.3 + self.num_C * 2 + self.num_C_minus * 1.7 + self.num_D
 		self.avg = total / self.getTotalGrades()
 
 	def getAvg(self):
