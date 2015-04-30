@@ -644,7 +644,10 @@ def comparedeptView(request):
     dist2 = zip(GRADES, numGrades2)
     total2 = sum(numGrades2)
 
-    context = {'dept1ForPrint': depts[cdept1], 'dept1': cdept1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'dept2ForPrint': depts[cdept2], 'dept2': cdept2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2}
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
+
+    context = {'dept1ForPrint': depts[cdept1], 'dept1': cdept1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'dept2ForPrint': depts[cdept2], 'dept2': cdept2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compdepttodept.html', context)
 
 
@@ -699,9 +702,6 @@ def comparecourseView(request):
     dist1 = zip(GRADES, numGrades1)
     total1 = sum(numGrades1) 
 
-    cachedList1 = QueryList.objects.all()
-    q1 = cachedList1[0]
-
     #second course
     course_list2 = Course_Specific.objects.filter(dept=cdept2, num=cnum2)
     if not course_list2:
@@ -719,7 +719,7 @@ def comparecourseView(request):
     total2 = sum(numGrades2) 
 
     cachedList2 = QueryList.objects.all()
-    q2 = cachedList2[0]
+    qAll = cachedList2[0]
 
     # condenses name for graph (e.g. COS 333)
     thisName1 = curCourse1.__unicode__();
@@ -727,7 +727,7 @@ def comparecourseView(request):
     thisName2 = curCourse2.__unicode__();
     simpleName2 = (thisName2.split(":"))[0]
 
-    context = {'dist1': dist1,'total1': total1, 'simpleName1': simpleName1, 'name1': curCourse1.__unicode__(), 'course1': curCourse1, 'allCombinedJSON1': q1.qlist, 'dist2': dist2,'total2': total2, 'simpleName2': simpleName2, 'name2': curCourse2.__unicode__(), 'course2': curCourse2, 'allCombinedJSON2': q2.qlist, 'cdept1': cdept1, 'cdept2': cdept2, 'cnum1': cnum1, 'cnum2': cnum2}
+    context = {'dist1': dist1,'total1': total1, 'simpleName1': simpleName1, 'name1': curCourse1.__unicode__(), 'course1': curCourse1, 'allCombinedJSON': qAll.qlist, 'dist2': dist2,'total2': total2, 'simpleName2': simpleName2, 'name2': curCourse2.__unicode__(), 'course2': curCourse2, 'cdept1': cdept1, 'cdept2': cdept2, 'cnum1': cnum1, 'cnum2': cnum2}
     return render(request, 'curves/comparecourse.html', context)
 
 @login_required
@@ -786,10 +786,10 @@ def compareProfView(request):
     dist2 = zip(GRADES, numGrades2)
     total2 = sum(numGrades2)
 
-    print dist1
-    print dist2
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
 
-    context = {'prof1ForPrint': cprof1.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2}
+    context = {'prof1ForPrint': cprof1.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compareprof.html', context)
 
 @login_required
