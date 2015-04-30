@@ -107,3 +107,31 @@ class compProfForm(forms.Form):
         elif (p1 == p2):
             self.add_error("prof1", "Please select two different professors.")
             self.add_error("prof2", "Please select two different professors.")
+
+class compDeptForm(forms.Form):
+    dept1 = forms.CharField(required=True)
+    dept2 = forms.CharField(required=True)
+
+    def clean(self):
+        cleaned_data = super(compDeptForm, self).clean()
+        d1 = cleaned_data.get("dept1")
+        d2 = cleaned_data.get("dept2")
+        if d1 == None or d2 == None:
+            pass;
+        elif (d1 == d2):
+            self.add_error("dept1", "Please select two different departments.")
+            self.add_error("dept2", "Please select two different departments.")
+
+class compCourseForm(forms.Form):
+    course1 = forms.CharField(required=True)
+    course2 = forms.CharField(required=True)
+
+    def clean(self):
+        cleaned_data = super(compCourseForm, self).clean()
+        c1 = cleaned_data.get("course1")
+        c2 = cleaned_data.get("course2")
+        if c1 == None or c2 == None:
+            pass;
+        elif (c1 == c2):
+            self.add_error("course1", "Please select two different courses.")
+            self.add_error("course2", "Please select two different courses.")

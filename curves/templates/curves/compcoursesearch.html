@@ -7,18 +7,40 @@
   <h1 class="title"> Choose Courses to Compare </h1>
 </div>
 
-<form action="/compcourse/" method="get" class="pure-form pure-form-stacked">
-    <div class="form-group">
-        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 40%" placeholder="Choose Course 1" name="q1">
-    </div>
+<form class = "option" id="data_form" method="post" action="/choosecourse/">
 
-    <div class="form-group">
-        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 40%" placeholder="Choose Course 2" name="q2">
-    </div>
-
-    <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Courses">Compare Courses</button>
-</form>
-
+    {% csrf_token %}
+      <div class = "combinedForm">
+        <div class = "form-group">
+        <ul class = "list-inline">
+            <div class="form-group">
+        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 20%" placeholder="Choose Course 1" {{form.course1}} >
+            </div>
+          {% if form.course1.errors%}
+          <!-- <div class="alert alert-danger alert-custom" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid email address
+          </div> -->
+              <li class="alert alert-danger alert-custom" role ="alert">{{ form.course1.errors }}</li>
+          {% endif %}
+        </ul>
+        <ul class = "list-inline">
+            <div class="form-group">
+        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 20%" placeholder="Choose Pofessor 2" {{form.course2}}>
+            </div>
+          {% if form.course2.errors%}
+          <!-- <div class="alert alert-danger alert-custom" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Enter a valid email address
+          </div> -->
+              <li class="alert alert-danger alert-custom" role ="alert">{{ form.course2.errors }}</li>
+          {% endif %}
+        </ul>
+      </div>
+      <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Courses">Compare Courses </button>
+    </form>
 
 
 <script type = "text/javascript">

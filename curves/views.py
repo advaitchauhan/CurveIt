@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific, Student, QueryList, QueryProfList, QueryCourseList, QueryDeptList
-from curves.forms import Course_SpecificForm, compProfForm
+from curves.forms import Course_SpecificForm, compProfForm, compDeptForm, compCourseForm
 from deptscript import depts
 import json
 
@@ -586,13 +586,9 @@ def handler404(request):
     return response
 
 @login_required
-def comparedeptView(request):
+def comparedeptView(request, cdept1, cdept2):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
-    q1 = (request.GET['q1']).split(":")
-    q2 = (request.GET['q2']).split(":")
-    cdept1 = q1[0]
-    cdept2 = q2[0]
 
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(dept__icontains = cdept1) # includes all semesters
@@ -654,37 +650,9 @@ def comparedeptView(request):
 @login_required
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
-def comparecourseView(request):
+def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
     if loggedIn(request) == False:
         return redirect('/add_data/')
-    q1 = ((request.GET['q1']).split(":"))[0]
-    q2 = ((request.GET['q2']).split(":"))[0]
-    areas1 = q1.split("/")
-    areas2 = q2.split("/")
-    cdept1 = ""
-    cnum1 = ""
-    for i in range(0,len(areas1)):
-        separate = areas1[i].split(" ")
-        thisDept = separate[0]
-        thisNum = separate[1]
-        if i < len(areas1) - 1:
-            cdept1 += thisDept + "+"
-            cnum1 += thisNum + "+"
-        else:
-            cdept1 += thisDept
-            cnum1 += thisNum
-    cdept2 = ""
-    cnum2 = ""
-    for i in range(0,len(areas2)):
-        separate = areas2[i].split(" ")
-        thisDept = separate[0]
-        thisNum = separate[1]
-        if i < len(areas2) - 1:
-            cdept2 += thisDept + "+"
-            cnum2 += thisNum + "+"
-        else:
-            cdept2 += thisDept
-            cnum2 += thisNum
 
     # gets list of this course over all semesters
     course_list1 = Course_Specific.objects.filter(dept=cdept1, num=cnum1)
@@ -847,7 +815,7 @@ def compareProfSelect(request):
 
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    context = {'form': form, 'allCombinedJSON': q.qlist, 'allProfJSON': q.qlist}
+    context = {'form': form, 'allCombinedJSON': qAll.qlist, 'allProfJSON': q.qlist}
     return render(request, 'curves/compprofsearch.html', context)
 
 @login_required
@@ -883,10 +851,27 @@ def compareDeptSelect(request):
     else:
         q = cachedList[0]
 
+    if request.method == 'POST':
+        form = compDeptForm(request.POST)
+
+        # Have we been provided with a valid form?
+        if form.is_valid():
+            curData = form.cleaned_data
+            cdept1 = curData["dept1"]
+            cdept2 = curData["dept2"]
+            cdept1 = (cdept1.split(":"))[0]
+            cdept2 = (cdept2.split(":"))[0]
+            return redirect('/compdept/' + cdept1 + '/' + cdept2 + '/')
+        else:
+            print form.errors
+    else:
+        # If the request was not a POST, display the form to enter details.
+        form = compDeptForm()
+
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'allDeptJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
+    context = {'form': form, 'allCombinedJSON': qAll.qlist, 'allDeptJSON': q.qlist}
     return render(request, 'curves/compdeptsearch.html', context)
 
 @login_required
@@ -918,10 +903,56 @@ def compareCourseSelect(request):
     else:
         q = cachedList[0]
 
+    if request.method == 'POST':
+        form = compCourseForm(request.POST)
+
+        # Have we been provided with a valid form?
+        if form.is_valid():
+            curData = form.cleaned_data
+            course1 = curData["course1"]
+            course2 = curData["course2"]
+            areas1 = course1.split("/")
+            areas2 = course2.split("/")
+            cdept1 = ""
+            cnum1 = ""
+            for i in range(0,len(areas1)):
+                separate = areas1[i].split(" ")
+                thisDept = separate[0]
+                thisNum = separate[1]
+                if i < len(areas1) - 1:
+                    cdept1 += thisDept + "+"
+                    cnum1 += thisNum + "+"
+                else:
+                    cdept1 += thisDept
+                    curIndex = thisNum.index(":")
+                    cnum1 += thisNum[0:curIndex]
+            cdept2 = ""
+            cnum2 = ""
+            for i in range(0,len(areas2)):
+                separate = areas2[i].split(" ")
+                thisDept = separate[0]
+                thisNum = separate[1]
+                if i < len(areas2) - 1:
+                    cdept2 += thisDept + "+"
+                    cnum2 += thisNum + "+"
+                else:
+                    cdept2 += thisDept
+                    curIndex = thisNum.index(":")
+                    cnum2 += thisNum[0:curIndex]
+
+            print course1
+            print course2
+            return redirect('/compcourse/' + cdept1 + '/' + cnum1 + '/' + cdept2 + '/' + cnum2 + '/')
+        else:
+            print form.errors
+    else:
+        # If the request was not a POST, display the form to enter details.
+        form = compCourseForm()
+
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'allCourseJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
+    context = {'form': form, 'allCombinedJSON': qAll.qlist, 'allCourseJSON': q.qlist}
     return render(request, 'curves/compcoursesearch.html', context)
 
 def getKey(item):
