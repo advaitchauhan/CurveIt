@@ -769,11 +769,13 @@ def compareProfSelect(request):
             return render(request, 'curves/404.html')
 
         uniqueProfList = []
+        simpleProfList = []
 
         for c in allSemAllCourse:
             profs = c.prof.split("+")
             for p in profs:
-                if p not in uniqueProfList:
+                if p not in simpleProfList:
+                    simpleProfList.append(p)
                     uniqueProfList.append(p.replace("*", " "))
 
         allProfJSON = json.dumps(uniqueProfList)
@@ -794,6 +796,7 @@ def compareProfSelect(request):
 @login_required
 # page where user can select two professors to compare
 def compareDeptSelect(request):
+    print "here"
     if loggedIn(request) == False:
         return redirect('/add_data/')
 
@@ -804,14 +807,17 @@ def compareDeptSelect(request):
             return render(request, 'curves/404.html')
 
         uniqueDeptList = []
+        simpleDeptList = []
 
         for c in allSemAllCourse:
             deps = c.dept.split("+")
             for d in deps:
                 if d not in uniqueDeptList:
+                    simpleDeptList.append(d)
                     uniqueDeptList.append(d + ": " + depts[d])
 
         allDeptJSON = json.dumps(uniqueDeptList)
+        print uniqueDeptList
 
         q = QueryDeptList()
         q.qlist = allDeptJSON
