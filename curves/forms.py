@@ -3,6 +3,7 @@ autocomplete_light.autodiscover()
 
 from django import forms
 from curves.models import Course_Specific, Student
+from deptscript import depts
 
 pastSemClasses = []
 grades = []
@@ -100,8 +101,39 @@ class compProfForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(compProfForm, self).clean()
-        p1 = cleaned_data.get("prof1")
-        p2 = cleaned_data.get("prof2")
+        p1 = (cleaned_data.get("prof1")).replace(" ", "*")
+        p2 = (cleaned_data.get("prof2")).replace(" ", "*")
+
+        allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p1)
+        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+        uniqueProfs1 = []
+        for a in allSemAllCourse:
+            profs = a.prof.split("+")
+            for p in profs:
+                if p not in uniqueProfs1:
+                    uniqueProfs1.append(p)
+
+        for u in uniqueProfs1:
+            if p1 == u:
+                break
+        else:
+            self.add_error("prof1", "Please select a valid professor")
+
+        allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p2)
+        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+        uniqueProfs2 = []
+        for a in allSemAllCourse:
+            profs = a.prof.split("+")
+            for p in profs:
+                if p not in uniqueProfs2:
+                    uniqueProfs2.append(p)
+
+        for u in uniqueProfs2:
+            if p2 == u:
+                break
+        else:
+            self.add_error("prof2", "Please select a valid professor")
+
         if p1 == None or p2 == None:
             pass;
         elif (p1 == p2):
@@ -114,8 +146,40 @@ class compDeptForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(compDeptForm, self).clean()
-        d1 = cleaned_data.get("dept1")
-        d2 = cleaned_data.get("dept2")
+        d1s = (cleaned_data.get("dept1")).split(":")
+        d2s = (cleaned_data.get("dept2")).split(":")
+        d1 = d1s[0]
+        d2 = d2s[0]
+
+        allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d1)
+        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+        uniqueDepts1 = []
+        for a in allSemAllCourse:
+            deps = a.dept.split("+")
+            for d in deps:
+                if d not in uniqueDepts1:
+                    uniqueDepts1.append(d)
+
+        for u in uniqueDepts1:
+            if d1 == u:
+                break
+        else:
+            self.add_error("dept1", "Please select a valid Department")
+
+        allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d2)
+        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+        uniqueDepts2 = []
+        for a in allSemAllCourse:
+            deps = a.dept.split("+")
+            for d in deps:
+                if d not in uniqueDepts2:
+                    uniqueDepts2.append(d)
+
+        for u in uniqueDepts2:
+            if d2 == u:
+                break
+        else:
+            self.add_error("dept2", "Please select a valid Department")
         if d1 == None or d2 == None:
             pass;
         elif (d1 == d2):
@@ -127,9 +191,21 @@ class compCourseForm(forms.Form):
     course2 = forms.CharField(required=True)
 
     def clean(self):
+        allSemAllCourse = Course_Specific.objects.all()
         cleaned_data = super(compCourseForm, self).clean()
         c1 = cleaned_data.get("course1")
         c2 = cleaned_data.get("course2")
+        for a in allSemAllCourse:
+            if a.__unicode__() == c1:
+                break
+        else:
+            self.add_error("course1", "Please select a valid course")
+
+        for a in allSemAllCourse:
+            if a.__unicode__() == c2:
+                break
+        else:
+            self.add_error("course2", "Please select a valid course")
         if c1 == None or c2 == None:
             pass;
         elif (c1 == c2):
