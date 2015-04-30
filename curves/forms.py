@@ -79,7 +79,7 @@ class Course_SpecificForm(forms.Form):
         #                 if optional_Courses[i] == optional_Courses[j]:
         #                     self.add_error(optionalClasses[j], "Please do not select a class more than once")
         all_Courses = required_Courses + optional_Courses
-        errors = [False]*6
+        # errors = [False]*6
         # checks that a class has not been selected more than once
         for i in range(0, len(all_Courses)):
             for j in range(0, len(all_Courses)):
@@ -93,3 +93,17 @@ class Course_SpecificForm(forms.Form):
                                 else:
                                     self.add_error(optionalClasses[j - len(required_Courses)], "Please do not select a class more than once.")
                                     errors[j] = True
+
+class compProfForm(forms.Form):
+    prof1 = forms.CharField(required=True)
+    prof2 = forms.CharField(required=True)
+
+    def clean(self):
+        cleaned_data = super(compProfForm, self).clean()
+        p1 = cleaned_data.get("prof1")
+        p2 = cleaned_data.get("prof2")
+        if p1 == None or p2 == None:
+            pass;
+        elif (p1 == p2):
+            self.add_error("prof1", "Please select two different professors.")
+            self.add_error("prof2", "Please select two different professors.")

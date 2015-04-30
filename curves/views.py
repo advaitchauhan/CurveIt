@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from curves.models import Course_Specific, Student, QueryList, QueryProfList, QueryCourseList, QueryDeptList
-from curves.forms import Course_SpecificForm
+from curves.forms import Course_SpecificForm, compProfForm
 from deptscript import depts
 import json
 
@@ -731,11 +731,11 @@ def comparecourseView(request):
     return render(request, 'curves/comparecourse.html', context)
 
 @login_required
-def compareProfView(request):
+def compareProfView(request, cprof1, cprof2):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
-    cprof1 = (request.GET['q1']).replace(" ", "*")
-    cprof2 = (request.GET['q2']).replace(" ", "*")
+    print cprof1
+    print cprof2
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(prof__icontains = cprof1) # includes all semesters
     if not course_list1:
@@ -795,7 +795,9 @@ def compareProfView(request):
 @login_required
 # page where user can select two professors to compare
 def compareProfSelect(request):
+    print "Adi"
     if loggedIn(request) == False:
+        print "Tyler"
         return redirect('/add_data/')
 
     cachedList = QueryProfList.objects.all()
@@ -823,10 +825,29 @@ def compareProfSelect(request):
     else:
         q = cachedList[0]
 
+    if request.method == 'POST':
+        form = compProfForm(request.POST)
+
+        # Have we been provided with a valid form?
+        if form.is_valid():
+            curData = form.cleaned_data
+            cprof1 = curData["prof1"]
+            cprof2 = curData["prof2"]
+            cprof1 = cprof1.replace(" ", "*")
+            cprof2 = cprof2.replace(" ", "*")
+            return redirect('/compprof/' + cprof1 + '/' + cprof2 + '/')
+        else:
+            print form.errors
+    else:
+        # If the request was not a POST, display the form to enter details.
+        form = compProfForm()
+
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'allProfJSON': q.qlist, 'allCombinedJSON': qAll.qlist}
+    # Bad form (or form details), no form supplied...
+    # Render the form with error messages (if any).
+    context = {'form': form, 'allCombinedJSON': q.qlist, 'allProfJSON': q.qlist}
     return render(request, 'curves/compprofsearch.html', context)
 
 @login_required
