@@ -4,29 +4,30 @@
 {% load static %}
 
 <div class="title-div">
-  <h1 class="title"> Choose Professors to Compare </h1>
+  <h1 class="title"> Choose Courses to Compare </h1>
 </div>
 
 <form action="/compcourse/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteCourse" class="form-control" style=" width50%" placeholder="Choose Course 1" name="q1">
+        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 40%" placeholder="Choose Course 1" name="q1">
     </div>
+
+    <div class="form-group">
+        <input type="text" id = "autocompleteCourse" class="form-control" style="width: 40%" placeholder="Choose Course 2" name="q2">
+    </div>
+
+    <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Courses">Compare Courses</button>
 </form>
 
-<form action="/compcourse/" method="get" class="pure-form pure-form-stacked">
-    <div class="form-group">
-        <input type="text" id = "autocompleteCourse" class="form-control" style=" width50%" placeholder="Choose Course 2" name="q2">
-    </div>
-</form>
+
 
 <script type = "text/javascript">
 $(function(){
   //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allCombinedJSON | safe}};
+  var allFields = {{ allCourseJSON | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocomplete').autocomplete({
+  $('.form-control').autocomplete({
     lookup: allFields,
-    groupBy: 'cat',
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
     minChars: 2
@@ -35,17 +36,4 @@ $(function(){
 });
 </script>
 
-<script type = "text/javascript">
-$(function(){
-  //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allCourseJSON | safe}};
-  // setup autocomplete function pulling from currencies[] array
-  $('#autocompleteCourse').autocomplete({
-    lookup: allFields,
-    triggerSelectOnValidInput: false,
-    lookupLimit: 8,
-    minChars: 2
-  });
-});
-</script>
 {% endblock %}

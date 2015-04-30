@@ -45,13 +45,13 @@ urlpatterns = patterns('',
 	url(r'^choosecourse/$', views.compareCourseSelect),
 
 	#compare departments
-	url(r'^compdept/(?P<cdept1>[A-Za-z]{3,3})/(?P<cdept2>[A-Za-z]{3,3})/$', views.comparedeptView, name = 'comparedeptView'),
+	url(r'^compdept/$', views.comparedeptView, name = 'comparedeptView'),
 
 	#compare courses
-	url(r'^compcourse/(?P<cdept1>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum1>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/(?P<cdept2>([A-Za-z]{3}\+)*[A-Za-z]{3})/(?P<cnum2>(\d{3}[A-Z]?\+)*\d{3}[A-Z]?)/$', views.comparecourseView, name = 'comparecourseView'),
+	url(r'^compcourse/$', views.comparecourseView, name = 'comparecourseView'),
 
 	#compare professors
-	url(r'^compprof/(?P<cprof1>[^\+]+)/(?P<cprof2>[^\+]+)/$', views.compareProfView, name = 'compareProfView'),
+	url(r'^compprof/$', views.compareProfView, name = 'compareProfView'),
 
 	#top 10
 	url(r'^topten/$', views.topTen)

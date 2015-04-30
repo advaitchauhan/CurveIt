@@ -32,6 +32,9 @@ def main():
     thisProf = ""
     for i in range(0, len(profs)):
       curProf = (profs[i])["name"]
+      index = curProf.find(",")
+      if index != -1:
+        curProf = curProf[0:index]
       names = curProf.replace(" ", "*")
       if i < (len(profs) - 1):
         thisProf += names + "+" 
@@ -57,7 +60,7 @@ def main():
       else:
         thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2015", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C_minus=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30)))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2015", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C_minus=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30), num_P=random.randint(0,30)))
 
   for i in range(0, len(courseSpecifics)):
     courseSpecifics[i].calcAvg()
@@ -82,6 +85,9 @@ def main():
     thisProf = ""
     for i in range(0, len(profs)):
       curProf = (profs[i])["name"]
+      index = curProf.find(",")
+      if index != -1:
+        curProf = curProf[0:index]
       names = curProf.replace(" ", "*")
       if i < (len(profs) - 1):
         thisProf += names + "+" 
@@ -107,7 +113,7 @@ def main():
       else:
         thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2014", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C=random.randint(0,30), num_C_minus=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30)))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2014", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C=random.randint(0,30), num_C_minus=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30), num_P=random.randint(0,30)))
 
   for i in range(0, len(courseSpecifics)):
       courseSpecifics[i].calcAvg()
@@ -132,6 +138,9 @@ def main():
     thisProf = ""
     for i in range(0, len(profs)):
       curProf = (profs[i])["name"]
+      index = curProf.find(",")
+      if index != -1:
+        curProf = curProf[0:index]
       names = curProf.replace(" ", "*")
       if i < (len(profs) - 1):
         thisProf += names + "+" 
@@ -157,7 +166,7 @@ def main():
       else:
         thisNum += theseNums[i] + "+"    
     thisTitle = course["title"]
-    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2013", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30)))
+    courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester="S2013", num_A_plus=random.randint(0,30), num_A=random.randint(0,30), num_A_minus=random.randint(0,30), num_B_plus=random.randint(0,30), num_B=random.randint(0,30), num_B_minus=random.randint(0,30), num_C_plus=random.randint(0,30), num_C=random.randint(0,30), num_D=random.randint(0,30), num_F=random.randint(0,30), num_P=random.randint(0,30)))
 
   for i in range(0, len(courseSpecifics)):
       courseSpecifics[i].calcAvg()

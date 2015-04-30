@@ -586,9 +586,14 @@ def handler404(request):
     return response
 
 @login_required
-def comparedeptView(request, cdept1, cdept2):
+def comparedeptView(request):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
+    q1 = (request.GET['q1']).split(":")
+    q2 = (request.GET['q2']).split(":")
+    cdept1 = q1[0]
+    cdept2 = q2[0]
+
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(dept__icontains = cdept1) # includes all semesters
     if not course_list1:
@@ -646,9 +651,38 @@ def comparedeptView(request, cdept1, cdept2):
 @login_required
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
-def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
+def comparecourseView(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
+    q1 = ((request.GET['q1']).split(":"))[0]
+    q2 = ((request.GET['q2']).split(":"))[0]
+    areas1 = q1.split("/")
+    areas2 = q2.split("/")
+    cdept1 = ""
+    cnum1 = ""
+    for i in range(0,len(areas1)):
+        separate = areas1[i].split(" ")
+        thisDept = separate[0]
+        thisNum = separate[1]
+        if i < len(areas1) - 1:
+            cdept1 += thisDept + "+"
+            cnum1 += thisNum + "+"
+        else:
+            cdept1 += thisDept
+            cnum1 += thisNum
+    cdept2 = ""
+    cnum2 = ""
+    for i in range(0,len(areas2)):
+        separate = areas2[i].split(" ")
+        thisDept = separate[0]
+        thisNum = separate[1]
+        if i < len(areas2) - 1:
+            cdept2 += thisDept + "+"
+            cnum2 += thisNum + "+"
+        else:
+            cdept2 += thisDept
+            cnum2 += thisNum
+
     # gets list of this course over all semesters
     course_list1 = Course_Specific.objects.filter(dept=cdept1, num=cnum1)
     if not course_list1:
@@ -697,9 +731,11 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
     return render(request, 'curves/comparecourse.html', context)
 
 @login_required
-def compareProfView(request, cprof1, cprof2):
+def compareProfView(request):
     if loggedIn(request) == False:
         return redirect('/curves/add_data')
+    cprof1 = (request.GET['q1']).replace(" ", "*")
+    cprof2 = (request.GET['q2']).replace(" ", "*")
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(prof__icontains = cprof1) # includes all semesters
     if not course_list1:
@@ -839,6 +875,7 @@ def compareCourseSelect(request):
         return redirect('/add_data/')
 
     cachedList = QueryCourseList.objects.all()
+    QueryCourseList.objects.all().delete()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
@@ -848,9 +885,8 @@ def compareCourseSelect(request):
 
         for a in allSemAllCourse:
             course = a.__unicode__()
-            for c in course:
-                if c not in uniqueCourseList:
-                    uniqueCourseList.append(c)
+            if course not in uniqueCourseList:
+                    uniqueCourseList.append(course)
 
         allCourseJSON = json.dumps(uniqueCourseList)
 

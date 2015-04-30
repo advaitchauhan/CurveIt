@@ -7,20 +7,18 @@
   <h1 class="title"> Choose Professors to Compare </h1>
 </div>
 
-<div class = "compareSearch"
 <form action="/compprof/" method="get" class="pure-form pure-form-stacked">
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style="width: 50%" placeholder="Choose Professor 1" name="q1">
+        <input type="text" id = "autocompleteDept" class="form-control" style="width: 40%" placeholder="Choose Department 1" name="q1">
     </div>
 
     <div class="form-group">
-        <input type="text" id = "autocompleteProf" class="form-control" style="width: 50%" placeholder="Choose Professor 2" name="q2">
+        <input type="text" id = "autocompleteDept" class="form-control" style="width: 40%" placeholder="Choose Department 2" name="q2">
     </div>
 
-    <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Profs">Compare Professors</button>
-
+    <button type="submit" class="btn btn-search" style ="width: 100px" value="Compare Depts">Compare Professors</button>
 </form>
-</div>
+
 
 
 <script type = "text/javascript">
@@ -34,21 +32,8 @@ $(function(){
     lookupLimit: 8,
     minChars: 2
   });
+  
 });
 </script>
 
-<script type = "text/javascript">
-$(function(){
-  //var profs = {{ allProfsJSON | safe }};
-  var allFields = {{ allCombinedJSON | safe}};
-  // setup autocomplete function pulling from currencies[] array
-  $('#autocomplete').autocomplete({
-    lookup: allFields,
-    groupBy: 'cat',
-    triggerSelectOnValidInput: false,
-    lookupLimit: 8,
-    minChars: 2
-  });
-});
-</script>
 {% endblock %}
