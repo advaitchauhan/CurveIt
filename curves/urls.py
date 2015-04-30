@@ -51,7 +51,7 @@ urlpatterns = patterns('',
 	url(r'^compcourse/$', views.comparecourseView, name = 'comparecourseView'),
 
 	#compare professors
-	url(r'^compprof/$', views.compareProfView, name = 'compareProfView'),
+	url(r'^compprof/(?P<cprof1>[^\+]+)/(?P<cprof2>[^\+]+)/$', views.compareProfView, name = 'compareProfView'),
 
 	#top 10
 	url(r'^topten/$', views.topTen)
