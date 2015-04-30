@@ -1,5 +1,4 @@
 depts = {}
-print "yo"
 f = open("curves/depts.txt", "r")
 line = f.readline()
 names = line.split(" ")

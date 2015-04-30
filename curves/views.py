@@ -61,6 +61,7 @@ def index(request):
                     curDict = {}
                     curData = {}
                     curDict["value"] = dept + ": " + depts[dept]
+                    print depts[dept]
                     curData["cat"] = "Departments"
                     curDict["data"] = curData
                     allDepts.append(curDict)
@@ -708,19 +709,6 @@ def compareProfView(request, cprof1, cprof2):
     course_list1 = Course_Specific.objects.filter(prof__icontains = cprof1) # includes all semesters
     if not course_list1:
         return render(request, 'curves/404.html')
-    allSemAllCourse = Course_Specific.objects.all()
-    uniqueProfs1 = []
-    for a in allSemAllCourse:
-        profs = a.prof.split("+")
-        for p in profs:
-            if p not in uniqueProfs1:
-                uniqueProfs1.append(p)
-
-    for u in uniqueProfs1:
-        if cprof1 == u:
-            break
-    else:
-        return render(request, 'curves/404.html')
 
     # construct list of unique course titles
     uniqueCourse_list1 = []
@@ -745,20 +733,7 @@ def compareProfView(request, cprof1, cprof2):
 
 
     course_list2 = Course_Specific.objects.filter(prof__icontains = cprof2) # includes all semesters
-    if not course_list2:
-        return render(request, 'curves/404.html')
-    uniqueProfs2 = []
-    for a in allSemAllCourse:
-        profs = a.prof.split("+")
-        for p in profs:
-            if p not in uniqueProfs2:
-                uniqueProfs2.append(p)
-
-    for u in uniqueProfs2:
-        if cprof2 == u:
-            break
-    else:
-        return render(request, 'curves/404.html')
+        
     # construct list of unique course titles
     uniqueCourse_list2 = []
     # construct a list of all semesters for which we have data
@@ -851,7 +826,6 @@ def compareDeptSelect(request):
     print "here"
     if loggedIn(request) == False:
         return redirect('/add_data/')
-
     cachedList = QueryDeptList.objects.all()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
@@ -864,7 +838,7 @@ def compareDeptSelect(request):
         for c in allSemAllCourse:
             deps = c.dept.split("+")
             for d in deps:
-                if d not in uniqueDeptList:
+                if d not in simpleDeptList:
                     simpleDeptList.append(d)
                     uniqueDeptList.append(d + ": " + depts[d])
 

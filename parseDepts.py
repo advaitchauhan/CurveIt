@@ -14,3 +14,5 @@ while len(line) > 0:
 		name += " " + names[i]
 	depts[(names[0])] = name
 	line = f.readline()
+
+print depts
