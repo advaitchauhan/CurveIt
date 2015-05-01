@@ -80,7 +80,7 @@ class Course_SpecificForm(forms.Form):
         #                 if optional_Courses[i] == optional_Courses[j]:
         #                     self.add_error(optionalClasses[j], "Please do not select a class more than once")
         all_Courses = required_Courses + optional_Courses
-        # errors = [False]*6
+        errors = [False]*6
         # checks that a class has not been selected more than once
         for i in range(0, len(all_Courses)):
             for j in range(0, len(all_Courses)):
@@ -101,42 +101,47 @@ class compProfForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(compProfForm, self).clean()
-        p1 = (cleaned_data.get("prof1")).replace(" ", "*")
-        p2 = (cleaned_data.get("prof2")).replace(" ", "*")
-
-        allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p1)
-        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
-        uniqueProfs1 = []
-        for a in allSemAllCourse:
-            profs = a.prof.split("+")
-            for p in profs:
-                if p not in uniqueProfs1:
-                    uniqueProfs1.append(p)
-
-        for u in uniqueProfs1:
-            if p1 == u:
-                break
-        else:
-            self.add_error("prof1", "Please select a valid professor")
-
-        allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p2)
-        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
-        uniqueProfs2 = []
-        for a in allSemAllCourse:
-            profs = a.prof.split("+")
-            for p in profs:
-                if p not in uniqueProfs2:
-                    uniqueProfs2.append(p)
-
-        for u in uniqueProfs2:
-            if p2 == u:
-                break
-        else:
-            self.add_error("prof2", "Please select a valid professor")
-
-        if p1 == None or p2 == None:
+        p1 = cleaned_data.get("prof1")
+        p2 = cleaned_data.get("prof2")
+        if p1 == None:
             pass;
-        elif (p1 == p2):
+        else:
+            p1 = p1.replace(" ", "*")
+            allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p1)
+            # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+            uniqueProfs1 = []
+            for a in allSemAllCourse:
+                profs = a.prof.split("+")
+                for p in profs:
+                    if p not in uniqueProfs1:
+                        uniqueProfs1.append(p)
+
+            for u in uniqueProfs1:
+                if p1 == u:
+                    break
+            else:
+                self.add_error("prof1", "Please select a valid professor")
+
+        if p2 == None:
+            pass;
+        else:
+            p2 = p2.replace(" ", "*")
+            allSemAllCourse = Course_Specific.objects.filter(prof__icontains = p2)
+            # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+            uniqueProfs2 = []
+            p2 = p2.replace(" ", "*")
+            for a in allSemAllCourse:
+                profs = a.prof.split("+")
+                for p in profs:
+                    if p not in uniqueProfs2:
+                        uniqueProfs2.append(p)
+
+            for u in uniqueProfs2:
+                if p2 == u:
+                    break
+            else:
+                self.add_error("prof2", "Please select a valid professor")
+        if (p1 == p2):
             self.add_error("prof1", "Please select two different professors.")
             self.add_error("prof2", "Please select two different professors.")
 
@@ -146,45 +151,51 @@ class compDeptForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(compDeptForm, self).clean()
-        d1s = (cleaned_data.get("dept1")).split(":")
-        d2s = (cleaned_data.get("dept2")).split(":")
-        d1 = d1s[0]
-        d2 = d2s[0]
-
-        allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d1)
-        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
-        uniqueDepts1 = []
-        for a in allSemAllCourse:
-            deps = a.dept.split("+")
-            for d in deps:
-                if d not in uniqueDepts1:
-                    uniqueDepts1.append(d)
-
-        for u in uniqueDepts1:
-            if d1 == u:
-                break
-        else:
-            self.add_error("dept1", "Please select a valid Department")
-
-        allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d2)
-        # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
-        uniqueDepts2 = []
-        for a in allSemAllCourse:
-            deps = a.dept.split("+")
-            for d in deps:
-                if d not in uniqueDepts2:
-                    uniqueDepts2.append(d)
-
-        for u in uniqueDepts2:
-            if d2 == u:
-                break
-        else:
-            self.add_error("dept2", "Please select a valid Department")
-        if d1 == None or d2 == None:
+        d1s = cleaned_data.get("dept1")
+        d2s = cleaned_data.get("dept2")
+        if d1s == None:
             pass;
-        elif (d1 == d2):
-            self.add_error("dept1", "Please select two different departments.")
-            self.add_error("dept2", "Please select two different departments.")
+        else:
+            d1s = d1s.split(":")
+            d1 = d1s[0]
+
+            allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d1)
+            # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+            uniqueDepts1 = []
+            for a in allSemAllCourse:
+                deps = a.dept.split("+")
+                for d in deps:
+                    if d not in uniqueDepts1:
+                        uniqueDepts1.append(d)
+
+            for u in uniqueDepts1:
+                if d1 == u:
+                    break
+            else:
+                self.add_error("dept1", "Please select a valid Department")
+        if d2s == None:
+            pass;
+        else:
+            d2s = d2s.split(":")
+            d2 = d2s[0]
+            allSemAllCourse = Course_Specific.objects.filter(dept__icontains = d2)
+            # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
+            uniqueDepts2 = []
+            for a in allSemAllCourse:
+                deps = a.dept.split("+")
+                for d in deps:
+                    if d not in uniqueDepts2:
+                        uniqueDepts2.append(d)
+
+            for u in uniqueDepts2:
+                if d2 == u:
+                    break
+            else:
+                self.add_error("dept2", "Please select a valid Department")
+        if d1s != None and d2s != None:
+            if (d1 == d2):
+                self.add_error("dept1", "Please select two different departments.")
+                self.add_error("dept2", "Please select two different departments.")
 
 class compCourseForm(forms.Form):
     course1 = forms.CharField(required=True)
