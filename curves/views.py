@@ -877,7 +877,6 @@ def compareCourseSelect(request):
         return redirect('/add_data/')
 
     cachedList = QueryCourseList.objects.all()
-    QueryCourseList.objects.all().delete()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
@@ -956,16 +955,31 @@ def topTen(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
 
-    allSemAllCourse = Course_Specific.objects.filter(semester="S2015")
+    cachedList = QueryCourseList.objects.all()
+    if len(cachedList) == 0:
+        allSemAllCourse = Course_Specific.objects.all()
+        if not allSemAllCourse:
+            return render(request, 'curves/404.html')
 
-    uniqueCourseList = []
+        uniqueCourseList = []
 
-    for a in allSemAllCourse:
-        course = a.__unicode__()
-        index = course.index(":")
-        course = course[index+2:]
-        if course not in uniqueCourseList:
-            uniqueCourseList.append(course)
+        for a in allSemAllCourse:
+            course = a.__unicode__()
+            if course not in uniqueCourseList:
+                    uniqueCourseList.append(course)
+
+        allCourseJSON = json.dumps(uniqueCourseList)
+
+        q = QueryCourseList()
+        q.qlist = allCourseJSON
+        q.save()
+
+    else:
+        q = cachedList[0]
+
+    uniqueCourseList = json.loads(q.qlist)
+
+    # allSemAllCourse = Course_Specific.objects.filter(semester="S2015")
 
     # uniqueDeptList = []
 
@@ -986,7 +1000,7 @@ def topTen(request):
 
     courseAvgList = {}
     for u in uniqueCourseList:
-        allSems = Course_Specific.objects.filter(name=u, semester=CURRENTSEMESTER)
+        allSems = Course_Specific.objects.filter(titleString=u)
         thisAvg = 0
         thisTotal = 0
         for a in allSems:
@@ -1001,7 +1015,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(name=course, semester=CURRENTSEMESTER)
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
@@ -1021,7 +1035,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(name=course, semester=CURRENTSEMESTER)
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
