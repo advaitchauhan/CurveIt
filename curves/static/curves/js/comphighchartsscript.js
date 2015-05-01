@@ -49,6 +49,27 @@ for (var i=0; i < _numGrades2.length; i++) {
 };
 
 
+var maxpcnt = 0;
+
+for (var i=0; i < _pctGrades1.length; i++) {
+    if (_pctGrades1[i] > maxpcnt) {
+        maxpcnt = _pctGrades1;
+    }
+};
+
+
+for (var i=0; i < _pctGrades2.length; i++) {
+    if (_pctGrades2[i] > maxpcnt) {
+        maxpcnt = _pctGrades2[i];
+    }
+};
+
+var tickpos = [];
+if (maxpcnt > 50) {tickpos = [0, 20, 40, 60, 80, 100];}
+else if (maxpcnt > 25) {tickpos = [0, 10, 20, 30, 40, 50];}
+else {tickpos = [0, 5, 10, 15, 20, 25];}
+
+
 
 $(function makechart() { 
 	$('#container').highcharts({
@@ -102,6 +123,9 @@ $(function makechart() {
                     fontSize: '16px'
                 }
             },
+
+            tickPositions: tickpos,
+
         },
         
         plotOptions: {
