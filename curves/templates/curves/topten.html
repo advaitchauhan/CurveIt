@@ -5,19 +5,15 @@
 {% load static %}
 <div class="title-div">
 <ul>
-{% for c in finalCourseList %}
-  <li>{{c}}</li>
+{% for course, grade in hard %}
+  <li>{{course}} {{ grade }}</li>
 {% endfor %}
   </ul>
 <ul>
-{% for c in finalDeptList %}
-  <li>{{c}}</li>
+<ul>
+{% for course, grade in easy %}
+  <li>{{course}} {{ grade }}</li>
 {% endfor %}
   </ul>
 <ul>
-{% for c in finalProfList %}
-  <li>{{c}}</li>
-{% endfor %}
-  </ul>
-</div>
 {% endblock %}
