@@ -206,19 +206,23 @@ class compCourseForm(forms.Form):
         cleaned_data = super(compCourseForm, self).clean()
         c1 = cleaned_data.get("course1")
         c2 = cleaned_data.get("course2")
-        for a in allSemAllCourse:
-            if a.__unicode__() == c1:
-                break
-        else:
-            self.add_error("course1", "Please select a valid course")
-
-        for a in allSemAllCourse:
-            if a.__unicode__() == c2:
-                break
-        else:
-            self.add_error("course2", "Please select a valid course")
-        if c1 == None or c2 == None:
+        if c1 == None:
             pass;
-        elif (c1 == c2):
-            self.add_error("course1", "Please select two different courses.")
-            self.add_error("course2", "Please select two different courses.")
+        else:
+            for a in allSemAllCourse:
+                if a.__unicode__() == c1:
+                    break
+            else:
+                self.add_error("course1", "Please select a valid course")
+        if c2 == None:
+            pass;
+        else:
+            for a in allSemAllCourse:
+                if a.__unicode__() == c2:
+                    break
+            else:
+                self.add_error("course2", "Please select a valid course")
+        if (c1 != None and c2 != None):
+            if (c1 == c2):
+                self.add_error("course1", "Please select two different courses.")
+                self.add_error("course2", "Please select two different courses.")
