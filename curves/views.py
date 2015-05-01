@@ -11,6 +11,7 @@ import json
 
 CURRENTSEMESTER = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
+SEM_list = ["S2015", "S2014", "S2013"]
 
 # Create your views here.
 @login_required
@@ -108,12 +109,6 @@ def deptView(request, cdept):
         else:
             uniqueCourse_list.append(course)
         # get list of all distinct semesters
-        for sem in sem_list:
-            if course.semester == sem:
-                break
-        else:
-            sem_list.append(course.semester)
-
     # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
     for course in course_list:
@@ -128,7 +123,7 @@ def deptView(request, cdept):
     q = cachedList[0]
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': SEM_list, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -173,7 +168,7 @@ def deptSpecificView(request, cdept, ctime):
     q = cachedList[0]
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': SEM_list, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -232,7 +227,7 @@ def profView(request, cprof):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sem_list': SEM_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -288,7 +283,7 @@ def profSpecificView(request, cprof, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sem_list': SEM_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -343,7 +338,7 @@ def courseView(request, cdept, cnum):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
+    context = {'sem_list': SEM_list, 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -382,7 +377,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
+    context = {'sem_list': SEM_list, 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     print dist
     return render(request, 'curves/course_specific.html', context)
