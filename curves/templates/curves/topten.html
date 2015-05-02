@@ -3,17 +3,30 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
-<div class="title-div">
-<ul>
-{% for course, grade in hard %}
-  <li>{{course}} {{ grade }}</li>
-{% endfor %}
-  </ul>
-<ul>
-<ul>
-{% for course, grade in easy %}
-  <li>{{course}} {{ grade }}</li>
-{% endfor %}
-  </ul>
-<ul>
+<div class="row">
+	<div class = "text-center">
+  		<h1> Top Ten </h1>
+	</div>
+</div>
+
+<div class = "container-fluid">
+	<div class = "row">
+		<div class = "col-md-6  panel panel-good">
+			<h2 class = "text-center">Highest Average Grade:</h2>
+			<ol>
+				<h3>{% for course, grade in hard %}				
+			  		<li>{{course}}: {{ grade }}</li>
+					{% endfor %}</h3>
+			</ol>
+		</div>
+		<div class = "col-md-6  panel panel-bad">
+			<h2 class = "text-center">Lowest Average Grade:</h2>
+			<ol>
+				<h3>{% for course, grade in easy %}
+  					<li>{{course}}: {{ grade }}</li>
+				{% endfor %}</h3>
+			</ol>
+		</div>
+	</div>
+</div>
 {% endblock %}
