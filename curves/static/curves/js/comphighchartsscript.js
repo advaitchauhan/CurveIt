@@ -48,6 +48,51 @@ for (var i=0; i < _numGrades2.length; i++) {
     _pctGrades2.push(parseFloat(_numGrades2[i] / Class2dataSum *100))
 };
 
+var GradeSum1 = 0;
+GradeSum1 = 4*_numGrades1[0] + 4*_numGrades1[1] + 3.7*_numGrades1[2] + 3.3*_numGrades1[3] + 3*_numGrades1[4] + 2.7*_numGrades1[5] + 2.3*_numGrades1[6] + 2*_numGrades1[7] + 1.7*_numGrades1[8] + 1*_numGrades1[9];
+
+var GradeTot1 = 0
+for (var i=0; i < 11; i++) {
+    GradeTot1 += _numGrades1[i]
+};
+ 
+var AverageGrade1 = GradeSum1/GradeTot1;
+
+var AvgLetGrade1 = '';
+
+if (AverageGrade1 > 3.85) AvgLetGrade1 = 'A';
+else if (AverageGrade1 > 3.5) AvgLetGrade1 = 'A-';
+else if (AverageGrade1 > 3.15) AvgLetGrade1 = 'B+';
+else if (AverageGrade1 > 2.85) AvgLetGrade1 = 'B';
+else if (AverageGrade1 > 2.5) AvgLetGrade1 = 'B-';
+else if (AverageGrade1 > 2.15) AvgLetGrade1 = 'C+';
+else if (AverageGrade1 > 1.85) AvgLetGrade1 = 'C';
+else if (AverageGrade1 > 1.5) AvgLetGrade1 = 'C-';
+else if (AverageGrade1 > .5) AvgLetGrade1 = 'D';
+else AvgLetGrade1 = 'F';
+
+var GradeSum2 = 0;
+GradeSum2 = 4*_numGrades2[0] + 4*_numGrades2[1] + 3.7*_numGrades2[2] + 3.3*_numGrades2[3] + 3*_numGrades2[4] + 2.7*_numGrades2[5] + 2.3*_numGrades2[6] + 2*_numGrades2[7] + 1.7*_numGrades2[8] + 1*_numGrades2[9];
+
+var GradeTot2 = 0
+for (var i=0; i < 11; i++) {
+    GradeTot2 += _numGrades2[i]
+};
+ 
+var AverageGrade2 = GradeSum2/GradeTot2;
+
+var AvgLetGrade2 = '';
+
+if (AverageGrade2 > 3.85) AvgLetGrade2 = 'A';
+else if (AverageGrade2 > 3.5) AvgLetGrade2 = 'A-';
+else if (AverageGrade2 > 3.15) AvgLetGrade2 = 'B+';
+else if (AverageGrade2 > 2.85) AvgLetGrade2 = 'B';
+else if (AverageGrade2 > 2.5) AvgLetGrade2 = 'B-';
+else if (AverageGrade2 > 2.15) AvgLetGrade2 = 'C+';
+else if (AverageGrade2 > 1.85) AvgLetGrade2 = 'C';
+else if (AverageGrade2 > 1.5) AvgLetGrade2 = 'C-';
+else if (AverageGrade2 > .5) AvgLetGrade2 = 'D';
+else AvgLetGrade2 = 'F';
 
 var maxpcnt = 0;
 
@@ -82,7 +127,7 @@ $(function makechart() {
             }
         },
          title: {
-            text: Class1name + " vs. " + Class2name,
+            text: Class1name + ' (Average Grade ' + AverageGrade1.toFixed(2) + ', ' + AvgLetGrade1 + ') vs. ' + Class2name + ' (Average Grade ' +  AverageGrade2.toFixed(2) + ', ' + AvgLetGrade2 + ')' ,
             style: {
                      color: "#FFFFFF",
                      fontSize: '26px'

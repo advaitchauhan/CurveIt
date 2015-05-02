@@ -18,6 +18,32 @@ for (var i=0; i < _numGrades.length; i++) {
     dataSum += _numGrades[i]
 };
 
+var GradeSum = 0;
+GradeSum = 4*_numGrades[0] + 4*_numGrades[1] + 3.7*_numGrades[2] + 3.3*_numGrades[3] + 3*_numGrades[4] + 2.7*_numGrades[5] + 2.3*_numGrades[6] + 2*_numGrades[7] + 1.7*_numGrades[8] + 1*_numGrades[9];
+
+var testA = 0;
+testA = _numGrades[1];
+
+var GradeTot = 0
+for (var i=0; i < 11; i++) {
+    GradeTot += _numGrades[i]
+};
+ 
+var AverageGrade = GradeSum/GradeTot;
+
+var AvgLetGrade = '';
+
+if (AverageGrade > 3.85) AvgLetGrade = 'A';
+else if (AverageGrade > 3.5) AvgLetGrade = 'A-';
+else if (AverageGrade > 3.15) AvgLetGrade = 'B+';
+else if (AverageGrade > 2.85) AvgLetGrade = 'B';
+else if (AverageGrade > 2.5) AvgLetGrade = 'B-';
+else if (AverageGrade > 2.15) AvgLetGrade = 'C+';
+else if (AverageGrade > 1.85) AvgLetGrade = 'C';
+else if (AverageGrade > 1.5) AvgLetGrade = 'C-';
+else if (AverageGrade > .5) AvgLetGrade = 'D';
+else AvgLetGrade = 'F';
+
 var maxpcnt = 0;
 
 for (var i=0; i < _numGrades.length; i++) {
@@ -44,7 +70,7 @@ $(function makechart() {
             }
         },
          title: {
-             text: 'Total Grades Entered: ' + dataSum,
+             text: 'Average Grade: ' + AvgLetGrade + ' (' + AverageGrade.toFixed(2) + ')' + ' for ' + dataSum + ' Grades Entered' ,
             style: {
                      color: "#FFFFFF",
                      fontSize: '26px'
