@@ -11,6 +11,7 @@ import json
 
 CURRENTSEMESTER = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
+SEM_list = ["S2015", "S2014", "S2013"]
 
 # Create your views here.
 @login_required
@@ -108,12 +109,6 @@ def deptView(request, cdept):
         else:
             uniqueCourse_list.append(course)
         # get list of all distinct semesters
-        for sem in sem_list:
-            if course.semester == sem:
-                break
-        else:
-            sem_list.append(course.semester)
-
     # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
     for course in course_list:
@@ -128,7 +123,7 @@ def deptView(request, cdept):
     q = cachedList[0]
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': SEM_list, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -173,7 +168,7 @@ def deptSpecificView(request, cdept, ctime):
     q = cachedList[0]
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': SEM_list, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -232,7 +227,7 @@ def profView(request, cprof):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sem_list': SEM_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -288,7 +283,7 @@ def profSpecificView(request, cprof, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sem_list': SEM_list, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -343,7 +338,7 @@ def courseView(request, cdept, cnum):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
+    context = {'sem_list': SEM_list, 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -382,7 +377,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
+    context = {'sem_list': SEM_list, 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     print dist
     return render(request, 'curves/course_specific.html', context)
@@ -882,7 +877,6 @@ def compareCourseSelect(request):
         return redirect('/add_data/')
 
     cachedList = QueryCourseList.objects.all()
-    QueryCourseList.objects.all().delete()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
@@ -956,122 +950,157 @@ def compareCourseSelect(request):
     context = {'form': form, 'allCombinedJSON': qAll.qlist, 'allCourseJSON': q.qlist}
     return render(request, 'curves/compcoursesearch.html', context)
 
-def getKey(item):
-    return item[1]
-
 @login_required
 def topTen(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
 
-    allSemAllCourse = Course_Specific.objects.all()
+    cachedList = QueryCourseList.objects.all()
+    if len(cachedList) == 0:
+        allSemAllCourse = Course_Specific.objects.all()
+        if not allSemAllCourse:
+            return render(request, 'curves/404.html')
 
-    uniqueCourseList = []
+        uniqueCourseList = []
 
-    for a in allSemAllCourse:
-        course = a.__unicode__()
-        index = course.index(":")
-        course = course[index+2:]
-        if course not in uniqueCourseList:
-            uniqueCourseList.append(course)
+        for a in allSemAllCourse:
+            course = a.__unicode__()
+            if course not in uniqueCourseList:
+                    uniqueCourseList.append(course)
 
-    uniqueDeptList = []
+        allCourseJSON = json.dumps(uniqueCourseList)
 
-    for c in allSemAllCourse:
-        curdepts = c.dept.split("+")
-        for d in curdepts:
-            if d not in uniqueDeptList:
-                uniqueDeptList.append(d)
+        q = QueryCourseList()
+        q.qlist = allCourseJSON
+        q.save()
 
-    uniqueProfList = []
+    else:
+        q = cachedList[0]
 
-    for c in allSemAllCourse:
-        profs = c.prof.split("+")
-        for p in profs:
-            if p not in uniqueProfList:
-                uniqueProfList.append(p)
+    uniqueCourseList = json.loads(q.qlist)
+
+    # allSemAllCourse = Course_Specific.objects.filter(semester="S2015")
+
+    # uniqueDeptList = []
+
+    # for c in allSemAllCourse:
+    #     curdepts = c.dept.split("+")
+    #     for d in curdepts:
+    #         if d not in uniqueDeptList:
+    #             uniqueDeptList.append(d)
+
+    # uniqueProfList = []
+
+    # for c in allSemAllCourse:
+    #     profs = c.prof.split("+")
+    #     for p in profs:
+    #         if p not in uniqueProfList:
+    #             uniqueProfList.append(p)
 
 
-    courseAvgList = []
+    courseAvgList = {}
     for u in uniqueCourseList:
-        allSems = Course_Specific.objects.filter(name=u)
+        allSems = Course_Specific.objects.filter(titleString=u)
         thisAvg = 0
         thisTotal = 0
         for a in allSems:
             thisAvg += a.getAvg() * a.getTotalGrades()
             thisTotal += a.getTotalGrades()
-        courseAvgList.append((u, thisAvg/thisTotal))
+        courseAvgList[u] = (thisAvg/thisTotal)
 
-
-    courseAvgList = sorted(courseAvgList, key=getKey, reverse=True)
+    hardCourseAvgList = sorted(courseAvgList, key=courseAvgList.__getitem__, reverse=True)
     i = 0
-    finalCourseList = []
-    for course in courseAvgList:
+    hardCourseList = {}
+    for course in hardCourseAvgList:
         if i >= 10:
             break
         else:
-            print course[0]
-            allClasses = Course_Specific.objects.filter(name=course[0])
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
             if allClassesTotal >= 10:
-                finalCourseList.append(course[0])
+                hardCourseList[course] = courseAvgList[course]
                 i += 1
+    hardCourses = sorted(hardCourseList, key=hardCourseList.__getitem__, reverse=True)
+    hardGrades = []
+    for h in hardCourses:
+        hardGrades.append(hardCourseList[h])
+    hard = zip(hardCourses, hardGrades)
 
-    profAvgList = []
-    for p in uniqueProfList:
-        allSems = Course_Specific.objects.filter(prof__icontains=p)
-        thisAvg = 0
-        thisTotal = 0
-        for a in allSems:
-            thisAvg += a.getAvg() * a.getTotalGrades()
-            thisTotal += a.getTotalGrades()
-        profAvgList.append((p, thisAvg/thisTotal))
-
-    profAvgList = sorted(profAvgList, key=getKey)
+    easyCourseAvgList = sorted(courseAvgList, key=courseAvgList.__getitem__)
     i = 0
-    finalProfList = []
-    for prof in profAvgList:
+    easyCourseList = {}
+    for course in easyCourseAvgList:
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(prof__icontains=prof[0])
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
             if allClassesTotal >= 10:
-                finalProfList.append(prof[0].replace("*", " "))
+                easyCourseList[course] = courseAvgList[course]
                 i += 1
+    easyCourses = sorted(easyCourseList, key=easyCourseList.__getitem__)
+    easyGrades = []
+    for e in easyCourses:
+        easyGrades.append(easyCourseList[e])
+    easy = zip(easyCourses, easyGrades)
 
-    deptAvgList = []
-    for d in uniqueDeptList:
-        allSems = Course_Specific.objects.filter(dept__icontains=d)
-        thisAvg = 0
-        thisTotal = 0
-        for a in allSems:
-            thisAvg += a.getAvg() * a.getTotalGrades()
-            thisTotal += a.getTotalGrades()
-        deptAvgList.append((d, thisAvg/thisTotal))
+    # profAvgList = []
+    # for p in uniqueProfList:
+    #     allSems = Course_Specific.objects.filter(prof__icontains=p)
+    #     thisAvg = 0
+    #     thisTotal = 0
+    #     for a in allSems:
+    #         thisAvg += a.getAvg() * a.getTotalGrades()
+    #         thisTotal += a.getTotalGrades()
+    #     profAvgList.append((p, thisAvg/thisTotal))
 
-    deptAvgList = sorted(deptAvgList, key=getKey)
-    i = 0
-    finalDeptList = []
-    for dept in deptAvgList:
-        if i >= 10:
-            break
-        else:
-            allClasses = Course_Specific.objects.filter(dept__icontains=dept[0])
-            allClassesTotal = 0
-            for a in allClasses:
-                allClassesTotal += a.getTotalGrades()
-            if allClassesTotal >= 10:
-                thisDept = dept[0]
-                finalDeptList.append(dept[0] + ": " + depts[thisDept])
-                i += 1
+    # profAvgList = sorted(profAvgList, key=getKey)
+    # i = 0
+    # finalProfList = []
+    # for prof in profAvgList:
+    #     if i >= 10:
+    #         break
+    #     else:
+    #         allClasses = Course_Specific.objects.filter(prof__icontains=prof[0])
+    #         allClassesTotal = 0
+    #         for a in allClasses:
+    #             allClassesTotal += a.getTotalGrades()
+    #         if allClassesTotal >= 10:
+    #             finalProfList.append(prof[0].replace("*", " "))
+    #             i += 1
+
+    # deptAvgList = []
+    # for d in uniqueDeptList:
+    #     allSems = Course_Specific.objects.filter(dept__icontains=d)
+    #     thisAvg = 0
+    #     thisTotal = 0
+    #     for a in allSems:
+    #         thisAvg += a.getAvg() * a.getTotalGrades()
+    #         thisTotal += a.getTotalGrades()
+    #     deptAvgList.append((d, thisAvg/thisTotal))
+
+    # deptAvgList = sorted(deptAvgList, key=getKey)
+    # i = 0
+    # finalDeptList = []
+    # for dept in deptAvgList:
+    #     if i >= 10:
+    #         break
+    #     else:
+    #         allClasses = Course_Specific.objects.filter(dept__icontains=dept[0])
+    #         allClassesTotal = 0
+    #         for a in allClasses:
+    #             allClassesTotal += a.getTotalGrades()
+    #         if allClassesTotal >= 10:
+    #             thisDept = dept[0]
+    #             finalDeptList.append(dept[0] + ": " + depts[thisDept])
+    #             i += 1
 
 
-    context = {'finalDeptList': finalDeptList, 'finalCourseList': finalCourseList, 'finalProfList': finalProfList}
+    context = {'hard': hard, 'easy': easy}
     return render(request, 'curves/topten.html', context)
 
 
