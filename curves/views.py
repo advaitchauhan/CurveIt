@@ -1026,7 +1026,27 @@ def topTen(request):
     hardGrades = []
     for h in hardCourses:
         hardGrades.append(hardCourseList[h])
-    hard = zip(hardCourses, hardGrades)
+
+    hardLinks = []
+    for h in hardCourses:
+        areas1 = h.split("/")
+        cdept1 = ""
+        cnum1 = ""
+        for i in range(0,len(areas1)):
+            separate = areas1[i].split(" ")
+            thisDept = separate[0]
+            thisNum = separate[1]
+            if i < len(areas1) - 1:
+                cdept1 += thisDept + "+"
+                cnum1 += thisNum + "+"
+            else:
+                cdept1 += thisDept
+                curIndex = thisNum.index(":")
+                cnum1 += thisNum[0:curIndex]
+        hardLinks.append(cdept1 + "/" + cnum1 + "/")
+    hardTemp = zip(hardCourses, hardLinks)
+    hard = zip(hardTemp, hardGrades)
+
 
     easyCourseAvgList = sorted(courseAvgList, key=courseAvgList.__getitem__)
     i = 0
@@ -1046,7 +1066,26 @@ def topTen(request):
     easyGrades = []
     for e in easyCourses:
         easyGrades.append(easyCourseList[e])
-    easy = zip(easyCourses, easyGrades)
+
+    easyLinks = []
+    for e in easyCourses:
+        areas1 = e.split("/")
+        cdept1 = ""
+        cnum1 = ""
+        for i in range(0,len(areas1)):
+            separate = areas1[i].split(" ")
+            thisDept = separate[0]
+            thisNum = separate[1]
+            if i < len(areas1) - 1:
+                cdept1 += thisDept + "+"
+                cnum1 += thisNum + "+"
+            else:
+                cdept1 += thisDept
+                curIndex = thisNum.index(":")
+                cnum1 += thisNum[0:curIndex]
+        easyLinks.append(cdept1 + "/" + cnum1 + "/")
+    easyTemp = zip(easyCourses, easyLinks)
+    easy = zip(easyTemp, easyGrades)
 
     # profAvgList = []
     # for p in uniqueProfList:
