@@ -175,9 +175,6 @@ def populate(filename, sem):
 
     # Randomly generate grade distribution for this class
     dist = distributeGrades()
-    print thisTitle
-    print dist
-
 
     # add the course specific to the model
     courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester=sem, num_A_plus=dist['A+'], num_A=dist['A'], num_A_minus=dist['A-'], num_B_plus=dist['B+'], num_B=dist['B'], num_B_minus=dist['B-'], num_C_plus=dist['C+'], num_C=dist['C'], num_C_minus=dist['C-'], num_D=dist['D'], num_F=dist['F'], num_P=dist['P']))
@@ -203,4 +200,22 @@ def main():
   filename = "reg6.json"
   populate(filename, sem)
 
+  # Add in titleString field -- necessary for autocomplete
+  courses = Course_Specific.objects.all()
+  for c in courses:
+    titleString = "" 
+    depts = c.dept.split("+") 
+    nums = c.num.split("+")
+    
+    #create string in format "COS 126/EGR 126: General Computer Science"
+    for i in range(0, len(depts)):
+      if i == (len(depts)-1):
+        titleString += depts[i] + " " + nums[i] + ": "
+      else:
+        titleString += depts[i] + " " + nums[i] + "/" 
+    titleString += c.name
+    c.titleString = titleString
+    c.save()
+
 main()
+

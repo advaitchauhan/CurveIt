@@ -385,8 +385,8 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
-    if loggedIn(request):
-        return redirect('/')
+    # if loggedIn(request):
+    #     return redirect('/')
 
     # A HTTP POST?
     y = range(1,4)
