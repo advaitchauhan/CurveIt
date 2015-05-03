@@ -14,11 +14,19 @@ GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
 SEM_list = ["2015 Spring", "2014 Spring", "2013 Spring"]
 
 # Convert semester string from format "S2015" to "2015 Spring"
-def convertSem(ctime):
+def convertToModel(ctime):
     if ctime[0] == 'S':
         return ctime[1:] + ' Spring'
     else:
         return ctime[1:] + ' Fall'
+
+# Convert semester string from format "S2015" to "2015 Spring"
+def convertFromModel(ctime):
+    sem = ctime.split(" ")
+    if sem[1] == 'Spring':
+        return 'S' + sem[0]
+    else:
+        return 'F' + sem[0]
 
 # Create your views here.
 @login_required
@@ -108,6 +116,7 @@ def deptView(request, cdept):
     uniqueCourse_list = []
     # construct a list of all semesters for which we have data
     sem_list = []
+    origsem_list = []
     for course in course_list:
         # get list of all distinct courses
         for uniqueCourse in uniqueCourse_list:
@@ -115,6 +124,9 @@ def deptView(request, cdept):
                 break
         else:
             uniqueCourse_list.append(course)
+        if course.semester not in origsem_list:
+            sem_list.append(convertFromModel(course.semester))
+            origsem_list.append(course.semester)
         # get list of all distinct semesters
     # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
@@ -130,7 +142,7 @@ def deptView(request, cdept):
     q = cachedList[0]
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sem_list': sorted(sem_list, reverse=True), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -142,26 +154,28 @@ def deptSpecificView(request, cdept, ctime):
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
     # check that the dept exists for the semester
-    course_list = Course_Specific.objects.filter(dept__contains = cdept, semester=ctime) # includes all semesters
+    course_list = Course_Specific.objects.filter(dept__contains = cdept, semester=convertToModel(ctime)) # includes all semesters
     if not course_list:
         return render(request, 'curves/404.html')
+
+    thisSem = convertToModel(ctime)
+    print thisSem
 
     # all courses for current semester
     course_list = []
     # all semester for which classes under this dept were taught
     sem_list = []
+    origsem_list = []
     # get list of all distinct semesters
     for course in allSemAllCourse:
         # create list of all the classes in the current semester
-        if course.semester == ctime:
+        if course.semester == thisSem:
             course_list.append(course)
 
         # create a list of all the distinct semesters
-        for sem in sem_list:
-            if course.semester == sem:
-                break
-        else:
-            sem_list.append(course.semester)
+        if course.semester not in origsem_list:
+            sem_list.append(convertFromModel(course.semester))
+            origsem_list.append(course.semester)
 
     numGrades = [0] * len(GRADES)
     for course in course_list:
