@@ -188,15 +188,15 @@ def main():
   # clear database
   Course_Specific.objects.all().delete() 
   
-  sem = "S2015"
+  sem = "2015 Spring"
   filename = "reg2.json"
   populate(filename, sem)
 
-  sem = "S2014"
+  sem = "2014 Spring"
   filename = "reg4.json"
   populate(filename, sem)
 
-  sem = "S2013"
+  sem = "2013 Spring"
   filename = "reg6.json"
   populate(filename, sem)
 
