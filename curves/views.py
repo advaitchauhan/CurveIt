@@ -100,6 +100,8 @@ def index(request):
 def loggedIn(request):
     currentnetid = request.user.username
     thisUser = Student.objects.get(netid=currentnetid)
+    if not thisUser:
+        return render(request, 'curves/404.html')
     return (thisUser.hasAccess())
 
 @login_required 
