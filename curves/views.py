@@ -854,6 +854,8 @@ def compareDeptSelect(request):
     print "here"
     if loggedIn(request) == False:
         return redirect('/add_data/')
+
+
     cachedList = QueryDeptList.objects.all()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
@@ -1171,8 +1173,10 @@ def topTen(request):
     #             finalDeptList.append(dept[0] + ": " + depts[thisDept])
     #             i += 1
 
+    cachedListAll = QueryList.objects.all()
+    qAll = cachedListAll[0]
 
-    context = {'hard': hard, 'easy': easy}
+    context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/topten.html', context)
 
 
