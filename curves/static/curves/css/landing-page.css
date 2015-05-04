@@ -4,6 +4,39 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+@font-face {
+    font-family: Dense;
+    src: url('../fonts/Dense-Regular.otf')
+}
+
+@font-face {
+    font-family: Dual;
+    src: url('../fonts/Dual-300.otf')
+}
+
+@font-face {
+    font-family: Aller;
+    src: url('../fonts/Aller_Rg.ttf');
+}
+
+@font-face {
+    font-family: Exo;
+    src: url('../fonts/Exo-Regular.otf');
+}
+
+@font-face {
+    font-family: Cardo;
+    src: url('../fonts/Cardo104s.ttf');
+}
+
+
+@font-face{
+    font-family: Raleway;
+    src: url('../fonts/Raleway-Regular.ttf');
+}
+
+
+
 body,
 html {
     background: url(../img/Princeton.jpg) no-repeat center center;
@@ -17,9 +50,6 @@ html {
     /*border: 5px solid red;*/
 }
 
-@font-face {
-    font-family: Georgia, serif;
-}
 
 body,
 h1,
@@ -28,7 +58,13 @@ h3,
 h4,
 h5,
 h6 {
-font-family: Georgia, serif;
+font-family: Aller, serif;
+    font-weight: 500;
+}
+
+h1 {
+
+    font-family: Palatino, serif;
     font-weight: 500;
 }
 

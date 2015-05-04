@@ -1,4 +1,4 @@
-/*@font-face {
+@font-face {
     font-family: Dense;
     src: url('../fonts/Dense-Regular.otf')
 }
@@ -6,7 +6,29 @@
 @font-face {
     font-family: Dual;
     src: url('../fonts/Dual-300.otf')
-}*/
+}
+
+@font-face {
+    font-family: Aller;
+    src: url('../fonts/Aller_Rg.ttf');
+}
+
+@font-face {
+    font-family: Exo;
+    src: url('../fonts/Exo-Regular.otf');
+}
+
+@font-face {
+    font-family: Cardo;
+    src: url('../fonts/Cardo104s.ttf');
+}
+
+
+@font-face{
+    font-family: Raleway;
+    src: url('../fonts/Raleway-Regular.ttf');
+}
+
 
 @font-face {
   font-family: Georgia, serif;
@@ -31,7 +53,7 @@
 
 
 body, html {
-	  font-family: Georgia, serif;
+	  font-family: Aller, serif;
     color: white;
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
@@ -126,11 +148,11 @@ body {
 
 /*dropdown components size*/
 .dropdown-menu {
-  font-size: 14px;
+  font-size: 18px;
 }
 /*compare on navbar size*/
 .dropdown-toggle {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 
@@ -145,12 +167,12 @@ body {
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {
-  font-size: 48px;
+  font-size: 36px;
 }
 
 /*logout size*/
 .navbar-link {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 
