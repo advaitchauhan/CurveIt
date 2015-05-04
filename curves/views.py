@@ -479,9 +479,17 @@ def add_data(request):
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
+
+    classes2015 = Course_Specific.objects.filter(semester="2015 Spring")
+    class2015_str = []
+    for c in classes2015:
+        class2015_str.append(c.titleString)
+
+    json2015 = json.dumps(class2015_str)
+
     # Bad form (or form details), no form supplied...
     # Render the form with error messages (if any).
-    return render(request, 'curves/add_data.html', {'form': form, 'allCombinedJSON': q.qlist})
+    return render(request, 'curves/add_data.html', {'form': form, 'allCombinedJSON': q.qlist, 'allCourses2015': json2015})
 
 @login_required
 def after_data(request):
