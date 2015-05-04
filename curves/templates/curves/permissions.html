@@ -1,0 +1,24 @@
+{% extends 'curves/base.html' %}
+{% block content %}
+{% load mathfilters %}
+{% load static %}
+<h3>Sorry, you do not have permission to view this page. If you need special permissions, please contact us at princetoncurveit@gmail.com</h3>
+
+<script type = "text/javascript">
+$(function(){
+
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCombinedJSON | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocomplete').autocomplete({
+    lookup: allFields,
+    groupBy: 'cat',
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+</script>
+
+{% endblock %}

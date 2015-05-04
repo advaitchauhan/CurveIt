@@ -101,7 +101,7 @@ def loggedIn(request):
     currentnetid = request.user.username
     thisUser = Student.objects.get(netid=currentnetid)
     if not thisUser:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/permissions.html')
     return (thisUser.hasAccess())
 
 @login_required 
