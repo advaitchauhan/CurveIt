@@ -537,7 +537,8 @@ def search(request):
                 aClass = classes[0]
                 return deptView(request, aClass.dept)
 
-
+        cachedList = QueryList.objects.all()
+        qc = cachedList[0]
         #check if the search term is part of a professor?
         qS = q.split(" ")
         classes = Course_Specific.objects.filter(prof__icontains=qS[0])
@@ -586,7 +587,7 @@ def search(request):
                             break
                     else:
                         uniqueClasses.append(c)
-                context = {'classes': uniqueClasses}
+                context = {'classes': uniqueClasses, 'allCombinedJSON': qc.qlist}
                 return render(request, 'curves/results.html', context)
 
         #check if search term is part of a class title?
@@ -602,8 +603,6 @@ def search(request):
                         break
                 else:
                     uniqueClasses.append(c)
-            cachedList = QueryList.objects.all()
-            qc = cachedList[0]
             context = {'classes': uniqueClasses, 'allCombinedJSON': qc.qlist}
             return render(request, 'curves/results.html', context)
         else:
@@ -1005,34 +1004,21 @@ def topTen(request):
         return redirect('/add_data/')
 
     # create list of unique course names (if it hasn't been calculated already)
-    cachedList = QueryCourseList.objects.all()
-    if len(cachedList) == 0:
-        allSemAllCourse = Course_Specific.objects.all()
-        if not allSemAllCourse:
-            return render(request, 'curves/404.html')
+    allSemAllCourse = Course_Specific.objects.filter(semester=CURRENTSEMESTER)
+    if not allSemAllCourse:
+        return render(request, 'curves/404.html')
 
-        uniqueCourseList = []
+    uniqueCourseList = []
 
-        for a in allSemAllCourse:
-            course = a.__unicode__()
-            if course not in uniqueCourseList:
-                    uniqueCourseList.append(course)
-
-        allCourseJSON = json.dumps(uniqueCourseList)
-
-        q = QueryCourseList()
-        q.qlist = allCourseJSON
-        q.save()
-
-    else:
-        q = cachedList[0]
-
-    uniqueCourseList = json.loads(q.qlist)
+    for a in allSemAllCourse:
+        course = a.__unicode__()
+        if course not in uniqueCourseList:
+                uniqueCourseList.append(course)
 
     courseAvgList = {}
     # Get all semesters of each course and calculate weighted avg GPA across them
     for u in uniqueCourseList:
-        allSems = Course_Specific.objects.filter(titleString=u)
+        allSems = Course_Specific.objects.filter(titleString=u, semester=CURRENTSEMESTER)
         thisAvg = 0
         thisTotal = 0
         for a in allSems:
@@ -1051,7 +1037,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course)
+            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
             allClassesTotal = 0
             # verify that at least 10 grades have been entered 
             for a in allClasses:
@@ -1119,8 +1105,7 @@ def topTen(request):
                 cnum1 += thisNum + "+"
             else:
                 cdept1 += thisDept
-                curIndex = thisNum.index(":")
-                cnum1 += thisNum[0:curIndex]
+                cnum1 += thisNum
         easyLinks.append(cdept1 + "/" + cnum1 + "/")
     easyTemp = zip(easyCourses, easyLinks)
     easy = zip(easyTemp, easyGrades)

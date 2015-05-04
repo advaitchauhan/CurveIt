@@ -6,14 +6,14 @@
 <div class="title-div">
   <h1 class="title">{{ name }}</h1>
 
-  <div class="dropdown">
+  <div class="dropdown dropdown-tip dropwdown-scroll">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
       Professors for this Course
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1" style="max-width: 100vw">
       {% for p,name in profs %}
-          <li> <a href = "/prof/{{ p }}/"> {{ name }}</a></li>
+        <li role = "presentation"> <a role ="menuitem"  tabindex="-1" href = "/prof/{{ p }}/"> {{ name }} </a> </li>
       {% endfor %}    
     </ul>
   </div>
