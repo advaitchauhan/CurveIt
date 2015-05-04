@@ -446,25 +446,29 @@ def add_data(request):
             thisUser.entered()
             thisUser.save()
             curData = form.cleaned_data #this is the data from the form
-
+            print curData
             #add grade to class for each class
             try:
                 for i in range(0, len(requiredClasses)):
                     c = requiredClasses[i]
                     g = requiredGrades[i]
                     thisClass = curData[c] # i.e. AAS 210/MUS 253: Intro to...
+                    print thisClass
+                    print ""
+                    thisCourse_Specific = Course_Specific.objects.get(titleString=thisClass, semester="2015 Spring")
                     thisGrade = curData[g] # gets grade chosen
-                    thisClass.addGrade(thisGrade)
-                    thisClass.calcAvg()
-                    thisClass.save()
+                    thisCourse_Specific.addGrade(thisGrade)
+                    thisCourse_Specific.calcAvg()
+                    thisCourse_Specific.save()
                     print thisGrade
                 for i in range(0, len(optionalClasses)):
                     thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
-                    if thisClass != None:
+                    if thisClass != "":
                         thisGrade = curData[optionalGrades[i]] # gets grade chosen
-                        thisClass.addGrade(thisGrade)
-                        thisClass.calcAvg()
-                        thisClass.save()
+                        thisCourse_Specific = Course_Specific.objects.get(titleString=thisClass, semester="2015 Spring")
+                        thisCourse_Specific.addGrade(thisGrade)
+                        thisCourse_Specific.calcAvg()
+                        thisCourse_Specific.save()
             except Course_Specific.DoesNotExist:
                 thisClass = None
 

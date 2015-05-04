@@ -7,10 +7,12 @@ grades = []
 
 def isCourse(courseString):
     print "checking if it is a course!"
-    for c in Course_Specific.objects.all():
+    all_Courses = Course_Specific.objects.filter(semester="2015 Spring")
+    for c in all_Courses:
         # print courseString
         # print c.titleString
         if c.titleString == courseString:
+            print "yes"
             return True
     return False
 
@@ -19,11 +21,11 @@ class Course_SpecificForm(forms.Form):
     curClasses = Course_Specific.objects.filter(semester="2015 Spring")
     curGradesList = Course_Specific.CHOICES
     curGradesList.insert(0, ("N/A", "Enter Grade"))
-    pastSemClass1 = forms.CharField(required=True)
+    pastSemClass1 = forms.CharField(required=False)
     grade1 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade*")
-    pastSemClass2 = forms.CharField(required=True)
+    pastSemClass2 = forms.CharField(required=False)
     grade2 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade*")
-    pastSemClass3 = forms.CharField(required=True)
+    pastSemClass3 = forms.CharField(required=False)
     grade3 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput",  help_text="Grade*")
     pastSemClass4 = forms.CharField(required = False)
     grade4 = forms.ChoiceField(choices=Course_Specific.CHOICES, label = "gradeInput", help_text="Grade")
@@ -59,33 +61,37 @@ class Course_SpecificForm(forms.Form):
         for i in range(0, len(requiredClasses)):
             thisGrade = cleaned_data.get(requiredGrades[i])
             thisClass = cleaned_data.get(requiredClasses[i])
-            if not isCourse(thisClass):
+            print thisClass
+            if thisGrade == "N/A" or thisClass == "":
+                self.add_error(requiredGrades[i], "Please enter both a class and a grade")
+            elif thisClass != "" and (not isCourse(thisClass)):
                 self.add_error(requiredClasses[i], "Please select a valid class")
 
             required_Courses.append(thisClass)
-            if thisGrade == "N/A" or thisClass == None:
-                self.add_error(requiredGrades[i], "Please enter both a class and a grade")
 
         #grab the optional classes, perform error checking with the grabbed classes
         for i in range(0, len(optionalClasses)):
             thisClass = cleaned_data.get(optionalClasses[i])
-            if not isCourse(thisClass):
-                self.add_error(requiredClasses[i], "Please select a valid class")
+            if thisClass != "" and (not isCourse(thisClass)):
+                print "herere"
+                print thisClass
+                self.add_error(optionalClasses[i], "Please select a valid class")
 
             optional_Courses.append(thisClass)
             thisGrade = cleaned_data.get(optionalGrades[i])
-            if thisGrade == "N/A" and thisClass != None:
+            if thisGrade == "N/A" and thisClass != "":
                 self.add_error(optionalGrades[i], "Please enter grade.")
-            elif thisGrade != "N/A" and thisClass == None:
+            elif thisGrade != "N/A" and thisClass == "":
                 self.add_error(optionalClasses[i], "Please enter class.")
 
         all_Courses = required_Courses + optional_Courses
+        print all_Courses
         errors = [False]*6
         # checks that a class has not been selected more than once
         for i in range(0, len(all_Courses)):
             for j in range(0, len(all_Courses)):
                 if i != j:
-                    if all_Courses[i] != None and all_Courses[j] != None:
+                    if all_Courses[i] != "" and all_Courses[j] != "":
                         if errors[j] == False:
                             if all_Courses[i] == all_Courses[j]:
                                 if j < len(required_Courses):
