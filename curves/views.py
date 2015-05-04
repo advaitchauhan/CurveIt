@@ -116,7 +116,7 @@ def deptView(request, cdept):
     uniqueCourse_list = []
     # construct a list of all semesters for which we have data
     sem_list = []
-    origsem_list = []
+    origsem_list= []
     for course in course_list:
         # get list of all distinct courses
         for uniqueCourse in uniqueCourse_list:
@@ -124,9 +124,9 @@ def deptView(request, cdept):
                 break
         else:
             uniqueCourse_list.append(course)
-        if course.semester not in origsem_list:
-            sem_list.append(convertFromModel(course.semester))
-            origsem_list.append(course.semester)
+        if course.semester not in sem_list:
+            sem_list.append(course.semester)
+            origsem_list.append(convertFromModel(course.semester))
         # get list of all distinct semesters
     # aggregate all time grade distribution
     numGrades = [0] * len(GRADES)
@@ -136,19 +136,23 @@ def deptView(request, cdept):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
+    sems = zip(sem_list, origsem_list)
     total = sum(numGrades)
+    print sems
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sem_list': sorted(sem_list, reverse=True), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sems': sorted(sems, reverse=True), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester.
 @login_required
 def deptSpecificView(request, cdept, ctime):
+    print "--here"
+    print ctime
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # list of all classes in the department over all semesters
@@ -173,9 +177,9 @@ def deptSpecificView(request, cdept, ctime):
             course_list.append(course)
 
         # create a list of all the distinct semesters
-        if course.semester not in origsem_list:
-            sem_list.append(convertFromModel(course.semester))
-            origsem_list.append(course.semester)
+        if course.semester not in sem_list:
+            sem_list.append(course.semester)
+            origsem_list.append(convertFromModel(course.semester))
 
     numGrades = [0] * len(GRADES)
     for course in course_list:
@@ -184,12 +188,13 @@ def deptSpecificView(request, cdept, ctime):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
+    sems = zip(sem_list, origsem_list)
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sems': sorted(sems, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -210,6 +215,7 @@ def profView(request, cprof):
             if p not in uniqueProfs:
                 uniqueProfs.append(p)
 
+
     for u in uniqueProfs:
         if cprof == u:
             break
@@ -219,6 +225,7 @@ def profView(request, cprof):
 
 
     sem_list = []
+    origsem_list = []
     course_list = []
 
     for c in allSemAllCourse:
@@ -230,11 +237,9 @@ def profView(request, cprof):
             course_list.append(c)
 
         # get a list of all distinct semesters taught
-        for sem in sem_list:
-            if c.semester == sem:
-                break
-        else:
+        if c.semester not in origsem_list:
             sem_list.append(c.semester)
+            origsem_list.append(convertFromModel(c.semester))
 
     # generate grade distibution across all courses taught
     numGrades = [0] * len(GRADES);
@@ -244,11 +249,12 @@ def profView(request, cprof):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
+    sems = zip(sem_list, origsem_list)
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sems': sorted(sems, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -260,7 +266,7 @@ def profSpecificView(request, cprof, ctime):
     if not allSemAllCourse:
         return render(request, 'curves/404.html')
     # check that the prof data exists for the semester
-    checkExists = Course_Specific.objects.filter(prof__icontains = cprof, semester=ctime)
+    checkExists = Course_Specific.objects.filter(prof__icontains = cprof, semester=convertToModel(ctime))
     if not checkExists:
         return render(request, 'curves/404.html')
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
@@ -279,18 +285,17 @@ def profSpecificView(request, cprof, ctime):
 
     course_list = []
     sem_list = []
+    origsem_list = []
 
     for c in allSemAllCourse:
         # create a list of all classes in the current semester
-        if c.semester == ctime:
+        if c.semester == convertToModel(ctime):
             course_list.append(c)
 
         # create a list of all semesters in which professor taught
-        for sem in sem_list:
-            if c.semester == sem:
-                break
-        else:
+        if c.semester not in origsem_list:
             sem_list.append(c.semester)
+            origsem_list.append(convertFromModel(c.semester))
 
     # generate grade distribution across all coureses taught
     numGrades = [0] * len(GRADES);
@@ -300,11 +305,12 @@ def profSpecificView(request, cprof, ctime):
             numGrades[i] += grades[i]
 
     dist = zip(GRADES, numGrades)
+    sems = zip(sem_list, origsem_list)
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sem_list': sorted(sem_list, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sems': sorted(sems, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -321,6 +327,7 @@ def courseView(request, cdept, cnum):
 
     # list of all semesters this class was taught
     sem_list = []
+    origsem_list = []
 
     # list of all professors who have taught this class
     prof_list = []
@@ -329,6 +336,7 @@ def courseView(request, cdept, cnum):
     numGrades = [0] * len(GRADES);
     for course in course_list:
         sem_list.append(course.semester)
+        origsem_list.append(convertFromModel(course.semester))
         curProf = course.prof
         curProfs = curProf.split("+")
         for c in curProfs:
@@ -354,12 +362,13 @@ def courseView(request, cdept, cnum):
 
     dist = zip(GRADES, numGrades)
     profs = zip(prof_list, prof_names_list)
+    sems = zip(sem_list, origsem_list)
     total = sum(numGrades) 
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
+    context = {'sems': sorted(sems, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -369,7 +378,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     if loggedIn(request) == False:
         return redirect('/add_data/')
     # course specific to the semester
-    courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = ctime)
+    courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = convertToModel(ctime))
     if not courseList:
         return render(request, 'curves/404.html')
     else:
@@ -380,11 +389,14 @@ def courseSpecificView(request, cdept, cnum, ctime):
         return render(request, 'curves/404.html')   
     # all semesters for which this class was taught
     sem_list = []
+    origsem_list = []
     for c in course_list:
         sem_list.append(c.semester)
+        origsem_list.append(convertFromModel(c.semester))
 
     numGrades = course.getAllGrades()
     dist = zip(GRADES, numGrades)
+    sems = zip(sem_list, origsem_list)
     total = sum(numGrades)
 
     curProfsForPrint = []
@@ -398,7 +410,7 @@ def courseSpecificView(request, cdept, cnum, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sem_list': sorted(sem_list, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
+    context = {'sems': sorted(sems, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     print dist
     return render(request, 'curves/course_specific.html', context)
@@ -1036,7 +1048,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course)
+            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
@@ -1076,7 +1088,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course)
+            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()

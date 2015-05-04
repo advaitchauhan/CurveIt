@@ -24,8 +24,8 @@
     <!-- Tabs to all semesters in which this professor taught  -->
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="#">View All Semesters</a></li>
-      {% for s in sem_list %}
-          <li role = "presentation"> <a class="tab-links" role ="menuitem"  tabindex="-1" href = "/prof/{{ prof }}/{{ s }}/">{{ s }} </a> </li>
+      {% for s in sems %}
+          <li role = "presentation"> <a class="tab-links" role ="menuitem"  tabindex="-1" href = "/prof/{{ prof }}/{{ s.1 }}/">{{ s.0 }} </a> </li>
       {% endfor %}
       </ul> 
 
