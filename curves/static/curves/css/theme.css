@@ -30,10 +30,6 @@
 }
 
 
-@font-face {
-  font-family: Georgia, serif;
-}
-
 .h2 {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -89,7 +85,7 @@ body {
 .title {
   width: 70%;
 	color: white;
-	font-size: 300%;
+	font-size: 250%;
 }
 
 .title-div {
@@ -148,11 +144,12 @@ body {
 
 /*dropdown components size*/
 .dropdown-menu {
-  font-size: 18px;
+  font-size: 16px;
 }
+
 /*compare on navbar size*/
 .dropdown-toggle {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 
@@ -167,12 +164,12 @@ body {
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {
-  font-size: 36px;
+  font-size: 32px;
 }
 
 /*logout size*/
 .navbar-link {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 
