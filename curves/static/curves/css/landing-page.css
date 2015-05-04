@@ -18,8 +18,7 @@ html {
 }
 
 @font-face {
-    font-family: Dense;
-    src: url('../fonts/Dense-Regular.otf')
+    font-family: Georgia, serif;
 }
 
 body,
@@ -29,7 +28,7 @@ h3,
 h4,
 h5,
 h6 {
-font-family: Dense, Helvetica,Arial,sans-serif;
+font-family: Georgia, serif;
     font-weight: 500;
 }
 

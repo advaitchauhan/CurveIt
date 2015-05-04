@@ -11,7 +11,7 @@ import json
 
 CURRENTSEMESTER = "2015 Spring"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
-SEM_list = ["2015 Spring", "2014 Spring", "2013 Spring"]
+MIN_ENTRIES_REQ = 0
 
 # Convert semester string from format "S2015" to "2015 Spring"
 def convertToModel(ctime):
@@ -1004,6 +1004,7 @@ def topTen(request):
     if loggedIn(request) == False:
         return redirect('/add_data/')
 
+    # create list of unique course names (if it hasn't been calculated already)
     cachedList = QueryCourseList.objects.all()
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
@@ -1028,26 +1029,8 @@ def topTen(request):
 
     uniqueCourseList = json.loads(q.qlist)
 
-    # allSemAllCourse = Course_Specific.objects.filter(semester="S2015")
-
-    # uniqueDeptList = []
-
-    # for c in allSemAllCourse:
-    #     curdepts = c.dept.split("+")
-    #     for d in curdepts:
-    #         if d not in uniqueDeptList:
-    #             uniqueDeptList.append(d)
-
-    # uniqueProfList = []
-
-    # for c in allSemAllCourse:
-    #     profs = c.prof.split("+")
-    #     for p in profs:
-    #         if p not in uniqueProfList:
-    #             uniqueProfList.append(p)
-
-
     courseAvgList = {}
+    # Get all semesters of each course and calculate weighted avg GPA across them
     for u in uniqueCourseList:
         allSems = Course_Specific.objects.filter(titleString=u)
         thisAvg = 0
@@ -1055,8 +1038,12 @@ def topTen(request):
         for a in allSems:
             thisAvg += a.getAvg() * a.getTotalGrades()
             thisTotal += a.getTotalGrades()
-        courseAvgList[u] = (thisAvg/thisTotal)
+        if thisTotal == 0:
+            courseAvgList[u] = format(0.0, '.2f')
+        else:
+            courseAvgList[u] = format(round(thisAvg/thisTotal, 2), '.2f')
 
+    # Look at bottom 10 avg GPA courses
     hardCourseAvgList = sorted(courseAvgList, key=courseAvgList.__getitem__, reverse=True)
     i = 0
     hardCourseList = {}
@@ -1064,11 +1051,12 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
+            # verify that at least 10 grades have been entered 
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
-            if allClassesTotal >= 10:
+            if allClassesTotal >= MIN_ENTRIES_REQ:
                 hardCourseList[course] = courseAvgList[course]
                 i += 1
     hardCourses = sorted(hardCourseList, key=hardCourseList.__getitem__, reverse=True)
@@ -1078,7 +1066,9 @@ def topTen(request):
 
     hardLinks = []
     for h in hardCourses:
-        areas1 = h.split("/")
+        header = h.split(":") # COS 126/EGR 126
+        areas1 = header[0].split("/") 
+
         cdept1 = ""
         cnum1 = ""
         for i in range(0,len(areas1)):
@@ -1090,8 +1080,7 @@ def topTen(request):
                 cnum1 += thisNum + "+"
             else:
                 cdept1 += thisDept
-                curIndex = thisNum.index(":")
-                cnum1 += thisNum[0:curIndex]
+                cnum1 += thisNum
         hardLinks.append(cdept1 + "/" + cnum1 + "/")
     hardTemp = zip(hardCourses, hardLinks)
     hard = zip(hardTemp, hardGrades)
@@ -1104,11 +1093,11 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             for a in allClasses:
                 allClassesTotal += a.getTotalGrades()
-            if allClassesTotal >= 10:
+            if allClassesTotal >= MIN_ENTRIES_REQ:
                 easyCourseList[course] = courseAvgList[course]
                 i += 1
     easyCourses = sorted(easyCourseList, key=easyCourseList.__getitem__)
@@ -1135,57 +1124,6 @@ def topTen(request):
         easyLinks.append(cdept1 + "/" + cnum1 + "/")
     easyTemp = zip(easyCourses, easyLinks)
     easy = zip(easyTemp, easyGrades)
-
-    # profAvgList = []
-    # for p in uniqueProfList:
-    #     allSems = Course_Specific.objects.filter(prof__icontains=p)
-    #     thisAvg = 0
-    #     thisTotal = 0
-    #     for a in allSems:
-    #         thisAvg += a.getAvg() * a.getTotalGrades()
-    #         thisTotal += a.getTotalGrades()
-    #     profAvgList.append((p, thisAvg/thisTotal))
-
-    # profAvgList = sorted(profAvgList, key=getKey)
-    # i = 0
-    # finalProfList = []
-    # for prof in profAvgList:
-    #     if i >= 10:
-    #         break
-    #     else:
-    #         allClasses = Course_Specific.objects.filter(prof__icontains=prof[0])
-    #         allClassesTotal = 0
-    #         for a in allClasses:
-    #             allClassesTotal += a.getTotalGrades()
-    #         if allClassesTotal >= 10:
-    #             finalProfList.append(prof[0].replace("*", " "))
-    #             i += 1
-
-    # deptAvgList = []
-    # for d in uniqueDeptList:
-    #     allSems = Course_Specific.objects.filter(dept__icontains=d)
-    #     thisAvg = 0
-    #     thisTotal = 0
-    #     for a in allSems:
-    #         thisAvg += a.getAvg() * a.getTotalGrades()
-    #         thisTotal += a.getTotalGrades()
-    #     deptAvgList.append((d, thisAvg/thisTotal))
-
-    # deptAvgList = sorted(deptAvgList, key=getKey)
-    # i = 0
-    # finalDeptList = []
-    # for dept in deptAvgList:
-    #     if i >= 10:
-    #         break
-    #     else:
-    #         allClasses = Course_Specific.objects.filter(dept__icontains=dept[0])
-    #         allClassesTotal = 0
-    #         for a in allClasses:
-    #             allClassesTotal += a.getTotalGrades()
-    #         if allClassesTotal >= 10:
-    #             thisDept = dept[0]
-    #             finalDeptList.append(dept[0] + ": " + depts[thisDept])
-    #             i += 1
 
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]

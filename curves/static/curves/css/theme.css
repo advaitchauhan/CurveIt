@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
     font-family: Dense;
     src: url('../fonts/Dense-Regular.otf')
 }
@@ -6,6 +6,10 @@
 @font-face {
     font-family: Dual;
     src: url('../fonts/Dual-300.otf')
+}*/
+
+@font-face {
+  font-family: Georgia, serif;
 }
 
 .h2 {
@@ -27,7 +31,7 @@
 
 
 body, html {
-	  font-family: Dense;
+	  font-family: Georgia, serif;
     color: white;
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
@@ -62,7 +66,7 @@ body {
 
 .title {
 	color: white;
-	font-size: 200%;
+	font-size: 300%;
 }
 
 .title-div {
@@ -121,11 +125,11 @@ body {
 
 /*dropdown components size*/
 .dropdown-menu {
-  font-size: 24px;
+  font-size: 14px;
 }
 /*compare on navbar size*/
 .dropdown-toggle {
-  font-size: 28px;
+  font-size: 20px;
 }
 
 
@@ -145,7 +149,7 @@ body {
 
 /*logout size*/
 .navbar-link {
-  font-size: 28px;
+  font-size: 20px;
 }
 
 
@@ -229,14 +233,6 @@ body {
   background-color: rgba(0,100,0,.8);
 }
 
-/*.btn-search {
-    border-color: #000000; background-color: rgba(0,0,0,0.8);
-}*/
-
-
-/*btn-search:hover { 
-    border-color: #000000; background-color: #FFFFFF; 
-    }*/
 .btn-search {
   background-color: hsl(0, 0%, 16%) !important;
   background-repeat: repeat-x;
@@ -252,7 +248,7 @@ body {
   color: #fff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
   -webkit-font-smoothing: antialiased;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .navbar-center {

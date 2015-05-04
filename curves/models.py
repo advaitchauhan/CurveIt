@@ -108,8 +108,11 @@ class Course_Specific(models.Model):
 		return searchList
 
 	def calcAvg(self):
-		total = self.num_A_plus * 4 + self.num_A * 4 + self.num_A_minus * 3.7 + self.num_B_plus * 3.3 + self.num_B * 3 + self.num_B_minus * 2.7 + self.num_C_plus * 2.3 + self.num_C * 2 + self.num_C_minus * 1.7 + self.num_D
-		self.avg = total / self.getTotalGrades()
+		if self.getTotalGrades() == 0:
+			self.avg = 0
+		else:
+			total = self.num_A_plus * 4 + self.num_A * 4 + self.num_A_minus * 3.7 + self.num_B_plus * 3.3 + self.num_B * 3 + self.num_B_minus * 2.7 + self.num_C_plus * 2.3 + self.num_C * 2 + self.num_C_minus * 1.7 + self.num_D
+			self.avg = total / self.getTotalGrades()
 
 	def getAvg(self):
 		return self.avg

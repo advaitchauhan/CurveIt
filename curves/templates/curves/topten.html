@@ -14,17 +14,17 @@
 		<div class = "col-md-6  panel panel-good">
 			<h2 class = "text-center">Highest Average Grade:</h2>
 			<ol>
-				<h3>{% for course, grade in hard %}				
-			  		<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li>
-					{% endfor %}</h3>
+				<h4>{% for course, grade in hard %}				
+			  		<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
+					{% endfor %}</h4>
 			</ol>
 		</div>
 		<div class = "col-md-6  panel panel-bad">
 			<h2 class = "text-center">Lowest Average Grade:</h2>
 			<ol>
-				<h3>{% for course, grade in easy %}
-  					<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li>
-				{% endfor %}</h3>
+				<h4>{% for course, grade in easy %}
+  					<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
+				{% endfor %}</h4>
 			</ol>
 		</div>
 	</div>

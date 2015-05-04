@@ -11,7 +11,7 @@
     <h3 style = "color: orange"> Please enter at least three classes and three
     grades from last semester, up to a maximum of 6 classes. </h3>
 
-    <h3> NOTE: The confidentiality of your grades is of utmost importance to us. We do not store grades associated with individual students - all of the data is aggregrated into our database immediately. </h3>
+    <p style = "font-size: 16pt"> NOTE: The confidentiality of your grades is of utmost importance to us. We do not store grades associated with individual students - all of the data is aggregrated into our database immediately. </p>
 
 <!-- Form to enter grade for a course -->
     <form class = "option" id="data_form" method="post" action="/add_data/">
@@ -21,7 +21,7 @@
       <div class = "combinedForm">
         <div class = "form-group">
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 1" {{ form.pastSemClass1 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 1" {{ form.pastSemClass1 }} </li>
           <li> {{ form.grade1 }} </li>
           {% if form.pastSemClass1.errors%}
               <li class="alert alert-danger alert-custom" role ="alert">{{ form.pastSemClass1.errors }}</li>
@@ -33,7 +33,7 @@
         </div>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 2" {{ form.pastSemClass2 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 2" {{ form.pastSemClass2 }} </li>
           <li> {{ form.grade2 }} </li>
           {% if form.pastSemClass2.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass2.errors }}</li>
@@ -44,7 +44,7 @@
         </ul>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 3" {{ form.pastSemClass3 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 3" {{ form.pastSemClass3 }} </li>
           <li> {{ form.grade3 }} </li>
           {% if form.pastSemClass3.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass3.errors }}</li>
@@ -55,7 +55,7 @@
         </ul>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 4" {{ form.pastSemClass4 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 4" {{ form.pastSemClass4 }} </li>
           <li> {{ form.grade4 }} </li>
           {% if form.pastSemClass4.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass4.errors }}</li>
@@ -67,7 +67,7 @@
 
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 5" {{ form.pastSemClass5 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 5" {{ form.pastSemClass5 }} </li>
           <li> {{ form.grade5 }} </li>
           {% if form.pastSemClass5.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass5.errors }}</li>
@@ -79,7 +79,7 @@
 
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 250px" placeholder="Choose Course 6" {{ form.pastSemClass6 }} </li>
+          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 6" {{ form.pastSemClass6 }} </li>
           <li> {{ form.grade6 }} </li>
           {% if form.pastSemClass6.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass6.errors }}</li>
@@ -90,7 +90,7 @@
         </ul>
       </div>
       <br>
-      <button type="submit" class="btn btn-search" style ="width: 75px" value="Add Data">Add Data </button>
+      <button type="submit" class="btn btn-search" style ="width: 100px" value="Add Data">Add Data </button>
     </form>
 
 
