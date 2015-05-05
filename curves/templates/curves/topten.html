@@ -5,7 +5,7 @@
 {% load static %}
 <div class="row">
 	<div class = "text-center">
-  		<h1> Top Ten </h1>
+  		<h1> Top Ten* </h1>
 	</div>
 </div>
 
@@ -15,7 +15,7 @@
 			<h2 class = "text-center">Highest Average Grade:</h2>
 			<ol>
 				<h4>{% for course, grade in hard %}				
-			  		<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
+			  		<li><a class = "a-link a-link-black" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
 					{% endfor %}</h4>
 			</ol>
 		</div>
@@ -28,6 +28,8 @@
 			</ol>
 		</div>
 	</div>
+	<div class = "row">
+		<h3>*Note: All average grades are computed based on a standard GPA model (4.0 for A+/A, 3.7 for A-, 3.3 for B+, etc.) and do not take into account 'P' grades.</h3>
 </div>
 
 <script type = "text/javascript">

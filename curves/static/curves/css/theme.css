@@ -82,6 +82,18 @@ body {
   text-decoration: underline;
 }
 
+.a-link-black {
+  color: white;
+  text-decoration: underline;
+
+}
+
+.a-link-black:hover,
+.a-link-black:focus {
+  color: rgba(0, 0, 0, .6);
+  text-decoration: underline;
+}
+
 .title {
   width: 70%;
 	color: white;
