@@ -5,7 +5,6 @@ from django.db import models
 # semester)
 class Course_Specific(models.Model):
 	CHOICES = [("A+", "A+"), ("A","A"), ("A-","A-"), ("B+", "B+"), ("B", "B"), ("B-", "B-"), ("C+", "C+"), ("C", "C"), ("C-", "C-"), ("D", "D"), ("F", "F"), ("P", "P")]
-	PASTSEMCLASSES = (("COS 333 Advanced Programming Techniques", "COS 333 Advanced Programming Techniques"), ("MAT 201 Multivariable Calculus", "MAT 201 Multivariable Calculus"))
 	
 	dept = models.CharField(max_length = 40) # e.g. 'COS'
 	num = models.CharField(max_length = 40) # e.g. '333'

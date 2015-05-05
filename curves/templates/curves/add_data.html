@@ -102,7 +102,7 @@ $(function(){
   //var profs = {{ allProfsJSON | safe }};
   var allFields = {{ allCourses2015 | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('.form-control').autocomplete({
+  $('#autocompleteCourse2015').autocomplete({
     lookup: allFields,
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
