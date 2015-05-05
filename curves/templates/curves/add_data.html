@@ -23,11 +23,8 @@
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 1" {{ form.pastSemClass1 }} </li>
           <li> {{ form.grade1 }} </li>
-          {% if form.pastSemClass1.errors%}
-              <li class="alert alert-danger alert-custom" role ="alert">{{ form.pastSemClass1.errors }}</li>
-          {% endif %}
-          {% if form.grade1.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.grade1.errors }}</li>
+          {% if form.pastSemClass1.errors or form.grade1.errors%}
+              <li class="alert alert-danger alert-custom" role ="alert">{{ form.pastSemClass1.errors }} {{ form.grade1.errors }}</li>
           {% endif %}
         </ul>
         </div>
@@ -35,33 +32,24 @@
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 2" {{ form.pastSemClass2 }} </li>
           <li> {{ form.grade2 }} </li>
-          {% if form.pastSemClass2.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.pastSemClass2.errors }}</li>
-          {% endif %}
-          {% if form.grade2.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.grade2.errors }}</li>
+          {% if form.pastSemClass2.errors or form.grade2.errors%}
+              <li class="alert alert-danger alert-custom">{{ form.pastSemClass2.errors }} {{ form.grade2.errors }}</li>
           {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 3" {{ form.pastSemClass3 }} </li>
           <li> {{ form.grade3 }} </li>
-          {% if form.pastSemClass3.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.pastSemClass3.errors }}</li>
-          {% endif %}
-          {% if form.grade3.errors %}
-              <li class="alert alert-danger alert-custom">{{ form.grade3.errors }}</li>
+          {% if form.pastSemClass3.errors or form.grade3.errors%}
+              <li class="alert alert-danger alert-custom">{{ form.pastSemClass3.errors }} {{ form.grade3.errors }}</li>
           {% endif %}
         </ul>
 
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 4" {{ form.pastSemClass4 }} </li>
           <li> {{ form.grade4 }} </li>
-          {% if form.pastSemClass4.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.pastSemClass4.errors }}</li>
-          {% endif %}
-          {% if form.grade4.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.grade4.errors }}</li>
+          {% if form.pastSemClass4.errors or form.grade4.errors%}
+              <li class="alert alert-danger alert-custom">{{ form.pastSemClass4.errors }} {{ form.grade4.erros }}</li>
           {% endif %}
         </ul>
 
@@ -69,11 +57,8 @@
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 5" {{ form.pastSemClass5 }} </li>
           <li> {{ form.grade5 }} </li>
-          {% if form.pastSemClass5.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.pastSemClass5.errors }}</li>
-          {% endif %}
-          {% if form.grade5.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.grade5.errors }}</li>
+          {% if form.pastSemClass5.errors or form.grade5.errors%}
+              <li class="alert alert-danger alert-custom">{{ form.pastSemClass5.errors }} {{ form.grade5.errors }}</li>
           {% endif %}
         </ul>
 
@@ -81,11 +66,8 @@
         <ul class = "list-inline">
           <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 6" {{ form.pastSemClass6 }} </li>
           <li> {{ form.grade6 }} </li>
-          {% if form.pastSemClass6.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.pastSemClass6.errors }}</li>
-          {% endif %}
-          {% if form.grade6.errors%}
-              <li class="alert alert-danger alert-custom">{{ form.grade6.errors }}</li>
+          {% if form.pastSemClass6.errors or form.grade6.errors%}
+              <li class="alert alert-danger alert-custom">{{ form.pastSemClass6.errors }} {{ form.grade6.errors }}</li>
           {% endif %}
         </ul>
       </div>
