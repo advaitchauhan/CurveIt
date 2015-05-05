@@ -1090,10 +1090,12 @@ def topTen(request):
     easyGrades = []
     for e in easyCourses:
         easyGrades.append(easyCourseList[e])
+    print easyCourses
 
     easyLinks = []
     for e in easyCourses:
-        areas1 = e.split("/")
+        header = e.split(":") # COS 126/EGR 126
+        areas1 = header[0].split("/") 
         cdept1 = ""
         cnum1 = ""
         for i in range(0,len(areas1)):
@@ -1109,6 +1111,7 @@ def topTen(request):
         easyLinks.append(cdept1 + "/" + cnum1 + "/")
     easyTemp = zip(easyCourses, easyLinks)
     easy = zip(easyTemp, easyGrades)
+    print "here"
 
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
