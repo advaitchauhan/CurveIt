@@ -35,7 +35,9 @@
     src: url('../fonts/Raleway-Regular.ttf');
 }
 
-
+.modal-wide .modal-dialog {
+  width: 80%; /* or whatever you wish */
+}
 
 body,
 html {
@@ -58,7 +60,7 @@ h3,
 h4,
 h5,
 h6 {
-font-family: Aller, serif;
+font-family: Raleway, serif;
     font-weight: 500;
 }
 
@@ -121,7 +123,7 @@ h1 {
 }
 
 .modal-backdrop {
-   background-color: rgba(0,0,0,.8);
+   background-color: rgb(0,0,0);
 }
 
 .modal-content {
