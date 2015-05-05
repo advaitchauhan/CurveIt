@@ -49,7 +49,7 @@
 
 
 body, html {
-	  font-family: serif;
+	  font-family: Raleway;
     color: white;
     /*background-color: #005266;
     background: rgb(255, 154, 51);   
@@ -176,7 +176,7 @@ body {
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {
-  font-family: Palatino;
+ /* font-family: Palatino;*/
   font-size: 32px;
 }
 
