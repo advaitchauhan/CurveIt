@@ -12,16 +12,47 @@
       <div class="modal-body" style="font-size: 16pt">
         <p >Hello, and welcome to CurveIt, Princeton's one and only grade distribution service. </p>
         <p>Before you begin browsing through course data, we ask that you share your grades from last semester with us. It’s your quick contribution that drives this service and help bring transparency to grading at Princeton! </p>
-        <p>If you are ready to enter your grades and be a part of CurveIt, click "Contribute" below.  Or, if you wouuld like to learn more, check out our About page. </p>
+        <p>If you are ready to enter your grades and be a part of CurveIt, click "Contribute" below.  Or, if you would like to learn more, click "About" below. </p>
           </br>
         	*Note: You will be unable to view data until you enter one semester's worth of grades</h3></p>
       </div>
       <div class="modal-footer">
+    <button class="btn btn-search" data-toggle = "modal" data-target="#aboutmodal">About</button>
 		<button class="btn btn-search" onclick= "location.href='/add_data/'">Contribute</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class = "modal fade aboutmodal modal-wide" tabindex="-1" role = "dialog" aria-labelledby="aboutmodal" aria-hidden = "true" id="aboutmodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+        <h3 class="modal-title">About PrincetonCurveIt!</h3>
+      </div>
+      <div class="modal-body" style="font-size: 16pt">
+        <p style = "color: black"><b>What is PrincetonCurveIt?</p></b>
+        <p>Princeton CurveIt is a crowd-sourced distribution service that allows students to search and visualize the grade curves for each of the classes available to Princeton students each semester. You can search and compare by department, professor, classes, and semesters, or you can just see the top 10 classes with either the highest/lowest average grade.</p>
+
+        <p style = "color: black"><b>How do we get the data?</p></b>
+        <p>Every semester students must enter grades for at least 3 of the classes they took the past semester. It is completely anonymous and only the grade is saved and added to the total distribution for the class.</p>
+
+        <p style = "color: black"><b>Who can see this?</p></b>
+        <p>This site is protected via Princeton CAS, which is also used to protect Blackboard and most of Princeton’s TigerApps. Only current Princeton students who have submitted the grades for the previous semester can see the curves for all the classes.</p>
+
+        <p style = "color: black"><b>Who made this and why?</p></b>
+        <p>Princeton CurveIt was created by Suraj Bhat ‘16, Advait Chauhan ‘17, Garrett Gosse ‘16, Tyler "Project-Mom" Hoffman ‘16, and Sylvia Okafor ’16. We thought it would be a cool project for COS333: Advanced Programming Techniques, especially in light of the end of grade deflation.</p>
+                      
+          </br>
+          </h3></p>
+      </div>
+      <div class="modal-footer">
+    <button class="btn btn-search" data-toggle = "modal" data-target="#aboutmodal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 {% endblock %}
 <a href = "/add_data/">Get Started!</a>

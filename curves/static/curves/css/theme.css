@@ -176,7 +176,8 @@ body {
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {
- /* font-family: Palatino;*/
+  /*font-family: Palatino;*/
+
   font-size: 32px;
 }
 
@@ -254,16 +255,17 @@ body {
     color: orange;
 }
 
+
 .h3 > a {
     color: black;
 }
 
 .modal-backdrop {
-   background-color: rgba(0,100,0,.8);
+   background-color: rgba(0,100,0,.9);
 }
 
 .modal-header {
-  background-color: rgba(0,100,0,.8);
+  background-color: rgba(0,100,0,.9);
 }
 
 .btn-search {
