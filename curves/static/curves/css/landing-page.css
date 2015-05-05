@@ -58,7 +58,7 @@ h3,
 h4,
 h5,
 h6 {
-font-family: Dense, serif;
+font-family: Aller, serif;
     font-weight: 500;
 }
 
@@ -186,7 +186,7 @@ body.modal-open { overflow:inherit; padding-right:inherit !important; }
     color: black;
 }
 
-.autocomplete-suggestions { font-size: 14px; border: 1px solid #999; background: #FFF; overflow: auto; color: black; }
+.autocomplete-suggestions { font-size: 14px; border: 1px solid #999; background: #FFF; overflow: auto; color: black; text-overflow: ellipsis; cursor: default; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: rgba(230, 91, 5, 0.3) }
 .autocomplete-suggestions strong { font-weight: bold; color: rgba(230, 91, 5, 1); }
