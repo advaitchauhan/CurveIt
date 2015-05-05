@@ -10,6 +10,7 @@ from deptscript import depts
 import json
 
 CURRENTSEMESTER = "2015 Spring"
+CURSEMLINK = "S2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
 MIN_ENTRIES_REQ = 0
 
@@ -1067,7 +1068,7 @@ def topTen(request):
             else:
                 cdept1 += thisDept
                 cnum1 += thisNum
-        hardLinks.append(cdept1 + "/" + cnum1 + "/")
+        hardLinks.append(cdept1 + "/" + cnum1)
     hardTemp = zip(hardCourses, hardLinks)
     hard = zip(hardTemp, hardGrades)
 
@@ -1108,7 +1109,7 @@ def topTen(request):
             else:
                 cdept1 += thisDept
                 cnum1 += thisNum
-        easyLinks.append(cdept1 + "/" + cnum1 + "/")
+        easyLinks.append(cdept1 + "/" + cnum1)
     easyTemp = zip(easyCourses, easyLinks)
     easy = zip(easyTemp, easyGrades)
     print "here"
@@ -1116,7 +1117,7 @@ def topTen(request):
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist}
+    context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist, 'CURSEM': CURSEMLINK}
     return render(request, 'curves/topten.html', context)
 
 

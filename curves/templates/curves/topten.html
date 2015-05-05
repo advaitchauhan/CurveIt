@@ -15,7 +15,7 @@
 			<h2 class = "text-center">Highest Average Grade:</h2>
 			<ol>
 				<h4>{% for course, grade in hard %}				
-			  		<li><a class = "a-link a-link-black" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
+			  		<li><a class = "a-link a-link-black" href="/{{course.1}}/{{CURSEM}}/">{{course.0}}</a>: {{ grade }}</li> </br>
 					{% endfor %}</h4>
 			</ol>
 		</div>
@@ -23,7 +23,7 @@
 			<h2 class = "text-center">Lowest Average Grade:</h2>
 			<ol>
 				<h4>{% for course, grade in easy %}
-  					<li><a class = "a-link" href="/{{course.1}}">{{course.0}}</a>: {{ grade }}</li> </br>
+  					<li><a class = "a-link" href="/{{course.1}}/{{CURSEM}}/">{{course.0}}</a>: {{ grade }}</li> </br>
 				{% endfor %}</h4>
 			</ol>
 		</div>
