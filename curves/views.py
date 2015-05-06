@@ -32,7 +32,8 @@ def convertFromModel(ctime):
 # Create your views here.
 @login_required
 def intro(request):
-    return render(request, 'curves/intro.html')
+    intro = 'y'
+    return render(request, 'curves/index.html', {'intro':intro})
 
 @login_required
 def index(request):
