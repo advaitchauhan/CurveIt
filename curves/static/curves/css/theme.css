@@ -167,12 +167,12 @@ body {
 
 .navbar-custom .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu {
     
-    background-color: rgba(230, 91, 5, .6);
+    background-color: rgba(230, 91, 5, 0);
     color: #ffffff;
   }
 
 .navbar-custom .dropdown-menu {
-  background-color: rgba(230, 91, 5, .3);
+  background-color: rgba(230, 91, 5, .6);
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {
