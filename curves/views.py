@@ -660,7 +660,8 @@ def comparedeptView(request, cdept1, cdept2):
 
 
     course_list2 = Course_Specific.objects.filter(dept__icontains = cdept2) # includes all semesters
-        
+    if not course_list2:
+        return render(request, 'curves/404.html')  
     # construct list of unique course titles
     uniqueCourse_list2 = []
     # construct a list of all semesters for which we have data
