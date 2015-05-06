@@ -8,7 +8,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'CurveIt.settings')
 import django
 django.setup()
 
-from curves.models import Course_Specific, Student
+from curves.models import Course_Specific, Student, QueryList, QueryCourseList, QueryProfList, QueryDeptList
 
 # return a dictionary containing grade distribution for a course-specific
 def distributeGrades():
@@ -186,7 +186,11 @@ def populate(filename, sem):
 
 def main():
   # clear database
-  Course_Specific.objects.all().delete() 
+  Course_Specific.objects.all().delete()
+  QueryList.objects.all().delete()
+  QueryCourseList.objects.all().delete() 
+  QueryProfList.objects.all().delete()
+  QueryDeptList.objects.all().delete()
   
   sem = "2015 Spring"
   filename = "reg2.json"
