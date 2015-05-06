@@ -28,6 +28,9 @@
 
 <body>
 
+    {% block content %}
+    {% endblock %}
+
     <!-- Header -->
     <div class="intro-header">
 
@@ -39,10 +42,10 @@
                     <div class = "theStrip">
                       <form action="/search/" method="get" class="form-inline">
                         
-                          <input type="text" id = "autocomplete" class="form-control" placeholder="Search by Course Name, Number, Department, or Professor" name="q" style="width: 80%">
+                          <input type="text" id = "autocomplete" class="form-control" placeholder="Search by Course Name, Number, Department, or Professor" name="q" style="width: 80%; margin-right:-60px">
                           
                         
-                        <button type="submit" class="form-control" style="width:50px; padding:0;"><span class="fa fa-search" style="width:100%; margin: auto"></span></button>
+                        <button type="submit" class="form-control" style="width:50px; height:95%; padding:0; margin:0; background-color:orange"><span class="fa fa-search" style="width:100%; margin: auto"></span></button>
                               
 <!--                               <div id='button-holder'>
                                 <input type="image" src="../../static/curves/img/glass1.png" alt="Submit" />
@@ -83,16 +86,16 @@
                                   <h3 class="modal-title">About PrincetonCurveIt!</h3>
                                 </div>
                                 <div class="modal-body" style="font-size: 16pt">
-                                  <p style = "color: black"><b>What is PrincetonCurveIt?</p></b>
-                                  <p>Princeton CurveIt is a crowdsourced grade distribution service that allows students to search for and view grade curves for classes offered at Princeton. Grade distributions are available across multiple semesters for individual courses, departments, and professors</p>
+                                  <p style = "color: black"><b>What is Princeton CurveIt?</p></b>
+                                  <p>Princeton CurveIt is a crowdsourced grade distribution service that allows students to search for and view grade curves for classes offered at Princeton. Grade distributions are available across multiple semesters for individual courses, departments, and professors.</p>
 
-                                  <p style = "color: black"><b>How do we get the data?</p></b>
-                                  <p>Every semester students must enter grades for at least 3 classes they took during the previous semester (except for Freshmen). Data collection is completely anonymous - we do not store grades for any individual student. When a grade is entered, it is immediately added to a course's distribution, with no record of the student it came from.</p>
+                                  <p style = "color: black"><b>Where does the data come from?</p></b>
+                                  <p>Every semester students must enter grades for at least 3 classes they took during the previous semester (except for freshmen). Data collection is completely anonymous - we do not store grades for any individual student. When a grade is entered, it is immediately added to a course's distribution, with no record of the student it came from.</p>
 
                                   <p style = "color: black"><b>Who has access?</p></b>
-                                  <p>This site is protected via Princeton CAS, which is also used to protect Blackboard and most of Princeton’s TigerApps. Only current Princeton students who have submitted at least 3 grades for the previous semester (or who are Freshmen) can see the grade distributions.</p>
+                                  <p>This site is protected via Princeton CAS, which is also used to protect Blackboard and most of Princeton’s TigerApps. Only current Princeton students who have submitted at least 3 grades for the previous semester (or who are freshmen) can see the grade distributions.</p>
 
-                                  <p style = "color: black"><b>Who made this and why?</p></b>
+                                  <p style = "color: black"><b>Who made this?</p></b>
                                   
                                   <p>Princeton CurveIt was created as a project for COS 333; Advanced Programming Techniques, by Suraj Bhat ‘16, Advait Chauhan ‘17, Garrett Gosse ‘16, Tyler Hoffman ‘17, and Sylvia Okafor ’16. We know how important grades are to students at Princeon, and that grade data is not public information. We think that CurveIt will enhance the course selection process, and will also give insight into the effect that the recent decision by the Grading Committee has had on individual courses, professors, and departments. </p>
 
@@ -130,34 +133,11 @@
     <script src= "{% static 'curves/js/jquery.autocomplete.js' %}"></script>
 <!--     // <script src= "{% static 'curves/js/princeton-autocomplete.js' %}"></script> -->
 
-  {% if intro %}
-  <div class="modal fade" data-keyboard="false" data-backdrop="static" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        <h3 class="modal-title">Welcome to PrincetonCurveIt!</h3>
-      </div>
-      <div class="modal-body" style="font-size: 16pt">
-        <p >Hello, and welcome to CurveIt, Princeton's one and only grade distribution service. </p>
-        <p>Before you begin browsing through course data, we ask that you share your grades from last semester with us. It’s your quick contribution that drives this service and help bring transparency to grading at Princeton! </p>
-        <p>If you are ready to enter your grades and be a part of CurveIt, click "Contribute" below.  Or, if you would like to learn more, click "About" below. </p>
-          </br>
-          *Note: You will be unable to view data until you enter one semester's worth of grades</h3></p>
-      </div>
-      <div class="modal-footer">
-    <button class="btn btn-search" data-toggle = "modal" data-target="#aboutmodal">About</button>
-    <button class="btn btn-search" onclick= "location.href='/add_data/'">Contribute</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-     <script type="text/javascript">
+    <script type="text/javascript">
      $(window).load(function(){
             $('#myModal').modal('show');
         });
     </script>
-    {% endif %}
 
     <script type = "text/javascript">
     $(function(){
@@ -188,6 +168,4 @@
       </script>
 
 </body>
-
 </html>
-

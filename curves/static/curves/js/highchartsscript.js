@@ -75,7 +75,7 @@ $(function makechart() {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
             type: 'column',
             style: {
-                fontFamily: 'dense',
+                fontFamily: 'Raleway',
                 fontSize: '24px'
             }
         },
@@ -146,7 +146,7 @@ $(function makechart() {
                  'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
                      'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
                          'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-                             'rgba(230, 91, 5, 0.6', '#FFFFFF',],
+                             'rgba(230, 91, 5, 0.6', 'rgba(255, 255, 255, 0.6)'],
 		legend: {
 			enabled: false
 		},

@@ -114,7 +114,7 @@ body {
 }
 
 /*navbar - at different size*/
-@media (max-width: 1050px) {
+@media (max-width: 1100px) {
     .navbar-header {
         float: none;
     }
@@ -153,6 +153,18 @@ body {
 }
 /*end navbar resizing*/
 
+@media (max-width: 1100px) {
+  .navbar-nav .open .dropdown-menu {
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+}
 
 /*dropdown components size*/
 .dropdown-menu {
@@ -167,12 +179,12 @@ body {
 
 .navbar-custom .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu {
     
-    background-color: rgba(230, 91, 5, .6);
+    background-color: rgba(230, 91, 5, 0);
     color: #ffffff;
   }
 
 .navbar-custom .dropdown-menu {
-  background-color: rgba(230, 91, 5, .3);
+  background-color: rgba(230, 91, 5, .6);
 }
 /*CurveIt on Navbar size*/
 .navbar-brand {

@@ -11,6 +11,7 @@ import json
 
 CURRENTSEMESTER = "2015 Spring"
 CURSEMLINK = "S2015"
+CURSEMFORPRINT = "Spring 2015"
 GRADES = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F", "P"]
 MIN_ENTRIES_REQ = 0
 
@@ -32,8 +33,7 @@ def convertFromModel(ctime):
 # Create your views here.
 @login_required
 def intro(request):
-    intro = 'y'
-    return render(request, 'curves/index.html', {'intro':intro})
+    return render(request, 'curves/intro.html')
 
 @login_required
 def index(request):
@@ -1149,7 +1149,7 @@ def topTen(request):
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist, 'CURSEM': CURSEMLINK}
+    context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist, 'CURSEM': CURSEMLINK, 'CURRENTSEMESTER': CURSEMFORPRINT}
     return render(request, 'curves/topten.html', context)
 
 
