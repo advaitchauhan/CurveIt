@@ -28,6 +28,9 @@
 
 <body>
 
+    {% block content %}
+    {% endblock %}
+
     <!-- Header -->
     <div class="intro-header">
 
@@ -130,35 +133,11 @@
     <script src= "{% static 'curves/js/jquery.autocomplete.js' %}"></script>
 <!--     // <script src= "{% static 'curves/js/princeton-autocomplete.js' %}"></script> -->
 
-  {% if intro %}
-  <div class="modal fade" data-keyboard="false" data-backdrop="static" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-        <h3 class="modal-title">Welcome to PrincetonCurveIt!</h3>
-      </div>
-      <div class="modal-body" style="font-size: 16pt">
-        <p >Hello, and welcome to CurveIt, Princeton's one and only grade distribution service. </p>
-        <p>Before you begin browsing through course data, we ask that you share your grades from last semester with us. It’s your quick contribution that drives this service and help bring transparency to grading at Princeton! </p>
-        <p>If you are ready to enter your grades and be a part of CurveIt, click "Contribute" below.  Or, if you would like to learn more, click "About" below. </p>
-          </br>
-          *Note: You will be unable to view data until you enter one semester's worth of grades</h3></p>
-      </div>
-      <div class="modal-footer">
-    <button class="btn btn-search" data-toggle = "modal" data-target="#aboutmodal">About</button>
-    <button class="btn btn-search" onclick= "location.href='/add_data/'">Contribute</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-     <script type="text/javascript">
+    <script type="text/javascript">
      $(window).load(function(){
             $('#myModal').modal('show');
         });
     </script>
-    {% endif %}
 
     <script type = "text/javascript">
     $(function(){
@@ -189,6 +168,4 @@
       </script>
 
 </body>
-
 </html>
-
