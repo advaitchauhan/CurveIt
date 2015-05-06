@@ -23,13 +23,11 @@ import sys
 import urllib2
 from bs4 import BeautifulSoup
 
-TERM_CODE = 1122  # seems to be fall 11-12
-TERM_CODE = 1124  # so 1124 would be spring 11-12
-                  # 1134 is definitely spring 13 (course offerings link)`
-TERM_CODE = 1134
-TERM_CODE = 1142  # fall 2013; spring 2014 will be 1144
-TERM_CODE = 1144  # spring 2014
-TERM_CODE = 1154  # spring 2015
+# TERM_CODE = 1134  # Spring 2013
+# TERM_CODE = 1142  # Fall 2013
+# TERM_CODE = 1144  # Spring 2014
+TERM_CODE = 1152  # Fall 2014
+# TERM_CODE = 1154  # Spring 2015
 
 URL_PREFIX = "http://registrar.princeton.edu/course-offerings/"
 LIST_URL = URL_PREFIX + "search_results.xml?term={term}"

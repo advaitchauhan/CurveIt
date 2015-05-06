@@ -1,0 +1,14 @@
+Things to do:
+
+populate completely (ORF 245, Spring 2013)
+get rid of errors in inspect element console
+add in professor/TA netids
+
+in final paper:
+talk about how different courses with the same course reference number show up together	
+
+
+MUS 306: 2 As
+COS 510: 15 B+s
+PHI 301: 13 A-s
+EGR 277: 1 D
