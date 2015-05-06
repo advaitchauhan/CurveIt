@@ -763,6 +763,19 @@ def compareProfView(request, cprof1, cprof2):
         else:
             uniqueCourse_list1.append(course)
 
+    uniqueProfs = []
+    for a in course_list1:
+        profs = a.prof.split("+")
+        for p in profs:
+            if p not in uniqueProfs:
+                uniqueProfs.append(p)
+
+    for u in uniqueProfs:
+        if cprof1 == u:
+            break
+    else:
+        return render(request, 'curves/404.html')
+
     # aggregate all time grade distribution
     numGrades1 = [0] * len(GRADES)
     for course in course_list1:
@@ -775,6 +788,8 @@ def compareProfView(request, cprof1, cprof2):
 
 
     course_list2 = Course_Specific.objects.filter(prof__icontains = cprof2) # includes all semesters
+    if not course_list2:
+        return render(request, 'curves/404.html')
         
     # construct list of unique course titles
     uniqueCourse_list2 = []
@@ -787,6 +802,19 @@ def compareProfView(request, cprof1, cprof2):
                 break
         else:
             uniqueCourse_list2.append(course)
+
+    uniqueProfs2 = []
+    for a in course_list2:
+        profs = a.prof.split("+")
+        for p in profs:
+            if p not in uniqueProfs:
+                uniqueProfs2.append(p)
+
+    for u in uniqueProfs2:
+        if cprof2 == u:
+            break
+    else:
+        return render(request, 'curves/404.html')
 
     # aggregate all time grade distribution
     numGrades2 = [0] * len(GRADES)
