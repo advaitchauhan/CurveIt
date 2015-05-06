@@ -75,7 +75,7 @@ $(function makechart() {
         	backgroundColor: 'rgba(255, 255, 255, 0.1)',
             type: 'column',
             style: {
-                fontFamily: 'dense',
+                fontFamily: 'Raleway',
                 fontSize: '24px'
             }
         },
