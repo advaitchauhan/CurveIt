@@ -21,7 +21,8 @@
       <div class = "combinedForm">
         <div class = "form-group">
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 1" {{ form.pastSemClass1 }} </li>
+          <li><input type="text" id = "autocompleteCourse1" class="form-control" style="width: 600px" placeholder="Course 1 (Required)" {{ form.pastSemClass1 }} </li>
+
           <li> {{ form.grade1 }} </li>
           {% if form.pastSemClass1.errors or form.grade1.errors%}
               <li class="alert alert-danger alert-custom" role ="alert">{{ form.pastSemClass1.errors }} {{ form.grade1.errors }}</li>
@@ -30,7 +31,7 @@
         </div>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 2" {{ form.pastSemClass2 }} </li>
+          <li><input type="text" id = "autocompleteCourse2" class="form-control" style="width: 600px" placeholder="Course 2 (Required)" {{ form.pastSemClass2 }} </li>
           <li> {{ form.grade2 }} </li>
           {% if form.pastSemClass2.errors or form.grade2.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass2.errors }} {{ form.grade2.errors }}</li>
@@ -38,7 +39,7 @@
         </ul>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 3" {{ form.pastSemClass3 }} </li>
+          <li><input type="text" id = "autocompleteCourse3" class="form-control" style="width: 600px" placeholder="Course 3 (Required)" {{ form.pastSemClass3 }} </li>
           <li> {{ form.grade3 }} </li>
           {% if form.pastSemClass3.errors or form.grade3.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass3.errors }} {{ form.grade3.errors }}</li>
@@ -46,7 +47,7 @@
         </ul>
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 4" {{ form.pastSemClass4 }} </li>
+          <li><input type="text" id = "autocompleteCourse4" class="form-control" style="width: 600px" placeholder="Course 4" {{ form.pastSemClass4 }} </li>
           <li> {{ form.grade4 }} </li>
           {% if form.pastSemClass4.errors or form.grade4.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass4.errors }} {{ form.grade4.erros }}</li>
@@ -55,7 +56,7 @@
 
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 5" {{ form.pastSemClass5 }} </li>
+          <li><input type="text" id = "autocompleteCourse5" class="form-control" style="width: 600px" placeholder="Course 5" {{ form.pastSemClass5 }} </li>
           <li> {{ form.grade5 }} </li>
           {% if form.pastSemClass5.errors or form.grade5.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass5.errors }} {{ form.grade5.errors }}</li>
@@ -64,7 +65,7 @@
 
 
         <ul class = "list-inline">
-          <li><input type="text" id = "autocompleteCourse2015" class="form-control" style="width: 600px" placeholder="Choose Course 6" {{ form.pastSemClass6 }} </li>
+          <li><input type="text" id = "autocompleteCourse6" class="form-control" style="width: 600px" placeholder="Course 6" {{ form.pastSemClass6 }} </li>
           <li> {{ form.grade6 }} </li>
           {% if form.pastSemClass6.errors or form.grade6.errors%}
               <li class="alert alert-danger alert-custom">{{ form.pastSemClass6.errors }} {{ form.grade6.errors }}</li>
@@ -84,7 +85,71 @@ $(function(){
   //var profs = {{ allProfsJSON | safe }};
   var allFields = {{ allCourses2015 | safe}};
   // setup autocomplete function pulling from currencies[] array
-  $('#autocompleteCourse2015').autocomplete({
+  $('#autocompleteCourse1').autocomplete({
+    lookup: allFields,
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+
+$(function(){
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCourses2015 | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocompleteCourse2').autocomplete({
+    lookup: allFields,
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+$(function(){
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCourses2015 | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocompleteCourse3').autocomplete({
+    lookup: allFields,
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+$(function(){
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCourses2015 | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocompleteCourse4').autocomplete({
+    lookup: allFields,
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+
+
+$(function(){
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCourses2015 | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocompleteCourse5').autocomplete({
+    lookup: allFields,
+    triggerSelectOnValidInput: false,
+    lookupLimit: 8,
+    minChars: 2
+  });
+  
+});
+
+$(function(){
+  //var profs = {{ allProfsJSON | safe }};
+  var allFields = {{ allCourses2015 | safe}};
+  // setup autocomplete function pulling from currencies[] array
+  $('#autocompleteCourse6').autocomplete({
     lookup: allFields,
     triggerSelectOnValidInput: false,
     lookupLimit: 8,
