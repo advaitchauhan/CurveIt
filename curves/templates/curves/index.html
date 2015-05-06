@@ -17,6 +17,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'curves/css/bootstrap.min.css' %}" rel="stylesheet">
 
+    <!-- Font Awesome CSS -->
+    <link href="{% static 'curves/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="{% static 'curves/css/landing-page.css' %}" rel="stylesheet">
     <link href="{% static 'curves/css/typeaheadjs.css' %}" rel="stylesheet">
@@ -34,8 +37,13 @@
                     <br/>
 
                     <div class = "theStrip">
-                      <form action="/search/" method="get" class="pure-form pure-form-stacked">
-                              <input type="text" id = "autocomplete" class="form-control" placeholder="Search by Course Name, Number, Department, or Professor" name="q">
+                      <form action="/search/" method="get" class="form-inline">
+                        
+                          <input type="text" id = "autocomplete" class="form-control" placeholder="Search by Course Name, Number, Department, or Professor" name="q" style="width: 80%">
+                          
+                        
+                        <button type="submit" class="form-control" style="width:50px; padding:0;"><span class="fa fa-search" style="width:100%; margin: auto"></span></button>
+                              
 <!--                               <div id='button-holder'>
                                 <input type="image" src="../../static/curves/img/glass1.png" alt="Submit" />
                               </div> -->
