@@ -830,7 +830,9 @@ def compareProfView(request, cprof1, cprof2):
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]
 
-    context = {'prof1ForPrint': cprof1.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2, 'allCombinedJSON': qAll.qlist}
+    cproftemp = cprof1.replace("'", "'")
+
+    context = {'prof1ForPrint': cproftemp.replace("*", " "), 'prof1': cprof1, 'course_list1': uniqueCourse_list1, 'dist1': dist1, 'total1': total1, 'prof2ForPrint': cprof2.replace("*", " "), 'prof2': cprof2, 'course_list2': uniqueCourse_list2, 'dist2': dist2, 'total2': total2, 'allCombinedJSON': qAll.qlist}
     return render(request, 'curves/compareprof.html', context)
 
 @login_required
