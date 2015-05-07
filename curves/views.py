@@ -1071,7 +1071,7 @@ def topTen(request):
     courseAvgList = {}
     # Get all semesters of each course and calculate weighted avg GPA across them
     for u in uniqueCourseList:
-        allSems = Course_Specific.objects.filter(titleString=u, semester=CURRENTSEMESTER)
+        allSems = Course_Specific.objects.filter(titleString=u)
         thisAvg = 0
         thisTotal = 0
         for a in allSems:
@@ -1090,7 +1090,7 @@ def topTen(request):
         if i >= 10:
             break
         else:
-            allClasses = Course_Specific.objects.filter(titleString=course, semester=CURRENTSEMESTER)
+            allClasses = Course_Specific.objects.filter(titleString=course)
             allClassesTotal = 0
             # verify that at least 10 grades have been entered 
             for a in allClasses:
