@@ -204,6 +204,10 @@ def main():
   filename = "f2013Final.json"
   populate(filename, sem)
 
+  sem = "2014 Fall"
+  filename = "f2014.json"
+  populate(filename, sem)
+
   # Add in titleString field -- necessary for autocomplete
   courses = Course_Specific.objects.all()
   for c in courses:

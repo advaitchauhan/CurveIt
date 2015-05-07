@@ -241,7 +241,7 @@ def profView(request, cprof):
             course_list.append(c)
 
         # get a list of all distinct semesters taught
-        if c.semester not in origsem_list:
+        if c.semester not in sem_list:
             sem_list.append(c.semester)
             origsem_list.append(convertFromModel(c.semester))
 
@@ -297,7 +297,7 @@ def profSpecificView(request, cprof, ctime):
             course_list.append(c)
 
         # create a list of all semesters in which professor taught
-        if c.semester not in origsem_list:
+        if c.semester not in sem_list:
             sem_list.append(c.semester)
             origsem_list.append(convertFromModel(c.semester))
 
@@ -1151,8 +1151,4 @@ def topTen(request):
 
     context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist, 'CURSEM': CURSEMLINK, 'CURRENTSEMESTER': CURSEMFORPRINT}
     return render(request, 'curves/topten.html', context)
-
-
-
-
 
