@@ -201,7 +201,11 @@ def main():
   populate(filename, sem)
 
   sem = "2013 Fall"
-  filename = "f2013Final.json"
+  filename = "f2013.json"
+  populate(filename, sem)
+
+  sem = "2014 Fall"
+  filename = "f2014.json"
   populate(filename, sem)
 
   # Add in titleString field -- necessary for autocomplete

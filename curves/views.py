@@ -147,8 +147,14 @@ def deptView(request, cdept):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
+    sems = sorted(sems, reverse=True)
+    print sems
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
+    print "here"
+    print sems
+
     # sem_list sorted in reverse so that they appear in reverse chronological order
-    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sems': sorted(sems, reverse=True), 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sems': sems, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept.html', context)
 
 # ex: curves/COS/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -193,12 +199,15 @@ def deptSpecificView(request, cdept, ctime):
 
     dist = zip(GRADES, numGrades)
     sems = zip(sem_list, origsem_list)
+    sems = sorted(sems, reverse=True)
+    print sems
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
-    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sems': sorted(sems, reverse=True), 'allCombinedJSON': q.qlist}
+    context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sems': sems, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
 
 
@@ -241,7 +250,7 @@ def profView(request, cprof):
             course_list.append(c)
 
         # get a list of all distinct semesters taught
-        if c.semester not in origsem_list:
+        if c.semester not in sem_list:
             sem_list.append(c.semester)
             origsem_list.append(convertFromModel(c.semester))
 
@@ -254,11 +263,13 @@ def profView(request, cprof):
 
     dist = zip(GRADES, numGrades)
     sems = zip(sem_list, origsem_list)
+    sems = sorted(sems, reverse=True)
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sems': sorted(sems, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sems': sems, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
 
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
@@ -297,7 +308,7 @@ def profSpecificView(request, cprof, ctime):
             course_list.append(c)
 
         # create a list of all semesters in which professor taught
-        if c.semester not in origsem_list:
+        if c.semester not in sem_list:
             sem_list.append(c.semester)
             origsem_list.append(convertFromModel(c.semester))
 
@@ -310,11 +321,13 @@ def profSpecificView(request, cprof, ctime):
 
     dist = zip(GRADES, numGrades)
     sems = zip(sem_list, origsem_list)
+    sems = sorted(sems, reverse=True)
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'course_list': course_list, 'sems': sorted(sems, reverse=True), 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
+    context = {'course_list': course_list, 'sems': sems, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
 
 
@@ -369,10 +382,13 @@ def courseView(request, cdept, cnum):
     sems = zip(sem_list, origsem_list)
     total = sum(numGrades) 
 
+    sems = sorted(sems, reverse=True)
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
+
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sems': sorted(sems, reverse=True), 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
+    context = {'sems': sems, 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
 @login_required
@@ -414,7 +430,10 @@ def courseSpecificView(request, cdept, cnum, ctime):
     cachedList = QueryList.objects.all()
     q = cachedList[0]
 
-    context = {'sems': sorted(sems, reverse=True), 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
+    sems = sorted(sems, reverse=True)
+    sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
+
+    context = {'sems': sems, 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
     print dist
     return render(request, 'curves/course_specific.html', context)
@@ -422,8 +441,8 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
-    # if loggedIn(request):
-    #     return redirect('/')
+    if loggedIn(request):
+        return redirect('/')
 
     # A HTTP POST?
     y = range(1,4)
@@ -768,6 +787,7 @@ def compareProfView(request, cprof1, cprof2):
     uniqueProfs = []
     for a in course_list1:
         profs = a.prof.split("+")
+        print profs
         for p in profs:
             if p not in uniqueProfs:
                 uniqueProfs.append(p)
@@ -809,7 +829,7 @@ def compareProfView(request, cprof1, cprof2):
     for a in course_list2:
         profs = a.prof.split("+")
         for p in profs:
-            if p not in uniqueProfs:
+            if p not in uniqueProfs2:
                 uniqueProfs2.append(p)
 
     for u in uniqueProfs2:
@@ -1151,8 +1171,4 @@ def topTen(request):
 
     context = {'hard': hard, 'easy': easy, 'allCombinedJSON': qAll.qlist, 'CURSEM': CURSEMLINK, 'CURRENTSEMESTER': CURSEMFORPRINT}
     return render(request, 'curves/topten.html', context)
-
-
-
-
 
