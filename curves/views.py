@@ -774,9 +774,7 @@ def compareProfView(request, cprof1, cprof2):
                 uniqueProfs.append(p)
 
     for u in uniqueProfs:
-        print "here"
         if cprof1 == u:
-            print "yes"
             break
     else:
         return render(request, 'curves/404.html')
