@@ -768,12 +768,15 @@ def compareProfView(request, cprof1, cprof2):
     uniqueProfs = []
     for a in course_list1:
         profs = a.prof.split("+")
+        print profs
         for p in profs:
             if p not in uniqueProfs:
                 uniqueProfs.append(p)
 
     for u in uniqueProfs:
+        print "here"
         if cprof1 == u:
+            print "yes"
             break
     else:
         return render(request, 'curves/404.html')
@@ -809,7 +812,7 @@ def compareProfView(request, cprof1, cprof2):
     for a in course_list2:
         profs = a.prof.split("+")
         for p in profs:
-            if p not in uniqueProfs:
+            if p not in uniqueProfs2:
                 uniqueProfs2.append(p)
 
     for u in uniqueProfs2:
