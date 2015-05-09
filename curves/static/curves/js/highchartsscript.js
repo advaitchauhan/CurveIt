@@ -1,5 +1,6 @@
 var _grades = [];
 var _numGrades = [];
+var _pctGrades = [];
 var plotTitle = "";
 $('.title').each(function(index){
 	plotTitle = $(this).text();
@@ -36,6 +37,12 @@ else {
     var AverageGrade = GradeSum/GradeTot;
 }
 
+for (var i=0; i < _grades.length; i++) {
+    _pctGrades.push(parseFloat(_numGrades[i] / dataSum *100))
+};
+
+console.log(_pctGrades)
+
 var AvgLetGrade = '';
 
 if (AverageGrade > 3.85) AvgLetGrade = 'A';
@@ -67,10 +74,12 @@ else {
 
 var tickpos = [];
 
-if (maxpcnt > .50) {tickpos = [0* dataSum, .2*dataSum, .4*dataSum, .6*dataSum, .8*dataSum, 1*dataSum];}
-else if (maxpcnt > .25) {tickpos = [0*dataSum, .1*dataSum, .2*dataSum, .3*dataSum, .4*dataSum, .5*dataSum];}
-else if (maxpcnt > 0) {tickpos = [0*dataSum, .05*dataSum, .1*dataSum, .15*dataSum, .2*dataSum, .25*dataSum];}
-else {tickpos = [0]}
+var tickpos = [];
+
+if (maxpcnt > .50) {tickpos = [0, 20, 40, 60, 80, 100];}
+else if (maxpcnt > .25) {tickpos = [0, 10, 20, 30, 40, 50];}
+else if (maxpcnt > .0) {tickpos = [0, 5, 10, 15, 20, 25];}
+else {tickpos = [0];}
 
 
 $(function makechart() { 
@@ -117,16 +126,11 @@ $(function makechart() {
                 }
         	},
             labels: {
-                formatter: function() {
-                    if (dataSum == 0) {
-                        var pcnt = 0;
-                    }
-                    else {
-                        var pcnt = (this.value / dataSum) * 100;
-                    }
-                    return pcnt.toFixed(0) + ' %';
-                },
-                style: {
+                formatter: function() {    
+                    var pcnt = this.value;
+                    console.log(pcnt)
+                    return pcnt.toFixed(0) + '%';
+                },                 style: {
                     color: "#FFFFFF",
                     fontSize: '16px'
                 }
@@ -161,14 +165,14 @@ $(function makechart() {
 
         tooltip: {
             formatter: function () {
+                var output;
                 if (dataSum == 0) {
-                    var pcnt = 0;
+                    output = 0;
                 }
                 else {
-                    var pcnt = (this.y / dataSum) * 100;
+                    ouput = parseInt((this.y/100 * dataSum));
                 }
-                return this.x + ' count: ' + this.y + '<br>' + 'Percent: ' + Highcharts.numberFormat(pcnt) + '%';
-
+                return this.x + 'count: ' + ouput + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
             },
             style: {
                 fontSize: '16px'
@@ -177,7 +181,7 @@ $(function makechart() {
 
         series: [{
         	name: plotTitle, 
-        	data: _numGrades
+        	data: _pctGrades
         }]
     });
 });

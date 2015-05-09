@@ -48,8 +48,6 @@ _shortnumGrades2[3] = _numGrades2[9]
 _shortnumGrades2[4] = _numGrades2[10]
 _shortnumGrades2[5] = _numGrades2[11]
 
-console.log('made it here')
-
 var Class1dataSum = 0;
 for (var i=0; i < _numGrades1.length; i++) {
     Class1dataSum += _numGrades1[i]
@@ -141,14 +139,11 @@ if (Class2dataSum != 0) {
 
 
 var tickpos = [];
-dataSum = Math.max(Class1dataSum, Class2dataSum);
 
 if (maxpcnt > .50) {tickpos = [0, 20, 40, 60, 80, 100];}
 else if (maxpcnt > .25) {tickpos = [0, 10, 20, 30, 40, 50];}
 else if (maxpcnt > .0) {tickpos = [0, 5, 10, 15, 20, 25];}
 else {tickpos = [0];}
-
-
 
 $(function makechart() { 
 	$('#container').highcharts({
@@ -244,8 +239,8 @@ $(function makechart() {
             formatter: function () {
                 var output;
                 if (this.series.name == Class1name) {
-                    ouput = parseInt((this.y/100 * Class1dataSum));
-                    return this.series.name + ' ' + this.x + 'count: ' + ouput + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
+                    ouput = parseInt((this.y/100 * Class1dataSum)); 
+                    return this.series.name + ' ' + this.x + ' count: ' + ouput + '<br>' + 'Percent: ' + Highcharts.numberFormat(this.y) + '%';
                 }
                 else if (this.series.name == Class2name) {
                     output = parseInt((this.y/100 * Class2dataSum));
