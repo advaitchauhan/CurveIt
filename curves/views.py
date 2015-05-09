@@ -22,7 +22,7 @@ def convertToModel(ctime):
     else:
         return ctime[1:] + ' Fall'
 
-# Convert semester string from format "S2015" to "2015 Spring"
+# Convert semester string from format "2015 Spring" to "S2015"
 def convertFromModel(ctime):
     sem = ctime.split(" ")
     if sem[1] == 'Spring':
@@ -33,11 +33,23 @@ def convertFromModel(ctime):
 # Create your views here.
 @login_required
 def intro(request):
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
     return render(request, 'curves/intro.html')
 
 @login_required
 def index(request):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/intro/')
     #code here that goes through all the course-specifics and generates three lists of strings,
     #profs, depts, and courses, and we then pass this on as context to index.html.
@@ -99,18 +111,33 @@ def index(request):
     return render(request, 'curves/index.html', context)
 
 # returns TRUE if user has a) already entered data OR b) is a freshman; else returns FALSE
-def loggedIn(request):
+def eligibleStudent(request):
     currentnetid = request.user.username
     thisUser = Student.objects.get(netid=currentnetid)
-    if not thisUser:
-        return render(request, 'curves/permissions.html')
     return (thisUser.hasAccess())
+
+def validNetID(request):
+    currentnetid = request.user.username
+
+    try:
+        thisUser = Student.objects.get(netid = currentnetid)
+        print 'here 1'
+        return True
+    except:
+        print 'here 2'
+        return False
 
 @login_required 
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     # get all courses registered under the department, including those that are cross listed
     course_list = Course_Specific.objects.filter(dept__icontains = cdept) # includes all semesters
@@ -161,9 +188,13 @@ def deptView(request, cdept):
 # during the given semester.
 @login_required
 def deptSpecificView(request, cdept, ctime):
-    print "--here"
-    print ctime
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     # list of all classes in the department over all semesters
     allSemAllCourse = get_list_or_404(Course_Specific, dept__contains = cdept)
@@ -215,7 +246,13 @@ def deptSpecificView(request, cdept, ctime):
 # ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
     if not allSemAllCourse:
@@ -275,7 +312,13 @@ def profView(request, cprof):
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester, links to other semesters
 def profSpecificView(request, cprof, ctime):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
     if not allSemAllCourse:
@@ -335,7 +378,13 @@ def profSpecificView(request, cprof, ctime):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     # gets list of this course over all semesters
     course_list = Course_Specific.objects.filter(dept=cdept, num=cnum)
@@ -372,10 +421,7 @@ def courseView(request, cdept, cnum):
     # in order to pass in name of this class
     curCourse = course_list[0]
 
-
-    print "--here--"
     print curCourse.getAvg()
-    print "--here--"
 
     dist = zip(GRADES, numGrades)
     profs = zip(prof_list, prof_names_list)
@@ -395,7 +441,13 @@ def courseView(request, cdept, cnum):
 # ex: curves/COS/333/S2015.  Plot of grade distribution for course taught during
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     # course specific to the semester
     courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = convertToModel(ctime))
@@ -441,7 +493,13 @@ def courseSpecificView(request, cdept, cnum, ctime):
 @login_required
 # page for user to input class/grade
 def add_data(request):
-    if loggedIn(request):
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request):
         return redirect('/')
 
     # A HTTP POST?
@@ -520,7 +578,13 @@ def add_data(request):
 
 @login_required
 def after_data(request):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
     cachedList = QueryList.objects.all()
@@ -530,7 +594,13 @@ def after_data(request):
 
 @login_required
 def search(request):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
     if 'q' in request.GET and request.GET['q'] and len(request.GET['q']) > 2:
         q = request.GET['q']
@@ -650,7 +720,13 @@ def handler404(request):
 
 @login_required
 def comparedeptView(request, cdept1, cdept2):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/curves/add_data')
 
     # get all courses registered under the department, including those that are cross listed
@@ -715,7 +791,13 @@ def comparedeptView(request, cdept1, cdept2):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
     # gets list of this course over all semesters
@@ -764,7 +846,13 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
 
 @login_required
 def compareProfView(request, cprof1, cprof2):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/curves/add_data')
     print cprof1
     print cprof2
@@ -859,9 +947,13 @@ def compareProfView(request, cprof1, cprof2):
 @login_required
 # page where user can select two professors to compare
 def compareProfSelect(request):
-    print "Adi"
-    if loggedIn(request) == False:
-        print "Tyler"
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
     cachedList = QueryProfList.objects.all()
@@ -917,8 +1009,13 @@ def compareProfSelect(request):
 @login_required
 # page where user can select two professors to compare
 def compareDeptSelect(request):
-    print "here"
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
 
@@ -974,7 +1071,13 @@ def compareDeptSelect(request):
 @login_required
 # page where user can select two professors to compare
 def compareCourseSelect(request):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
     cachedList = QueryCourseList.objects.all()
@@ -1053,7 +1156,13 @@ def compareCourseSelect(request):
 
 @login_required
 def topTen(request):
-    if loggedIn(request) == False:
+    if validNetID(request) == False:
+        cachedList = QueryList.objects.all()
+        q = cachedList[0]
+        context = {'allCombinedJSON': q.qlist}
+        return render(request, 'curves/permissions.html', context)
+
+    if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
     # create list of unique course names (if it hasn't been calculated already)
@@ -1164,7 +1273,6 @@ def topTen(request):
         easyLinks.append(cdept1 + "/" + cnum1)
     easyTemp = zip(easyCourses, easyLinks)
     easy = zip(easyTemp, easyGrades)
-    print "here"
 
     cachedListAll = QueryList.objects.all()
     qAll = cachedListAll[0]

@@ -51,14 +51,18 @@ else AvgLetGrade = 'F';
 
 var maxpcnt = 0;
 
-for (var i=0; i < _numGrades.length; i++) {
-    if (dataSum == 0) {
-        maxpcnt = 0;
-    }
-    else if ((_numGrades[i]/dataSum) > maxpcnt) {
-        maxpcnt = _numGrades[i]/dataSum;
-    }
-};
+// calculate maxpcnt: the highest percentage that any single numGrades element composes
+if (dataSum == 0) {
+    maxpcnt = 0;
+}
+else {
+    for (var i=0; i < _numGrades.length; i++) {
+        if ((_numGrades[i]/dataSum) > maxpcnt) {
+            maxpcnt = _numGrades[i]/dataSum;
+        }
+    };
+}
+
 
 
 var tickpos = [];
@@ -141,12 +145,12 @@ $(function makechart() {
                 borderColor: "#000000"
 			}
 		},
-        colors: ['rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-             'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-                 'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-                     'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-                         'rgba(230, 91, 5, 0.6', 'rgba(230, 91, 5, 0.6',
-                             'rgba(230, 91, 5, 0.6', 'rgba(255, 255, 255, 0.6)'],
+        colors: ['rgba(230, 91, 5, 0.8', 'rgba(230, 91, 5, 0.8',
+             'rgba(230, 91, 5, 0.8', 'rgba(230, 91, 5, 0.8',
+                 'rgba(230, 91, 5, 0.8', 'rgba(230, 91, 5, 0.8',
+                     'rgba(230, 91, 5, 0.8', 'rgba(230, 91, 5, 0.8',
+                         'rgba(230, 91, 5, 0.8', 'rgba(230, 91, 5, 0.8',
+                             'rgba(230, 91, 5, 0.8', 'rgba(230, 91,5, 0.4)'],
 		legend: {
 			enabled: false
 		},

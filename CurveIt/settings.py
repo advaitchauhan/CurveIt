@@ -103,7 +103,7 @@ CAS_SERVER_URL = "https://fed.princeton.edu/cas/login"
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
-# # --- HEROKU, POSTGRES ----
+# # --- HEROKU, POSTGRES ---
 
 # # Parse database configuration from $DATABASE_URL
 # import dj_database_url

@@ -179,7 +179,7 @@ body {
 
 .navbar-custom .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu {
     
-    background-color: rgba(230, 91, 5, 0);
+    background-color: rgba(230, 91, 5, 1);
     color: #ffffff;
   }
 
@@ -273,7 +273,7 @@ body {
 }
 
 .modal-backdrop {
-   background-color: rgba(0,100,0,.9);
+   background-color: rgba(0,100,0,.95);
 }
 
 .modal-header {

@@ -1,6 +1,11 @@
 var _grades = [];
 var _numGrades1 = [];
 var _numGrades2 = [];
+
+var _shortgrades = ["A", "B", "C", "D", "F", "P"];
+var _shortnumGrades1 = [0, 0, 0, 0, 0, 0];
+var _shortnumGrades2 = [0, 0, 0, 0, 0, 0,];
+
 var plotTitle = "";
 var _pctGrades1 = [];
 var _pctGrades2 = [];
@@ -29,6 +34,21 @@ $('._numGrade2').each(function(index){
     _numGrades2.push(parseInt($(this).text()));
 });
 
+_shortnumGrades1[0] = _numGrades1[0] + _numGrades1[1] + _numGrades1[2];
+_shortnumGrades1[1] = _numGrades1[3] + _numGrades1[4] + _numGrades1[5];
+_shortnumGrades1[2] = _numGrades1[6] + _numGrades1[7] + _numGrades1[8];
+_shortnumGrades1[3] = _numGrades1[9]
+_shortnumGrades1[4] = _numGrades1[10]
+_shortnumGrades1[5] = _numGrades1[11]
+
+_shortnumGrades2[0] = _numGrades2[0] + _numGrades2[1] + _numGrades2[2];
+_shortnumGrades2[1] = _numGrades2[3] + _numGrades2[4] + _numGrades2[5];
+_shortnumGrades2[2] = _numGrades2[6] + _numGrades2[7] + _numGrades2[8];
+_shortnumGrades2[3] = _numGrades2[9]
+_shortnumGrades2[4] = _numGrades2[10]
+_shortnumGrades2[5] = _numGrades2[11]
+
+console.log('made it here')
 
 var Class1dataSum = 0;
 for (var i=0; i < _numGrades1.length; i++) {
@@ -40,14 +60,16 @@ for (var i=0; i < _numGrades2.length; i++) {
     Class2dataSum += _numGrades2[i]
 };
 
-for (var i=0; i < _numGrades1.length; i++) {
-    _pctGrades1.push(parseFloat(_numGrades1[i] / Class1dataSum *100))
+for (var i=0; i < _shortnumGrades1.length; i++) {
+    _pctGrades1.push(parseFloat(_shortnumGrades1[i] / Class1dataSum *100))
 };
 
-for (var i=0; i < _numGrades2.length; i++) {
-    _pctGrades2.push(parseFloat(_numGrades2[i] / Class2dataSum *100))
+for (var i=0; i < _shortnumGrades2.length; i++) {
+    _pctGrades2.push(parseFloat(_shortnumGrades2[i] / Class2dataSum *100))
 };
 
+
+// Calculate the average GPA for Class 1 and Class 2
 var GradeSum1 = 0;
 GradeSum1 = 4*_numGrades1[0] + 4*_numGrades1[1] + 3.7*_numGrades1[2] + 3.3*_numGrades1[3] + 3*_numGrades1[4] + 2.7*_numGrades1[5] + 2.3*_numGrades1[6] + 2*_numGrades1[7] + 1.7*_numGrades1[8] + 1*_numGrades1[9];
 
@@ -96,23 +118,35 @@ else AvgLetGrade2 = 'F';
 
 var maxpcnt = 0;
 
-for (var i=0; i < _pctGrades1.length; i++) {
-    if (_pctGrades1[i] > maxpcnt) {
-        maxpcnt = _pctGrades1;
+// calculate maxpcnt: the highest percentage that any single numGrades element composes
+if (Class1dataSum == 0) {
+    maxpcnt = 0;
+}
+else {
+    for (var i = 0; i < _shortnumGrades1.length; i++) {
+        if ((_shortnumGrades1[i]/Class1dataSum) > maxpcnt) {
+            maxpcnt = _shortnumGrades1[i]/Class1dataSum;
+        }
     }
-};
+}
 
-
-for (var i=0; i < _pctGrades2.length; i++) {
-    if (_pctGrades2[i] > maxpcnt) {
-        maxpcnt = _pctGrades2[i];
+// calculate maxpcnt: the highest percentage that any single numGrades element composes
+if (Class2dataSum != 0) {
+    for (var i = 0; i < _shortnumGrades2.length; i++) {
+        if ((_shortnumGrades2[i]/Class2dataSum) > maxpcnt) {
+            maxpcnt = _shortnumGrades2[i]/Class2dataSum;
+        }
     }
-};
+}
+
 
 var tickpos = [];
-if (maxpcnt > 50) {tickpos = [0, 20, 40, 60, 80, 100];}
-else if (maxpcnt > 25) {tickpos = [0, 10, 20, 30, 40, 50];}
-else {tickpos = [0, 5, 10, 15, 20, 25];}
+dataSum = Math.max(Class1dataSum, Class2dataSum);
+
+if (maxpcnt > .50) {tickpos = [0, 20, 40, 60, 80, 100];}
+else if (maxpcnt > .25) {tickpos = [0, 10, 20, 30, 40, 50];}
+else if (maxpcnt > .0) {tickpos = [0, 5, 10, 15, 20, 25];}
+else {tickpos = [0];}
 
 
 
@@ -134,7 +168,7 @@ $(function makechart() {
              }
         },
         xAxis: {
-            categories: _grades,
+            categories: _shortgrades,
         	title: {
         		text: "Grades",
                 lineColor: "#FFFFFF",
@@ -177,7 +211,7 @@ $(function makechart() {
 			column: {
     			pointPadding: 0,
     			borderWidth: 0.5,
-                groupPadding: 0,
+                groupPadding: 0.1,
                 // color: 'rgb(255, 154, 51)',
                 color: 'rgba(230, 91, 5, 0.6)',
                 borderColor: "#000000"
