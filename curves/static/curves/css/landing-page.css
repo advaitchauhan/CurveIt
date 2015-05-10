@@ -197,6 +197,10 @@ h1 {
     .intro-divider {
         width: 100%;
     }
+
+    .form-inline > button {
+        display:none;
+    }
 }
 
 body.modal-open { overflow:inherit; padding-right:inherit !important; }
