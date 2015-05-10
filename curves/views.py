@@ -612,21 +612,22 @@ def search(request):
 
         #check if search term is a department?
         if len(q) == 3:
-            classes = Course_Specific.objects.filter(dept__iexact=q)
+            classes = Course_Specific.objects.filter(dept__icontains=q)
             if (len(classes) > 0):
                 #context = {'classes': classes}
                 #return render(request, 'curves/results.html', context)
                 aClass = classes[0]
-                return deptView(request, aClass.dept)
+                return deptView(request, q)
 
         if q.find(":") != -1:
             dept = (q.split(":"))[0]
-            classes = Course_Specific.objects.filter(dept__iexact=dept)
-            if (len(classes) > 0):
-                #context = {'classes': classes}
-                #return render(request, 'curves/results.html', context)
-                aClass = classes[0]
-                return deptView(request, aClass.dept)
+            if len(dept) == 3:
+                classes = Course_Specific.objects.filter(dept__icontains=dept)
+                if (len(classes) > 0):
+                    #context = {'classes': classes}
+                    #return render(request, 'curves/results.html', context)
+                    aClass = classes[0]
+                    return deptView(request, dept)
 
         cachedList = QueryList.objects.all()
         qc = cachedList[0]
