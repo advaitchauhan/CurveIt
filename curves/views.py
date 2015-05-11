@@ -131,10 +131,10 @@ def validNetID(request):
 # ex: curves/COS.  Shows dropdown for all distinct COS classes taught since birth, 
 # plot of all time aggregate distribution, links to deptSpecific for each semester.
 def deptView(request, cdept):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -142,7 +142,7 @@ def deptView(request, cdept):
     # get all courses registered under the department, including those that are cross listed
     course_list = Course_Specific.objects.filter(dept__icontains = cdept) # includes all semesters
     if not course_list:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     # construct list of unique course titles
     uniqueCourse_list = []
     # construct a list of all semesters for which we have data
@@ -171,9 +171,6 @@ def deptView(request, cdept):
     total = sum(numGrades)
     print sems
 
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
-
     sems = sorted(sems, reverse=True)
     print sems
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
@@ -188,10 +185,10 @@ def deptView(request, cdept):
 # during the given semester.
 @login_required
 def deptSpecificView(request, cdept, ctime):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -201,7 +198,7 @@ def deptSpecificView(request, cdept, ctime):
     # check that the dept exists for the semester
     course_list = Course_Specific.objects.filter(dept__contains = cdept, semester=convertToModel(ctime)) # includes all semesters
     if not course_list:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     thisSem = convertToModel(ctime)
     print thisSem
@@ -234,9 +231,6 @@ def deptSpecificView(request, cdept, ctime):
     print sems
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
-
     # departments sorted in reverse so they appear like S2015 S2014, etc...
     context = {'deptForPrint': depts[cdept], 'dept': cdept, 'course_list': course_list, 'dist': dist, 'sem': ctime, 'sems': sems, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/dept_specific.html', context)
@@ -246,17 +240,17 @@ def deptSpecificView(request, cdept, ctime):
 # ex: curves/prof/Brian%W.%Kernighan. Plot of all time aggregate distribution, links to
 # professorSpecific for each semester, dropdown of all courses taught.
 def profView(request, cprof):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
     if not allSemAllCourse:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
     uniqueProfs = []
     for a in allSemAllCourse:
@@ -270,7 +264,7 @@ def profView(request, cprof):
         if cprof == u:
             break
     else:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
 
 
@@ -303,8 +297,6 @@ def profView(request, cprof):
     sems = sorted(sems, reverse=True)
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
 
     context = {'course_list': course_list, 'sems': sems, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof.html', context)
@@ -312,21 +304,21 @@ def profView(request, cprof):
 # ex: curves/prof/Brian+W.+Kernighan/S2015.  Shows plot of grade distribution for all COS classes taught
 # during the given semester, links to other semesters
 def profSpecificView(request, cprof, ctime):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
         return redirect('/add_data/')
     allSemAllCourse = Course_Specific.objects.filter(prof__icontains = cprof)
     if not allSemAllCourse:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     # check that the prof data exists for the semester
     checkExists = Course_Specific.objects.filter(prof__icontains = cprof, semester=convertToModel(ctime))
     if not checkExists:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     # check that url is valid -- e.g. shouldn't be able to aggregate over "Douglas"
     uniqueProfs = []
     for a in allSemAllCourse:
@@ -339,7 +331,7 @@ def profSpecificView(request, cprof, ctime):
         if cprof == u:
             break
     else:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     course_list = []
     sem_list = []
@@ -367,8 +359,6 @@ def profSpecificView(request, cprof, ctime):
     sems = sorted(sems, reverse=True)
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
 
     context = {'course_list': course_list, 'sems': sems, 'profForPrint': cprof.replace("*", " "), 'prof': cprof, 'sem': ctime, 'dist': dist, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/prof_specific.html', context)
@@ -378,10 +368,10 @@ def profSpecificView(request, cprof, ctime):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def courseView(request, cdept, cnum):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -389,7 +379,7 @@ def courseView(request, cdept, cnum):
     # gets list of this course over all semesters
     course_list = Course_Specific.objects.filter(dept=cdept, num=cnum)
     if not course_list:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     # list of all semesters this class was taught
     sem_list = []
@@ -431,9 +421,6 @@ def courseView(request, cdept, cnum):
     sems = sorted(sems, reverse=True)
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
-
     context = {'sems': sems, 'profs': profs, 'dist': dist,'total': total, 'name': curCourse.__unicode__(), 'course': curCourse, 'allCombinedJSON': q.qlist}
     return render(request, 'curves/course.html', context)
 
@@ -441,10 +428,10 @@ def courseView(request, cdept, cnum):
 # ex: curves/COS/333/S2015.  Plot of grade distribution for course taught during
 # given semester.  Provide links to all other semesters for the course.  
 def courseSpecificView(request, cdept, cnum, ctime):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -452,13 +439,13 @@ def courseSpecificView(request, cdept, cnum, ctime):
     # course specific to the semester
     courseList = Course_Specific.objects.filter(dept = cdept, num = cnum, semester = convertToModel(ctime))
     if not courseList:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     else:
         course = courseList[0]
     # course over all semesters
     course_list = Course_Specific.objects.filter(dept = cdept, num = cnum)
     if not course_list:
-        return render(request, 'curves/404.html')   
+        return render(request, 'curves/404.html', context)   
     # all semesters for which this class was taught
     sem_list = []
     origsem_list = []
@@ -478,9 +465,6 @@ def courseSpecificView(request, cdept, cnum, ctime):
         curProfs.append(p)
         curProfsForPrint.append(p.replace("*", " "))
     profs = zip(curProfs, curProfsForPrint)
-
-    cachedList = QueryList.objects.all()
-    q = cachedList[0]
 
     sems = sorted(sems, reverse=True)
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
@@ -721,19 +705,22 @@ def handler404(request):
 
 @login_required
 def comparedeptView(request, cdept1, cdept2):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
         return redirect('/curves/add_data')
 
+    if cdept1 == cdept2:
+        return render(request, 'curves/404.html', context)
+
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(dept__icontains = cdept1) # includes all semesters
     if not course_list1:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
     # construct list of unique course titles
     uniqueCourse_list1 = []
     # construct a list of all semesters for which we have data
@@ -758,7 +745,7 @@ def comparedeptView(request, cdept1, cdept2):
 
     course_list2 = Course_Specific.objects.filter(dept__icontains = cdept2) # includes all semesters
     if not course_list2:
-        return render(request, 'curves/404.html')  
+        return render(request, 'curves/404.html', context)  
     # construct list of unique course titles
     uniqueCourse_list2 = []
     # construct a list of all semesters for which we have data
@@ -792,19 +779,22 @@ def comparedeptView(request, cdept1, cdept2):
 # ex: curves/COS/333. Plot of all time aggregate distribution, links to 
 # courseSpecific for each semester
 def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
         return redirect('/add_data/')
 
+    if cdept1 == cdept2 and cnum1 == cnum2:
+        return render(request, 'curves/404.html', context)
+
     # gets list of this course over all semesters
     course_list1 = Course_Specific.objects.filter(dept=cdept1, num=cnum1)
     if not course_list1:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     numGrades1 = [0] * len(GRADES);
     for course in course_list1:
@@ -820,7 +810,7 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
     #second course
     course_list2 = Course_Specific.objects.filter(dept=cdept2, num=cnum2)
     if not course_list2:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     numGrades2 = [0] * len(GRADES);
     for course in course_list2:
@@ -847,20 +837,21 @@ def comparecourseView(request, cdept1, cnum1, cdept2, cnum2):
 
 @login_required
 def compareProfView(request, cprof1, cprof2):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
         return redirect('/curves/add_data')
-    print cprof1
-    print cprof2
+
+    if cprof1 == cprof2:
+        return render(request, 'curves/404.html', context)
     # get all courses registered under the department, including those that are cross listed
     course_list1 = Course_Specific.objects.filter(prof__icontains = cprof1) # includes all semesters
     if not course_list1:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     # construct list of unique course titles
     uniqueCourse_list1 = []
@@ -885,7 +876,7 @@ def compareProfView(request, cprof1, cprof2):
         if cprof1 == u:
             break
     else:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     # aggregate all time grade distribution
     numGrades1 = [0] * len(GRADES)
@@ -900,7 +891,7 @@ def compareProfView(request, cprof1, cprof2):
 
     course_list2 = Course_Specific.objects.filter(prof__icontains = cprof2) # includes all semesters
     if not course_list2:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
         
     # construct list of unique course titles
     uniqueCourse_list2 = []
@@ -925,7 +916,7 @@ def compareProfView(request, cprof1, cprof2):
         if cprof2 == u:
             break
     else:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     # aggregate all time grade distribution
     numGrades2 = [0] * len(GRADES)
@@ -948,10 +939,10 @@ def compareProfView(request, cprof1, cprof2):
 @login_required
 # page where user can select two professors to compare
 def compareProfSelect(request):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -961,7 +952,7 @@ def compareProfSelect(request):
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
-            return render(request, 'curves/404.html')
+            return render(request, 'curves/404.html', context)
 
         uniqueProfList = []
         simpleProfList = []
@@ -1010,10 +1001,10 @@ def compareProfSelect(request):
 @login_required
 # page where user can select two professors to compare
 def compareDeptSelect(request):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -1024,7 +1015,7 @@ def compareDeptSelect(request):
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
-            return render(request, 'curves/404.html')
+            return render(request, 'curves/404.html', context)
 
         uniqueDeptList = []
         simpleDeptList = []
@@ -1072,10 +1063,10 @@ def compareDeptSelect(request):
 @login_required
 # page where user can select two professors to compare
 def compareCourseSelect(request):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -1085,7 +1076,7 @@ def compareCourseSelect(request):
     if len(cachedList) == 0:
         allSemAllCourse = Course_Specific.objects.all()
         if not allSemAllCourse:
-            return render(request, 'curves/404.html')
+            return render(request, 'curves/404.html', context)
 
         uniqueCourseList = []
 
@@ -1157,10 +1148,10 @@ def compareCourseSelect(request):
 
 @login_required
 def topTen(request):
+    cachedList = QueryList.objects.all()
+    q = cachedList[0]
+    context = {'allCombinedJSON': q.qlist}
     if validNetID(request) == False:
-        cachedList = QueryList.objects.all()
-        q = cachedList[0]
-        context = {'allCombinedJSON': q.qlist}
         return render(request, 'curves/permissions.html', context)
 
     if eligibleStudent(request) == False:
@@ -1169,7 +1160,7 @@ def topTen(request):
     # create list of unique course names (if it hasn't been calculated already)
     allSemAllCourse = Course_Specific.objects.filter(semester=CURRENTSEMESTER)
     if not allSemAllCourse:
-        return render(request, 'curves/404.html')
+        return render(request, 'curves/404.html', context)
 
     uniqueCourseList = []
 
