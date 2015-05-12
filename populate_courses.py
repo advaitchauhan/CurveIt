@@ -176,6 +176,10 @@ def populate(filename, sem):
     # Randomly generate grade distribution for this class
     dist = distributeGrades()
 
+    if len(thisProf) > 200:
+      print thisProf
+      print len(thisProf)
+      print thisTitle
     # add the course specific to the model
     courseSpecifics.append(Course_Specific(dept=thisDept, num=thisNum, name=thisTitle, prof=thisProf, semester=sem, num_A_plus=dist['A+'], num_A=dist['A'], num_A_minus=dist['A-'], num_B_plus=dist['B+'], num_B=dist['B'], num_B_minus=dist['B-'], num_C_plus=dist['C+'], num_C=dist['C'], num_C_minus=dist['C-'], num_D=dist['D'], num_F=dist['F'], num_P=dist['P']))
 
@@ -224,6 +228,8 @@ def main():
     titleString += c.name
     c.titleString = titleString
     c.save()
+    if len(titleString) > 200:
+      print titleString
 
 main()
 
