@@ -91,7 +91,6 @@ def index(request):
                     curDict = {}
                     curData = {}
                     curDict["value"] = dept + ": " + depts[dept]
-                    print depts[dept]
                     curData["cat"] = "Departments"
                     curDict["data"] = curData
                     allDepts.append(curDict)
@@ -121,10 +120,8 @@ def validNetID(request):
 
     try:
         thisUser = Student.objects.get(netid = currentnetid)
-        print 'here 1'
         return True
     except:
-        print 'here 2'
         return False
 
 @login_required 
@@ -169,13 +166,9 @@ def deptView(request, cdept):
     dist = zip(GRADES, numGrades)
     sems = zip(sem_list, origsem_list)
     total = sum(numGrades)
-    print sems
 
     sems = sorted(sems, reverse=True)
-    print sems
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
-    print "here"
-    print sems
 
     # sem_list sorted in reverse so that they appear in reverse chronological order
     context = {'deptForPrint': depts[cdept.upper()], 'dept': cdept.upper(), 'sems': sems, 'course_list': uniqueCourse_list, 'dist': dist, 'total': total, 'sem_list': sorted(sem_list, reverse=True), 'allCombinedJSON': q.qlist}
@@ -201,7 +194,6 @@ def deptSpecificView(request, cdept, ctime):
         return render(request, 'curves/404.html', context)
 
     thisSem = convertToModel(ctime)
-    print thisSem
 
     # all courses for current semester
     course_list = []
@@ -228,7 +220,6 @@ def deptSpecificView(request, cdept, ctime):
     dist = zip(GRADES, numGrades)
     sems = zip(sem_list, origsem_list)
     sems = sorted(sems, reverse=True)
-    print sems
     sems = sorted(sems, key=lambda x: (-int((x[0])[0:4]), (x[0])[5:6]))
 
     # departments sorted in reverse so they appear like S2015 S2014, etc...
@@ -411,8 +402,6 @@ def courseView(request, cdept, cnum):
     # in order to pass in name of this class
     curCourse = course_list[0]
 
-    print curCourse.getAvg()
-
     dist = zip(GRADES, numGrades)
     profs = zip(prof_list, prof_names_list)
     sems = zip(sem_list, origsem_list)
@@ -471,7 +460,6 @@ def courseSpecificView(request, cdept, cnum, ctime):
 
     context = {'sems': sems, 'course': course, 'name': course.__unicode__(), 'dist': dist, 'total': total, 'profs': profs, 'allCombinedJSON': q.qlist}
     # context = {'course': course, "grades": GRADES, "numGrades": numGrades}
-    print dist
     return render(request, 'curves/course_specific.html', context)
 
 @login_required
@@ -511,21 +499,17 @@ def add_data(request):
             thisUser.entered()
             thisUser.save()
             curData = form.cleaned_data #this is the data from the form
-            print curData
             #add grade to class for each class
             try:
                 for i in range(0, len(requiredClasses)):
                     c = requiredClasses[i]
                     g = requiredGrades[i]
                     thisClass = curData[c] # i.e. AAS 210/MUS 253: Intro to...
-                    print thisClass
-                    print ""
                     thisCourse_Specific = Course_Specific.objects.get(titleString=thisClass, semester="2015 Spring")
                     thisGrade = curData[g] # gets grade chosen
                     thisCourse_Specific.addGrade(thisGrade)
                     thisCourse_Specific.calcAvg()
                     thisCourse_Specific.save()
-                    print thisGrade
                 for i in range(0, len(optionalClasses)):
                     thisClass = curData[optionalClasses[i]] # i.e. AAS 210/MUS 253: Intro to...
                     if thisClass != "":
@@ -867,7 +851,6 @@ def compareProfView(request, cprof1, cprof2):
     uniqueProfs = []
     for a in course_list1:
         profs = a.prof.split("+")
-        print profs
         for p in profs:
             if p not in uniqueProfs:
                 uniqueProfs.append(p)
@@ -1028,7 +1011,6 @@ def compareDeptSelect(request):
                     uniqueDeptList.append(d + ": " + depts[d])
 
         allDeptJSON = json.dumps(uniqueDeptList)
-        print uniqueDeptList
 
         q = QueryDeptList()
         q.qlist = allDeptJSON
@@ -1131,8 +1113,6 @@ def compareCourseSelect(request):
                     curIndex = thisNum.index(":")
                     cnum2 += thisNum[0:curIndex]
 
-            print course1
-            print course2
             return redirect('/compcourse/' + cdept1 + '/' + cnum1 + '/' + cdept2 + '/' + cnum2 + '/')
         else:
             print form.errors
@@ -1244,7 +1224,6 @@ def topTen(request):
     easyGrades = []
     for e in easyCourses:
         easyGrades.append(easyCourseList[e])
-    print easyCourses
 
     easyLinks = []
     for e in easyCourses:
