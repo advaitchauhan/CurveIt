@@ -41,8 +41,6 @@ for (var i=0; i < _grades.length; i++) {
     _pctGrades.push(parseFloat(_numGrades[i] / dataSum *100))
 };
 
-console.log(_pctGrades)
-
 var AvgLetGrade = '';
 
 if (AverageGrade > 3.85) AvgLetGrade = 'A';
@@ -128,7 +126,6 @@ $(function makechart() {
             labels: {
                 formatter: function() {    
                     var pcnt = this.value;
-                    console.log(pcnt)
                     return pcnt.toFixed(0) + '%';
                 },                 style: {
                     color: "#FFFFFF",

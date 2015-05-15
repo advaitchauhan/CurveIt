@@ -8,8 +8,8 @@ class Course_Specific(models.Model):
 	
 	dept = models.CharField(max_length = 40) # e.g. 'COS'
 	num = models.CharField(max_length = 40) # e.g. '333'
-	name = models.CharField(max_length = 200) # e.g. 'Advanced Programming Techniques'
-	prof = models.CharField(max_length = 200) # e.g. 'Brian+Kernighan'
+	name = models.CharField(max_length = 500) # e.g. 'Advanced Programming Techniques'
+	prof = models.CharField(max_length = 500) # e.g. 'Brian+Kernighan'
 	semester = models.CharField(max_length = 11) # e.g. '2015 Spring' or '2014 Fall'
 	num_A_plus = models.IntegerField(default = 0) 
 	num_A = models.IntegerField(default = 0)
@@ -23,7 +23,7 @@ class Course_Specific(models.Model):
 	num_D = models.IntegerField(default = 0)
 	num_F = models.IntegerField(default = 0)
 	num_P = models.IntegerField(default = 0)
-	titleString = models.CharField(default = "blank", max_length = 200)
+	titleString = models.CharField(default = "blank", max_length = 500)
 	avg = models.DecimalField(default = 0, max_digits=3, decimal_places=2)
 
 	# increment grade counter for string grade (e.g. "A, B-, etc")
